@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="FontTextView">
+        <attr name="font">
+            <enum name="fontRegular" value="0" />
+            <enum name="fontBold" value="1" />
+            <enum name="nobelLight" value="2" />
+            <enum name="robotoLight" value="3" />
+            <enum name="robotoLightItalic" value="4" />
+            <enum name="robotoRegular" value="5" />
+            <enum name="robotoBold" value="6" />
+            <enum name="robotoMedium" value="7" />
+            <enum name="robotoMediumItalic" value="8" />
+        </attr>
+    </declare-styleable>
+
+</resources>
