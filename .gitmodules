@@ -1,0 +1,6 @@
+[submodule "submodules/ListViewAnimations"]
+	path = submodules/ListViewAnimations
+	url = https://github.com/nhaarman/ListViewAnimations.git
+[submodule "submodules/Volley"]
+	path = submodules/Volley
+	url = https://android.googlesource.com/platform/frameworks/volley
