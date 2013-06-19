@@ -24,15 +24,22 @@
 
     <style name="Text.News_Topline">
         <item name="font">robotoLight</item>
-        <item name="android:textColor">@color/cyan</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:typeface">monospace</item>
     </style>
 
     <style name="Text.News_Headline">
         <item name="font">robotoMedium</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
+    <style name="Text.News_Date">
+        <item name="font">robotoRegular</item>
+        <item name="android:textColor">@color/cyan</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:typeface">monospace</item>
     </style>
 

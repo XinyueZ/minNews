@@ -14,7 +14,7 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 
 public final class NewsListAdapter extends BaseAdapter {
 
-	private static final int LAYOUT = R.layout.activity_main;
+	private static final int LAYOUT = R.layout.news_list_item;
 	private final Context mContext;
 	private final List<INewsListItem> mNewsListItems;
 
@@ -23,6 +23,11 @@ public final class NewsListAdapter extends BaseAdapter {
 		super();
 		mContext = _context;
 		mNewsListItems = _newsListItems;
+	}
+
+
+	public void remove(int _i) {
+		mNewsListItems.remove(_i);
 	}
 
 
@@ -48,12 +53,14 @@ public final class NewsListAdapter extends BaseAdapter {
 
 		TextView topline;
 		TextView headline;
+		TextView date;
 
 
-		public ViewHolder(TextView _topline, TextView _headline) {
+		public ViewHolder(TextView _topline, TextView _headline, TextView _date) {
 			super();
 			topline = _topline;
 			headline = _headline;
+			date = _date;
 		}
 	}
 
@@ -62,15 +69,17 @@ public final class NewsListAdapter extends BaseAdapter {
 	public View getView(int _position, View _convertView, ViewGroup _parent) {
 		ViewHolder h;
 		if (_convertView == null) {
-			_convertView = View.inflate(mContext, R.layout.news_list_item, null);
+			_convertView = View.inflate(mContext, LAYOUT, null);
 			_convertView.setTag(h = new ViewHolder((TextView) _convertView.findViewById(R.id.tv_topline),
-					(TextView) _convertView.findViewById(R.id.tv_headline)));
+					(TextView) _convertView.findViewById(R.id.tv_headline), (TextView) _convertView
+							.findViewById(R.id.tv_date)));
 		} else {
 			h = (ViewHolder) _convertView.getTag();
 		}
 		INewsListItem newsItem = mNewsListItems.get(_position);
 		h.topline.setText(newsItem.getTopline());
 		h.headline.setText(newsItem.getHeadline());
+		h.date.setText(newsItem.getDate());
 		return _convertView;
 	}
 }
