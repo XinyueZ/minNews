@@ -1,11 +1,12 @@
 package com.gmail.hasszhao.mininews.fragments;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +14,25 @@ import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.android.volley.Request.Method;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
+import com.gmail.hasszhao.mininews.API;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
+import com.gmail.hasszhao.mininews.dataset.DONews;
+import com.gmail.hasszhao.mininews.dataset.DOStatus;
+import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
+import com.gmail.hasszhao.mininews.tasks.LoadNewsListTask;
+import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.haarman.listviewanimations.itemmanipulation.OnDismissCallback;
 import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 
-public final class NewsListFragment extends Fragment implements OnDismissCallback {
+public final class NewsListFragment extends Fragment implements OnDismissCallback, Listener<DOStatus>, ErrorListener {
 
 	public static final String TAG = "TAG.NewsList";
 	private final static int LAYOUT = R.layout.fragment_news_list;
@@ -41,19 +52,59 @@ public final class NewsListFragment extends Fragment implements OnDismissCallbac
 	@Override
 	public void onViewCreated(View _view, Bundle _savedInstanceState) {
 		super.onViewCreated(_view, _savedInstanceState);
-		initList();
+		loadData();
 	}
 
 
-	private void initList() {
-		View v = getView();
-		if (v != null) {
-			ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
-			NewsListAdapter adapter = new NewsListAdapter(getActivity(), getItems());
-			SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(
-					new SwipeDismissAdapter(adapter, this));
-			swingBottomInAnimationAdapter.setAbsListView(listView);
-			listView.setAdapter(swingBottomInAnimationAdapter);
+	private void loadData() {
+		Activity act = getActivity();
+		if (act != null) {
+			new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this)
+					.execute();
+		}
+	}
+
+
+	@Override
+	public void onErrorResponse(VolleyError _error) {
+	}
+
+
+	@Override
+	public void onResponse(DOStatus _response) {
+		if (_response != null) {
+			try {
+				switch (_response.getCode()) {
+					case API.API_OK:
+						initList(TaskHelper.getGson().fromJson(
+								new String(Base64.decode(_response.getData(), Base64.DEFAULT)), ListNews.class));
+						break;
+					case API.API_ACTION_FAILED:
+						// Util.showLongToast(_cxt, R.string.action_failed);
+						break;
+					case API.API_SERVER_DOWN:
+						// Util.showLongToast(_cxt, R.string.server_down);
+						break;
+				}
+			} catch (Exception _e) {
+				_e.printStackTrace();
+			}
+		}
+	}
+
+
+	private void initList(ListNews _listNews) {
+		List<DONews> newsList = _listNews.getPulledNewss();
+		if (newsList != null && newsList.size() > 0) {
+			View v = getView();
+			if (v != null) {
+				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
+				NewsListAdapter adapter = new NewsListAdapter(getActivity(), newsList);
+				SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(
+						new SwipeDismissAdapter(adapter, this));
+				swingBottomInAnimationAdapter.setAbsListView(listView);
+				listView.setAdapter(swingBottomInAnimationAdapter);
+			}
 		}
 	}
 
@@ -89,17 +140,6 @@ public final class NewsListFragment extends Fragment implements OnDismissCallbac
 		public String getDate() {
 			return date;
 		}
-	}
-
-
-	private ArrayList<INewsListItem> getItems() {
-		ArrayList<INewsListItem> items = new ArrayList<INewsListItem>();
-		for (int i = 0; i < 100; i++) {
-			Calendar c = Calendar.getInstance();
-			c.setTimeInMillis(System.currentTimeMillis());
-			items.add(new TempNewsItem("Topline " + i, "Headline " + i, c.getTime().toLocaleString()));
-		}
-		return items;
 	}
 
 

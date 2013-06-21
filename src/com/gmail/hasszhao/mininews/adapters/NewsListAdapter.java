@@ -16,10 +16,10 @@ public final class NewsListAdapter extends BaseAdapter {
 
 	private static final int LAYOUT = R.layout.news_list_item;
 	private final Context mContext;
-	private final List<INewsListItem> mNewsListItems;
+	private final List<? extends INewsListItem> mNewsListItems;
 
 
-	public NewsListAdapter(Context _context, List<INewsListItem> _newsListItems) {
+	public NewsListAdapter(Context _context, List<? extends INewsListItem> _newsListItems) {
 		super();
 		mContext = _context;
 		mNewsListItems = _newsListItems;

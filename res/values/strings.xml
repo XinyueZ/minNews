@@ -4,5 +4,8 @@
     <string name="app_name">miniNews</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <!-- ERR -->
+    <string name="action_failed">The request cant be fired!</string>
+    <string name="server_down">The Faroo is DOWN!</string>
 
 </resources>
