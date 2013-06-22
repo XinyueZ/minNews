@@ -70,6 +70,9 @@ public class FontTextView extends TextView {
 			case 8:
 				font = Fonts.FONT_ROBOTO_MEDIUM_ITALIC;
 				break;
+			case 9:
+				font = Fonts.FONT_ROBOTO_THIN;
+				break;
 			default:
 				font = null;
 				break;
@@ -108,6 +111,7 @@ public class FontTextView extends TextView {
 		public static final String FONT_ROBOTO_BOLD = "Roboto-Bold.ttf";
 		public static final String FONT_ROBOTO_MEDIUM = "Roboto-Medium.ttf";
 		public static final String FONT_ROBOTO_MEDIUM_ITALIC = "Roboto-MediumItalic.ttf";
+		public static final String FONT_ROBOTO_THIN = "Roboto-Thin.ttf";
 
 
 		public static Typeface getFont(Context _context, String _assetPath) {

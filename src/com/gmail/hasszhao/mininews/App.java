@@ -3,6 +3,7 @@ package com.gmail.hasszhao.mininews;
 import android.app.Application;
 
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
+import com.gmail.hasszhao.mininews.utils.Prefs;
 
 
 public final class App extends Application {
@@ -15,6 +16,7 @@ public final class App extends Application {
 
 
 	private void init() {
-		TaskHelper.init(this);
+		TaskHelper.init(getApplicationContext());
+		Prefs.createInstance(getApplicationContext());
 	}
 }

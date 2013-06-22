@@ -12,6 +12,7 @@
             <enum name="robotoBold" value="6" />
             <enum name="robotoMedium" value="7" />
             <enum name="robotoMediumItalic" value="8" />
+            <enum name="robotoThin" value="9" />
         </attr>
     </declare-styleable>
 

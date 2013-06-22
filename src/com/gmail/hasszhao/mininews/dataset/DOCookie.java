@@ -1,8 +1,6 @@
 package com.gmail.hasszhao.mininews.dataset;
 
-import android.content.Context;
-
-import com.gmail.hasszhao.mininews.utils.DeviceData;
+import com.gmail.hasszhao.mininews.utils.Prefs;
 
 
 public final class DOCookie {
@@ -14,9 +12,9 @@ public final class DOCookie {
 	private final long mDate;
 
 
-	public DOCookie(Context _context, long _count, String _lang, String _query) {
+	public DOCookie(long _count, String _lang, String _query) {
 		super();
-		mDevice = DeviceData.getInstance(_context).getDeviceId();
+		mDevice = Prefs.getInstance().getDeviceId();
 		mCount = _count;
 		mLang = _lang;
 		mQuery = _query;

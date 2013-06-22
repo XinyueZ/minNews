@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">小道消息</string>
+    <string name="hello_world">你好 世界!</string>
+    <!-- ERR -->
+    <string name="action_failed">无法发送请求!</string>
+    <string name="server_down">服务器调整!</string>
+    <!-- action title -->
+    <string name="title_hot_news">热门新闻</string>
+    <!-- menu -->
+    <string name="action_refresh">刷新</string>
+    <string name="action_pull_to_load">支持下拉刷新</string>
+
+</resources>

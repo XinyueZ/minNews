@@ -20,7 +20,7 @@ import android.text.TextUtils;
  * 
  * @author Chris.Xinyue Zhao<czhao@cellular.de>
  */
-public final class DeviceData extends SharedPreferenceWrapper {
+public final class Prefs extends SharedPreferenceWrapper {
 
 	/** The Constant VERSION. */
 	private final static String VERSION = "DeviceData.version";
@@ -34,8 +34,9 @@ public final class DeviceData extends SharedPreferenceWrapper {
 	private final static String OS_VERSION = "DeviceData.osversion";
 	/** The Constant SIM_COUNTRY_ISO. */
 	private final static String SIM_COUNTRY_ISO = "DeviceData.country";
+	private final static String KEY_SUPPORT_PULL_TO_LOAD = "support.pull.to.load";
 	/** The Instance. */
-	private static DeviceData sInstance;
+	private static Prefs sInstance;
 
 
 	/**
@@ -43,11 +44,11 @@ public final class DeviceData extends SharedPreferenceWrapper {
 	 * 
 	 * @return single instance of DeviceData
 	 */
-	public static DeviceData getInstance(Context _cxt) {
+	public static Prefs createInstance(Context _cxt) {
 		if (sInstance == null) {
-			synchronized (DeviceData.class) {
+			synchronized (Prefs.class) {
 				if (sInstance == null) {
-					sInstance = new DeviceData(_cxt);
+					sInstance = new Prefs(_cxt);
 				}
 			}
 		}
@@ -55,7 +56,12 @@ public final class DeviceData extends SharedPreferenceWrapper {
 	}
 
 
-	private DeviceData() {
+	public static Prefs getInstance() {
+		return sInstance;
+	}
+
+
+	private Prefs() {
 		super(null);
 	}
 
@@ -64,7 +70,7 @@ public final class DeviceData extends SharedPreferenceWrapper {
 	 * Created a DeviceData storage.
 	 * 
 	 */
-	private DeviceData(Context _cxt) {
+	private Prefs(Context _cxt) {
 		super(_cxt);
 		try {
 			TelephonyManager tm = (TelephonyManager) _cxt.getSystemService(Activity.TELEPHONY_SERVICE);
@@ -218,6 +224,16 @@ public final class DeviceData extends SharedPreferenceWrapper {
 	 */
 	private boolean setSimCountryIso(String _value) {
 		return setString(SIM_COUNTRY_ISO, _value);
+	}
+
+
+	public boolean isSupportPullToLoad() {
+		return getBoolean(KEY_SUPPORT_PULL_TO_LOAD, true);
+	}
+
+
+	public void setSupportPullToLoad(boolean _support) {
+		setBoolean(KEY_SUPPORT_PULL_TO_LOAD, _support);
 	}
 
 

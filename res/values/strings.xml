@@ -2,10 +2,14 @@
 <resources>
 
     <string name="app_name">miniNews</string>
-    <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <!-- ERR -->
-    <string name="action_failed">The request cant be fired!</string>
-    <string name="server_down">The Faroo is DOWN!</string>
+    <string name="action_failed">The request can not be fired!</string>
+    <string name="server_down">The server is under building!</string>
+    <!-- action title -->
+    <string name="title_hot_news">Hot News</string>
+    <!-- menu -->
+    <string name="action_refresh">Refresh</string>
+    <string name="action_pull_to_load">Support pull to load</string>
 
 </resources>
