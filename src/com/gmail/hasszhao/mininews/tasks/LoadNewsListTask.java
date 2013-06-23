@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response.ErrorListener;
@@ -16,12 +17,15 @@ import com.gmail.hasszhao.mininews.dataset.DOStatus;
 public final class LoadNewsListTask extends AbstractGsonRequest<DOStatus> {
 
 	public static final String TAG = LoadNewsListTask.class.getName();
+	private final int mNewsSize;
 
 
 	public LoadNewsListTask(Context _context, int _method, String _url, Class<DOStatus> _clazz,
-			Listener<DOStatus> _listener, ErrorListener _errorListener) {
+			Listener<DOStatus> _listener, ErrorListener _errorListener, int _newsSize) {
 		super(_context, Method.GET, _url, _clazz, _listener, _errorListener);
 		setTag(TAG);
+		setShouldCache(false);
+		mNewsSize = _newsSize;
 	}
 
 
@@ -31,7 +35,9 @@ public final class LoadNewsListTask extends AbstractGsonRequest<DOStatus> {
 		if (headers == null || headers.equals(Collections.emptyMap())) {
 			headers = new HashMap<String, String>();
 		}
-		headers.put(COOKIE_KEY, new DOCookie(30, "en", "").toString());
+		String cookie = new DOCookie(mNewsSize, "en", "").toString();
+		Log.d("news", "Ask: cookie:" + cookie);
+		headers.put(COOKIE_KEY, cookie);
 		return headers;
 	}
 }

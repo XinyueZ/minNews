@@ -10,6 +10,7 @@
     <string name="server_down">The server is under building!</string>
     <!-- action title -->
     <string name="title_hot_news">Hot News</string>
+    <string name="title_news_size">News Size:%1$d</string>
     <!-- menu -->
     <string name="action_refresh">Refresh</string>
     <string name="action_pull_to_load">Pull To Load</string>

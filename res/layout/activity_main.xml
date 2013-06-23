@@ -38,6 +38,21 @@
             android:text="@string/action_pull_to_load"
             app:textOff="@string/off"
             app:textOn="@string/on" />
+
+        <com.gmail.hasszhao.mininews.views.FontTextView
+            android:id="@+id/tv_news_size"
+            style="@style/Text.News_Size_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <SeekBar
+            android:id="@+id/sb_news_count"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:max="100" />
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

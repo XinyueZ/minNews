@@ -51,8 +51,15 @@
         <item name="android:typeface">monospace</item>
     </style>
 
-    <style name="Text.Pull2Load_Text" parent = "switch_light">
+    <style name="Text.Pull2Load_Text" parent="switch_light">
         <item name="font">robotoThin</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
+    <style name="Text.News_Size_Text">
+        <item name="font">robotoRegular</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">15sp</item>
         <item name="android:typeface">monospace</item>

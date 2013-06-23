@@ -88,8 +88,8 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	private void loadData() {
 		Activity act = getActivity();
 		if (act != null) {
-			new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this)
-					.execute();
+			new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this, Prefs
+					.getInstance().getNewsSize()).execute();
 		}
 	}
 
@@ -129,6 +129,7 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	private void initList(ListNews _listNews) {
 		List<DONews> newsList = _listNews.getPulledNewss();
 		if (newsList != null && newsList.size() > 0) {
+			Log.d("news", "Ask: news size:" + newsList.size());
 			View v = getView();
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);

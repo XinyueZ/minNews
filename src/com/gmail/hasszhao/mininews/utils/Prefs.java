@@ -35,6 +35,7 @@ public final class Prefs extends BasicPrefs {
 	/** The Constant SIM_COUNTRY_ISO. */
 	private final static String SIM_COUNTRY_ISO = "DeviceData.country";
 	private final static String KEY_SUPPORT_PULL_TO_LOAD = "support.pull.to.load";
+	private final static String KEY_NEWS_SIZE = "news.size";
 	/** The Instance. */
 	private static Prefs sInstance;
 
@@ -234,6 +235,16 @@ public final class Prefs extends BasicPrefs {
 
 	public void setSupportPullToLoad(boolean _support) {
 		setBoolean(KEY_SUPPORT_PULL_TO_LOAD, _support);
+	}
+
+
+	public int getNewsSize() {
+		return getInt(KEY_NEWS_SIZE, 10);
+	}
+
+
+	public void setNewsSize(int _size) {
+		setInt(KEY_NEWS_SIZE, _size);
 	}
 
 

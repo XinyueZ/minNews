@@ -12,6 +12,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -21,9 +24,10 @@ import com.gmail.hasszhao.mininews.fragments.NewsListFragment;
 import com.gmail.hasszhao.mininews.utils.Prefs;
 
 
-public class MainActivity extends SherlockFragmentActivity implements OnCheckedChangeListener {
+public class MainActivity extends SherlockFragmentActivity implements OnCheckedChangeListener, OnSeekBarChangeListener {
 
 	private static final int LAYOUT = R.layout.activity_main;
+	private static final int MIN_NEWS_SIZE = 10;
 	private PullToRefreshAttacher mPullToRefreshAttacher;
 	private ActionBarDrawerToggle mDrawerToggle;
 
@@ -59,6 +63,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 		showNewsListFragment();
 		createSidebar();
 		initPull2LoadSwitch();
+		initNewsSizeSeekbar();
 	}
 
 
@@ -66,6 +71,26 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 		de.ankri.views.Switch sw = null;
 		(sw = (de.ankri.views.Switch) findViewById(R.id.switch_pull_to_load)).setOnCheckedChangeListener(this);
 		sw.setChecked(Prefs.getInstance().isSupportPullToLoad());
+	}
+
+
+	private void initNewsSizeSeekbar() {
+		SeekBar sb = (SeekBar) findViewById(R.id.sb_news_count);
+		sb.setProgress(Prefs.getInstance().getNewsSize());
+		sb.setOnSeekBarChangeListener(this);
+		((TextView) findViewById(R.id.tv_news_size)).setText(String.format(getString(R.string.title_news_size),
+				sb.getProgress()));
+	}
+
+
+	@Override
+	public void onProgressChanged(SeekBar _seekBar, int _progress, boolean _fromUser) {
+		if (_progress < MIN_NEWS_SIZE) {
+			_seekBar.setProgress(MIN_NEWS_SIZE);
+		}
+		((TextView) findViewById(R.id.tv_news_size)).setText(String.format(getString(R.string.title_news_size),
+				_seekBar.getProgress()));
+		Prefs.getInstance().setNewsSize(_seekBar.getProgress());
 	}
 
 
@@ -203,5 +228,15 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 		trans.replace(R.id.container_news_list, fmg, NewsListFragment.TAG);
 		// trans.addToBackStack(NewsListFragment.TAG);
 		trans.commit();
+	}
+
+
+	@Override
+	public void onStartTrackingTouch(SeekBar _seekBar) {
+	}
+
+
+	@Override
+	public void onStopTrackingTouch(SeekBar _seekBar) {
 	}
 }
