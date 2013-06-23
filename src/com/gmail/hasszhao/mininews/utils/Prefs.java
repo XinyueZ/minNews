@@ -20,7 +20,7 @@ import android.text.TextUtils;
  * 
  * @author Chris.Xinyue Zhao<czhao@cellular.de>
  */
-public final class Prefs extends SharedPreferenceWrapper {
+public final class Prefs extends BasicPrefs {
 
 	/** The Constant VERSION. */
 	private final static String VERSION = "DeviceData.version";

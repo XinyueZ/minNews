@@ -10,13 +10,13 @@ import android.content.SharedPreferences;
  * @author chris
  * 
  */
-public class SharedPreferenceWrapper {
+public class BasicPrefs {
 
 	protected SharedPreferences preference = null;
 	protected Context mContext;
 
 
-	public SharedPreferenceWrapper(Context _cxt) {
+	public BasicPrefs(Context _cxt) {
 		mContext = _cxt;
 		preference = _cxt.getSharedPreferences(getClass().getPackage().toString(), Context.MODE_PRIVATE);
 	}
