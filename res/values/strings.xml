@@ -3,6 +3,8 @@
 
     <string name="app_name">miniNews</string>
     <string name="hello_world">Hello world!</string>
+    <string name="on">ON</string>
+    <string name="off">OFF</string>
     <!-- ERR -->
     <string name="action_failed">The request can not be fired!</string>
     <string name="server_down">The server is under building!</string>
@@ -10,6 +12,6 @@
     <string name="title_hot_news">Hot News</string>
     <!-- menu -->
     <string name="action_refresh">Refresh</string>
-    <string name="action_pull_to_load">Support pull to load</string>
+    <string name="action_pull_to_load">Pull To Load</string>
 
 </resources>

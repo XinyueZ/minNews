@@ -7,3 +7,6 @@
 [submodule "submodules/ActionBar-PullToRefresh"]
 	path = submodules/ActionBar-PullToRefresh
 	url = https://github.com/chrisbanes/ActionBar-PullToRefresh.git
+[submodule "submodules/SwitchCompatLibrary"]
+	path = submodules/SwitchCompatLibrary
+	url = https://github.com/ankri/SwitchCompatLibrary.git 

@@ -10,7 +10,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -18,8 +21,9 @@ import com.gmail.hasszhao.mininews.fragments.NewsListFragment;
 import com.gmail.hasszhao.mininews.utils.Prefs;
 
 
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends SherlockFragmentActivity implements OnCheckedChangeListener {
 
+	private static final int LAYOUT = R.layout.activity_main;
 	private PullToRefreshAttacher mPullToRefreshAttacher;
 	private ActionBarDrawerToggle mDrawerToggle;
 
@@ -49,17 +53,26 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(LAYOUT);
 		initActionbar();
 		mPullToRefreshAttacher = new PullToRefreshAttacher(this);
 		showNewsListFragment();
 		createSidebar();
+		initPull2LoadSwitch();
+	}
+
+
+	private void initPull2LoadSwitch() {
+		de.ankri.views.Switch sw = null;
+		(sw = (de.ankri.views.Switch) findViewById(R.id.switch_pull_to_load)).setOnCheckedChangeListener(this);
+		sw.setChecked(Prefs.getInstance().isSupportPullToLoad());
 	}
 
 
 	private void initActionbar() {
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setHomeButtonEnabled(true);
+		ActionBar ab = getSupportActionBar();
+		ab.setDisplayHomeAsUpEnabled(true);
+		ab.setHomeButtonEnabled(true);
 	}
 
 
@@ -141,12 +154,26 @@ public class MainActivity extends SherlockFragmentActivity {
 			case R.id.action_refresh:
 				refreshNewsList();
 				break;
-			case R.id.action_support_pull_to_load:
-				Prefs.getInstance().setSupportPullToLoad(!Prefs.getInstance().isSupportPullToLoad());
-				refreshNewsList();
-				break;
 		}
 		return true;
+	}
+
+
+	@Override
+	public void onCheckedChanged(CompoundButton _buttonView, boolean _isChecked) {
+		switch (_buttonView.getId()) {
+			case R.id.switch_pull_to_load:
+				switchPullToLoadStatus(_isChecked);
+				break;
+			default:
+				break;
+		}
+	}
+
+
+	private void switchPullToLoadStatus(boolean _support) {
+		Prefs.getInstance().setSupportPullToLoad(_support);
+		refreshNewsList();
 	}
 
 

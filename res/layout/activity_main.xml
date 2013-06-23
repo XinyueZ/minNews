@@ -27,14 +27,17 @@
         android:background="@color/dark_grey"
         android:orientation="vertical" >
 
-        <!-- <com.gmail.hasszhao.mininews.views.FontTextView -->
-        <!-- android:id="@+id/tv_support_pull_to_load" -->
-        <!-- style="@style/Text.News_Topline" -->
-        <!-- android:layout_width="wrap_content" -->
-        <!-- android:layout_height="match_parent" -->
-        <!-- android:textAppearance="?android:attr/textAppearanceMedium" /> -->
-
-        
+        <de.ankri.views.Switch
+            android:id="@+id/switch_pull_to_load"
+            style="@style/Text.Pull2Load_Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@string/action_pull_to_load"
+            app:textOff="@string/off"
+            app:textOn="@string/on" />
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
