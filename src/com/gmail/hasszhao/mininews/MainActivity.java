@@ -20,6 +20,13 @@ public class MainActivity extends SherlockFragmentActivity {
 
 
 	@Override
+	protected void onDestroy() {
+		mPullToRefreshAttacher = null;
+		super.onDestroy();
+	}
+
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);

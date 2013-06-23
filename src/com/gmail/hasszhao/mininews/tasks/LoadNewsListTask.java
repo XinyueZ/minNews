@@ -31,7 +31,7 @@ public final class LoadNewsListTask extends AbstractGsonRequest<DOStatus> {
 		if (headers == null || headers.equals(Collections.emptyMap())) {
 			headers = new HashMap<String, String>();
 		}
-		headers.put(COOKIE_KEY, new DOCookie(10, "en", "").toString());
+		headers.put(COOKIE_KEY, new DOCookie(30, "en", "").toString());
 		return headers;
 	}
 }

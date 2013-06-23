@@ -56,16 +56,6 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 
 
 	@Override
-	public void onViewCreated(View _view, Bundle _savedInstanceState) {
-		super.onViewCreated(_view, _savedInstanceState);
-		if (_view != null) {
-			ListView listView = (ListView) _view.findViewById(R.id.activity_googlecards_listview);
-			((MainActivity) getActivity()).setRefreshableView(listView, this);
-		}
-	}
-
-
-	@Override
 	public void onAttach(Activity _activity) {
 		super.onAttach(_activity);
 		TextView title = (TextView) View.inflate(_activity, R.layout.action_bar_title, null);
@@ -84,6 +74,7 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	@Override
 	public void onDestroyView() {
 		TaskHelper.getRequestQueue().cancelAll(LoadNewsListTask.TAG);
+		mAdapter = null;
 		super.onDestroyView();
 	}
 
@@ -142,10 +133,9 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
 				mAdapter = new NewsListAdapter(getActivity(), newsList);
+				supportCardAnim(listView);
 				if (Prefs.getInstance().isSupportPullToLoad()) {
-					listView.setAdapter(mAdapter);
-				} else {
-					supportCardAnim(listView);
+					((MainActivity) getActivity()).setRefreshableView(listView, this);
 				}
 			}
 		}
