@@ -10,4 +10,7 @@ public interface INewsListItem {
 
 
 	String getDate();
+
+
+	String getURL();
 }

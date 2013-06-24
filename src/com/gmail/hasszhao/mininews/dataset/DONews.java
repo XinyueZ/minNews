@@ -52,7 +52,13 @@ public final class DONews implements INewsListItem {
 	@Override
 	public String getDate() {
 		Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(System.currentTimeMillis());
+		c.setTimeInMillis(Date);
 		return c.getTime().toString();
+	}
+
+
+	@Override
+	public String getURL() {
+		return getUrl();
 	}
 }

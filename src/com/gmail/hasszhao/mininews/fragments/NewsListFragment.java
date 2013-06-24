@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,13 +33,14 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.tasks.LoadNewsListTask;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.Prefs;
+import com.gmail.hasszhao.mininews.utils.Util;
 import com.haarman.listviewanimations.itemmanipulation.OnDismissCallback;
 import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 
 public final class NewsListFragment extends SherlockFragment implements OnDismissCallback, Listener<DOStatus>,
-		ErrorListener, OnRefreshListener {
+		ErrorListener, OnRefreshListener, OnItemClickListener {
 
 	public static final String TAG = "TAG.NewsList";
 	private final static int LAYOUT = R.layout.fragment_news_list;
@@ -65,9 +68,10 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 
 
 	@Override
-	public void onResume() {
+	public void onViewCreated(View _view, Bundle _savedInstanceState) {
+		super.onViewCreated(_view, _savedInstanceState);
 		refreshData();
-		super.onResume();
+		((ListView) _view.findViewById(R.id.activity_googlecards_listview)).setOnItemClickListener(this);
 	}
 
 
@@ -108,6 +112,8 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 						Log.w("news", "Ask: API_OK");
 						initList(TaskHelper.getGson().fromJson(
 								new String(Base64.decode(_response.getData(), Base64.DEFAULT)), ListNews.class));
+						// initList(TaskHelper.getGson().fromJson(new
+						// String(_response.getData()), ListNews.class));
 						break;
 					case API.API_ACTION_FAILED:
 						Log.e("news", "Ask: API_ACTION_FAILED");
@@ -129,7 +135,7 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	private void initList(ListNews _listNews) {
 		List<DONews> newsList = _listNews.getPulledNewss();
 		if (newsList != null && newsList.size() > 0) {
-			Log.d("news", "Ask: news size:" + newsList.size());
+			// Log.d("news", "Ask: news size:" + newsList.size());
 			View v = getView();
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
@@ -143,45 +149,20 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	}
 
 
+	@Override
+	public void onItemClick(AdapterView<?> _parent, View _view, int _position, long _id) {
+		if (mAdapter != null) {
+			INewsListItem newsItem = (INewsListItem) mAdapter.getItem(_position);
+			Util.openUrl(getActivity(), newsItem.getURL());
+		}
+	}
+
+
 	private void supportCardAnim(ListView listView) {
 		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(
 				new SwipeDismissAdapter(mAdapter, this));
 		swingBottomInAnimationAdapter.setAbsListView(listView);
 		listView.setAdapter(swingBottomInAnimationAdapter);
-	}
-
-
-	static class TempNewsItem implements INewsListItem {
-
-		private final String topline;
-		private final String headline;
-		private final String date;
-
-
-		public TempNewsItem(String _topline, String _headline, String _date) {
-			super();
-			topline = _topline;
-			headline = _headline;
-			date = _date;
-		}
-
-
-		@Override
-		public String getTopline() {
-			return topline;
-		}
-
-
-		@Override
-		public String getHeadline() {
-			return headline;
-		}
-
-
-		@Override
-		public String getDate() {
-			return date;
-		}
 	}
 
 

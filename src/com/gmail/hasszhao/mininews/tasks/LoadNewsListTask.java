@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response.ErrorListener;
@@ -36,7 +35,7 @@ public final class LoadNewsListTask extends AbstractGsonRequest<DOStatus> {
 			headers = new HashMap<String, String>();
 		}
 		String cookie = new DOCookie(mNewsSize, "en", "").toString();
-		Log.d("news", "Ask: cookie:" + cookie);
+		// Log.d("news", "Ask: cookie:" + cookie);
 		headers.put(COOKIE_KEY, cookie);
 		return headers;
 	}
