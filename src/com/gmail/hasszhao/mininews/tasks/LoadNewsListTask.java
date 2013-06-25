@@ -16,15 +16,15 @@ import com.gmail.hasszhao.mininews.dataset.DOStatus;
 public final class LoadNewsListTask extends AbstractGsonRequest<DOStatus> {
 
 	public static final String TAG = LoadNewsListTask.class.getName();
-	private final int mNewsSize;
+	private final DOCookie mCookie;
 
 
 	public LoadNewsListTask(Context _context, int _method, String _url, Class<DOStatus> _clazz,
-			Listener<DOStatus> _listener, ErrorListener _errorListener, int _newsSize) {
+			Listener<DOStatus> _listener, ErrorListener _errorListener, DOCookie _cookie) {
 		super(_context, Method.GET, _url, _clazz, _listener, _errorListener);
 		setTag(TAG);
 		setShouldCache(false);
-		mNewsSize = _newsSize;
+		mCookie = _cookie;
 	}
 
 
@@ -34,9 +34,7 @@ public final class LoadNewsListTask extends AbstractGsonRequest<DOStatus> {
 		if (headers == null || headers.equals(Collections.emptyMap())) {
 			headers = new HashMap<String, String>();
 		}
-		String cookie = new DOCookie(mNewsSize, "en", "").toString();
-		// Log.d("news", "Ask: cookie:" + cookie);
-		headers.put(COOKIE_KEY, cookie);
+		headers.put(COOKIE_KEY, mCookie.toString());
 		return headers;
 	}
 }

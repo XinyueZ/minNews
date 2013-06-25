@@ -5,13 +5,13 @@
     <string name="hello_world">Hello world!</string>
     <string name="on">ON</string>
     <string name="off">OFF</string>
-    <!-- ERR -->
     <string name="action_failed">The request can not be fired!</string>
     <string name="server_down">The server is under building!</string>
-    <!-- action title -->
     <string name="title_hot_news">Hot News</string>
-    <string name="title_news_size">News Size:%1$d</string>
-    <!-- menu -->
+    <string name="title_news_size">News Size:%1$d pre Language</string>
+    <string name="title_english">English</string>
+    <string name="title_chinese">Chinese</string>
+    <string name="title_german">German</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_pull_to_load">Pull To Load</string>
 

@@ -64,6 +64,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 		createSidebar();
 		initPull2LoadSwitch();
 		initNewsSizeSeekbar();
+		initLangaugePreSelections();
 	}
 
 
@@ -80,6 +81,17 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 		sb.setOnSeekBarChangeListener(this);
 		((TextView) findViewById(R.id.tv_news_size)).setText(String.format(getString(R.string.title_news_size),
 				sb.getProgress()));
+	}
+
+
+	private void initLangaugePreSelections() {
+		de.ankri.views.Switch sw = null;
+		(sw = (de.ankri.views.Switch) findViewById(R.id.switch_english)).setOnCheckedChangeListener(this);
+		sw.setChecked(Prefs.getInstance().isSupportEnglish());
+		(sw = (de.ankri.views.Switch) findViewById(R.id.switch_chinese)).setOnCheckedChangeListener(this);
+		sw.setChecked(Prefs.getInstance().isSupportChinese());
+		(sw = (de.ankri.views.Switch) findViewById(R.id.switch_german)).setOnCheckedChangeListener(this);
+		sw.setChecked(Prefs.getInstance().isSupportGerman());
 	}
 
 
@@ -145,7 +157,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	}
 
 
-	public void refreshing() {
+	public void refreshingOn() {
 		if (mPullToRefreshAttacher != null) {
 			mPullToRefreshAttacher.setRefreshing(true);
 		}
@@ -189,6 +201,15 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 		switch (_buttonView.getId()) {
 			case R.id.switch_pull_to_load:
 				switchPullToLoadStatus(_isChecked);
+				break;
+			case R.id.switch_english:
+				((de.ankri.views.Switch) findViewById(R.id.switch_english)).setChecked(_isChecked);
+				break;
+			case R.id.switch_chinese:
+				((de.ankri.views.Switch) findViewById(R.id.switch_chinese)).setChecked(_isChecked);
+				break;
+			case R.id.switch_german:
+				((de.ankri.views.Switch) findViewById(R.id.switch_german)).setChecked(_isChecked);
 				break;
 			default:
 				break;

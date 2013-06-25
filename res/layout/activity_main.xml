@@ -21,38 +21,108 @@
     </RelativeLayout>
 
     <LinearLayout
+        style="@style/Sidebar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:background="@color/dark_grey"
-        android:orientation="vertical" >
+        android:layout_gravity="left" >
+
+        <!-- On/Off Pull to load -->
+
+        <com.gmail.hasszhao.mininews.views.FontTextView
+            style="@style/Text.Langauge_Choice_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_pull_to_load"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <de.ankri.views.Switch
             android:id="@+id/switch_pull_to_load"
-            style="@style/Text.Pull2Load_Text"
+            style="@style/Switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="@string/action_pull_to_load"
             app:textOff="@string/off"
             app:textOn="@string/on" />
+
+        <View
+            style="@style/line"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_marginBottom="@dimen/sidebar_line_margin_top_bottom"
+            android:layout_marginTop="@dimen/sidebar_line_margin_top_bottom" />
+        <!-- Total count of loading news -->
 
         <com.gmail.hasszhao.mininews.views.FontTextView
             android:id="@+id/tv_news_size"
             style="@style/Text.News_Size_Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <SeekBar
             android:id="@+id/sb_news_count"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:max="100" />
+
+        <View
+            style="@style/line"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_marginBottom="@dimen/sidebar_line_margin_top_bottom"
+            android:layout_marginTop="@dimen/sidebar_line_margin_top_bottom" />
+        <!-- English(default) -->
+
+        <com.gmail.hasszhao.mininews.views.FontTextView
+            
+            style="@style/Text.Langauge_Choice_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_english"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <de.ankri.views.Switch
+            android:id="@+id/switch_english"
+            style="@style/Switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:textOff="@string/off"
+            app:textOn="@string/on" />
+
+        <!-- Chinese -->
+
+        <com.gmail.hasszhao.mininews.views.FontTextView
+            
+            style="@style/Text.Langauge_Choice_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_chinese"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <de.ankri.views.Switch
+            android:id="@+id/switch_chinese"
+            style="@style/Switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:textOff="@string/off"
+            app:textOn="@string/on" />
+
+        <!-- German -->
+
+        <com.gmail.hasszhao.mininews.views.FontTextView
+         
+            style="@style/Text.Langauge_Choice_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_german"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <de.ankri.views.Switch
+            android:id="@+id/switch_german"
+            style="@style/Switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:textOff="@string/off"
+            app:textOn="@string/on" />
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

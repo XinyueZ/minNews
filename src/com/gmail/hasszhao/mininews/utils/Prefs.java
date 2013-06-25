@@ -36,6 +36,9 @@ public final class Prefs extends BasicPrefs {
 	private final static String SIM_COUNTRY_ISO = "DeviceData.country";
 	private final static String KEY_SUPPORT_PULL_TO_LOAD = "support.pull.to.load";
 	private final static String KEY_NEWS_SIZE = "news.size";
+	private final static String KEY_SUPPORT_ENGLISH = "language.english";
+	private final static String KEY_SUPPORT_CHINESE = "language.chinese";
+	private final static String KEY_SUPPORT_GERMAN = "language.german";
 	/** The Instance. */
 	private static Prefs sInstance;
 
@@ -235,6 +238,36 @@ public final class Prefs extends BasicPrefs {
 
 	public void setSupportPullToLoad(boolean _support) {
 		setBoolean(KEY_SUPPORT_PULL_TO_LOAD, _support);
+	}
+
+
+	public boolean isSupportEnglish() {
+		return getBoolean(KEY_SUPPORT_ENGLISH, true);
+	}
+
+
+	public void setSupportEnglish(boolean _support) {
+		setBoolean(KEY_SUPPORT_ENGLISH, _support);
+	}
+
+
+	public boolean isSupportChinese() {
+		return getBoolean(KEY_SUPPORT_CHINESE, true);
+	}
+
+
+	public void setSupportChinese(boolean _support) {
+		setBoolean(KEY_SUPPORT_CHINESE, _support);
+	}
+
+
+	public boolean isSupportGerman() {
+		return getBoolean(KEY_SUPPORT_GERMAN, true);
+	}
+
+
+	public void setSupportGerman(boolean _support) {
+		setBoolean(KEY_SUPPORT_GERMAN, _support);
 	}
 
 

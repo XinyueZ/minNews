@@ -1,5 +1,6 @@
 package com.gmail.hasszhao.mininews.fragments;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
@@ -26,6 +27,7 @@ import com.gmail.hasszhao.mininews.API;
 import com.gmail.hasszhao.mininews.MainActivity;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
+import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DONews;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
@@ -42,9 +44,13 @@ import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnim
 public final class NewsListFragment extends SherlockFragment implements OnDismissCallback, Listener<DOStatus>,
 		ErrorListener, OnRefreshListener, OnItemClickListener {
 
+	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsList";
-	private final static int LAYOUT = R.layout.fragment_news_list;
+	private static final int MAX_FRQUENT = 5 * 1000;
 	private NewsListAdapter mAdapter;
+	private long mLastLoadingTime = 0;
+	private int mCallCount = 0;
+	private List<DONews> mNewsList;
 
 
 	public static NewsListFragment newInstance(Context _context) {
@@ -79,52 +85,90 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	public void onDestroyView() {
 		TaskHelper.getRequestQueue().cancelAll(LoadNewsListTask.TAG);
 		mAdapter = null;
+		mNewsList = null;
 		super.onDestroyView();
 	}
 
 
 	public void refreshData() {
-		((MainActivity) getActivity()).refreshing();
+		((MainActivity) getActivity()).refreshingOn();
 		loadData();
 	}
 
 
 	private void loadData() {
-		Activity act = getActivity();
-		if (act != null) {
-			new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this, Prefs
-					.getInstance().getNewsSize()).execute();
+		long now = System.currentTimeMillis();
+		if (now - mLastLoadingTime > MAX_FRQUENT) {
+			Activity act = getActivity();
+			if (act != null) {
+				mNewsList = new ArrayList<DONews>();
+				if (Prefs.getInstance().isSupportEnglish()) {
+					mCallCount++;
+				}
+				if (Prefs.getInstance().isSupportChinese()) {
+					mCallCount++;
+				}
+				if (Prefs.getInstance().isSupportGerman()) {
+					mCallCount++;
+				}
+				if (Prefs.getInstance().isSupportEnglish()) {
+					new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
+							new DOCookie(Prefs.getInstance().getNewsSize(), "en", "")).execute();
+				}
+				if (Prefs.getInstance().isSupportChinese()) {
+					new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
+							new DOCookie(Prefs.getInstance().getNewsSize(), "zh", "")).execute();
+				}
+				if (Prefs.getInstance().isSupportGerman()) {
+					new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
+							new DOCookie(Prefs.getInstance().getNewsSize(), "de", "")).execute();
+				}
+			}
+			mLastLoadingTime = now;
+		} else {
+			Activity act = getActivity();
+			if (act != null) {
+				((MainActivity) getActivity()).refreshComplete();
+			}
 		}
 	}
 
 
 	@Override
-	public void onErrorResponse(VolleyError _error) {
+	public synchronized void onErrorResponse(VolleyError _error) {
+		mCallCount--;
+		if (mCallCount == 0) {
+			((MainActivity) getActivity()).refreshComplete();
+		}
 	}
 
 
 	@Override
-	public void onResponse(DOStatus _response) {
+	public synchronized void onResponse(DOStatus _response) {
+		mCallCount--;
 		if (_response != null) {
 			try {
 				switch (_response.getCode()) {
 					case API.API_OK:
 						Log.w("news", "Ask: API_OK");
-						initList(TaskHelper.getGson().fromJson(
-								new String(Base64.decode(_response.getData(), Base64.DEFAULT)), ListNews.class));
-						// initList(TaskHelper.getGson().fromJson(new
-						// String(_response.getData()), ListNews.class));
+						mNewsList.addAll(TaskHelper
+								.getGson()
+								.fromJson(new String(Base64.decode(_response.getData(), Base64.DEFAULT)),
+										ListNews.class).getPulledNewss());
+						if (mCallCount == 0) {
+							initList();
+						}
 						break;
 					case API.API_ACTION_FAILED:
 						Log.e("news", "Ask: API_ACTION_FAILED");
-						// Util.showLongToast(_cxt, R.string.action_failed);
 						break;
 					case API.API_SERVER_DOWN:
 						Log.e("news", "Ask: API_SERVER_DOWN");
-						// Util.showLongToast(_cxt, R.string.server_down);
 						break;
 				}
-				((MainActivity) getActivity()).refreshComplete();
+				if (mCallCount == 0) {
+					((MainActivity) getActivity()).refreshComplete();
+				}
 			} catch (Exception _e) {
 				_e.printStackTrace();
 			}
@@ -132,14 +176,13 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	}
 
 
-	private void initList(ListNews _listNews) {
-		List<DONews> newsList = _listNews.getPulledNewss();
-		if (newsList != null && newsList.size() > 0) {
+	private void initList() {
+		if (mNewsList != null && mNewsList.size() > 0) {
 			// Log.d("news", "Ask: news size:" + newsList.size());
 			View v = getView();
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
-				mAdapter = new NewsListAdapter(getActivity(), newsList);
+				mAdapter = new NewsListAdapter(getActivity(), mNewsList);
 				supportCardAnim(listView);
 				if (Prefs.getInstance().isSupportPullToLoad()) {
 					((MainActivity) getActivity()).setRefreshableView(listView, this);
@@ -168,12 +211,12 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 
 	@Override
 	public void onDismiss(AbsListView _listView, int[] _reverseSortedPositions) {
-		if (mAdapter != null) {
-			for (int position : _reverseSortedPositions) {
-				mAdapter.remove(position);
-			}
-			mAdapter.notifyDataSetChanged();
-		}
+		// if (mAdapter != null) {
+		// for (int position : _reverseSortedPositions) {
+		// mAdapter.remove(position);
+		// }
+		// mAdapter.notifyDataSetChanged();
+		// }
 	}
 
 

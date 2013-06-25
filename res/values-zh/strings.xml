@@ -5,13 +5,14 @@
     <string name="hello_world">你好 世界!</string>
     <string name="on">开</string>
     <string name="off">关</string>
-    <!-- ERR -->
     <string name="action_failed">无法发送请求!</string>
     <string name="server_down">服务器调整!</string>
-    <!-- action title -->
     <string name="title_hot_news">热门新闻</string>
-    <string name="title_news_size">新闻数目:%1$d</string>
-    <!-- menu -->
+    <string name="title_news_size">每语种新闻数目:%1$d</string>
+    <string name="title_english">英文</string>
+    <string name="title_chinese">中文</string>
+    <string name="title_german">德文</string>
+    <string name="action_refresh">Refresh</string>
     <string name="action_refresh">刷新</string>
     <string name="action_pull_to_load">支持下拉刷新</string>
 
