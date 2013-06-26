@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.gmail.hasszhao.mininews.R;
@@ -25,8 +26,14 @@ public final class NewsListAdapter extends BaseAdapter {
 		void onNewsClicked(INewsListItem _newsItem);
 	}
 
+	public interface OnNewsShareListener {
+
+		void onNewsShare(INewsListItem _newsItem);
+	}
+
 
 	private OnNewsClickedListener mOnNewsClickedListener;
+	private OnNewsShareListener mOnNewsShareListener;
 
 
 	public NewsListAdapter(Context _context, List<? extends INewsListItem> _newsListItems) {
@@ -64,13 +71,15 @@ public final class NewsListAdapter extends BaseAdapter {
 		TextView topline;
 		TextView headline;
 		TextView date;
+		ImageButton newsShare;
 
 
-		public ViewHolder(TextView _topline, TextView _headline, TextView _date) {
+		public ViewHolder(TextView _topline, TextView _headline, TextView _date, ImageButton _newsShare) {
 			super();
 			topline = _topline;
 			headline = _headline;
 			date = _date;
+			newsShare = _newsShare;
 		}
 	}
 
@@ -82,7 +91,8 @@ public final class NewsListAdapter extends BaseAdapter {
 			_convertView = View.inflate(mContext, LAYOUT, null);
 			_convertView.setTag(h = new ViewHolder((TextView) _convertView.findViewById(R.id.tv_topline),
 					(TextView) _convertView.findViewById(R.id.tv_headline), (TextView) _convertView
-							.findViewById(R.id.tv_date)));
+							.findViewById(R.id.tv_date), (ImageButton) _convertView
+							.findViewById(R.id.btn_news_be_shared)));
 		} else {
 			h = (ViewHolder) _convertView.getTag();
 		}
@@ -90,6 +100,15 @@ public final class NewsListAdapter extends BaseAdapter {
 		h.topline.setText(newsItem.getTopline());
 		h.headline.setText(newsItem.getHeadline());
 		h.date.setText(newsItem.getDate());
+		h.newsShare.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View _v) {
+				if (mOnNewsShareListener != null) {
+					mOnNewsShareListener.onNewsShare(newsItem);
+				}
+			}
+		});
 		_convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -105,5 +124,10 @@ public final class NewsListAdapter extends BaseAdapter {
 
 	public void setOnNewsClickedListener(OnNewsClickedListener _onNewsClickedListener) {
 		mOnNewsClickedListener = _onNewsClickedListener;
+	}
+
+
+	public void setOnNewsShareListener(OnNewsShareListener _onNewsShareListener) {
+		mOnNewsShareListener = _onNewsShareListener;
 	}
 }

@@ -10,10 +10,6 @@
     <string name="title_hot_news">热门新闻</string>
     <string name="title_news_size">每语种新闻数目:%1$d</string>
     <string name="title_language_list">新闻语种</string>
-    <string name="title_english">英文</string>
-    <string name="title_chinese">中文</string>
-    <string name="title_german">德文</string>
-    <string name="action_refresh">Refresh</string>
     <string name="action_refresh">刷新</string>
     <string name="msg_refresh">过5秒才能刷新一次哦。</string>
 

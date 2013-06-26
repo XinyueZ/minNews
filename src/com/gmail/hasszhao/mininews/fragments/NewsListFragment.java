@@ -6,6 +6,7 @@ import java.util.List;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.gmail.hasszhao.mininews.MainActivity;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsClickedListener;
+import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsShareListener;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DONews;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
@@ -41,7 +43,7 @@ import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnim
 
 
 public final class NewsListFragment extends SherlockFragment implements OnDismissCallback, Listener<DOStatus>,
-		ErrorListener, OnRefreshListener, OnNewsClickedListener {
+		ErrorListener, OnRefreshListener, OnNewsClickedListener, OnNewsShareListener {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsList";
@@ -183,6 +185,7 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
 				mAdapter = new NewsListAdapter(getActivity(), mNewsList);
 				mAdapter.setOnNewsClickedListener(this);
+				mAdapter.setOnNewsShareListener(this);
 				supportCardAnim(listView);
 				((MainActivity) getActivity()).setRefreshableView(listView, this);
 			}
@@ -219,6 +222,24 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 
 	@Override
 	public void onNewsClicked(INewsListItem _newsItem) {
-		Util.openUrl(getActivity(), _newsItem.getURL());
+//		Util.openUrl(getActivity(), _newsItem.getURL());
+		Activity act = getActivity();
+		if( act instanceof MainActivity) {
+			((MainActivity) act)
+					.openNextPage(WebViewFragment.newInstance(act, _newsItem.getURL()), WebViewFragment.TAG);
+		}
+		
+	}
+
+
+	@Override
+	public void onNewsShare(INewsListItem _newsItem) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(_newsItem.getTopline()).append('\n').append("----").append(_newsItem.getURL());
+		final Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.setType("text/plain");
+		intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+		intent.putExtra(Intent.EXTRA_TEXT, sb.toString());
+		startActivity(Intent.createChooser(intent, getString(R.string.app_name)));
 	}
 }

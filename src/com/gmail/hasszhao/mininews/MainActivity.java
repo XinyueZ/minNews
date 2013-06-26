@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,6 +22,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.gmail.hasszhao.mininews.fragments.NewsListFragment;
+import com.gmail.hasszhao.mininews.fragments.WebViewFragment;
 import com.gmail.hasszhao.mininews.utils.Prefs;
 
 
@@ -163,6 +165,14 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	}
 
 
+	public boolean isRefreshing() {
+		if (mPullToRefreshAttacher != null) {
+			return mPullToRefreshAttacher.isRefreshing();
+		}
+		return false;
+	}
+
+
 	public void setRefreshableView(View _view, OnRefreshListener _refreshListener) {
 		if (mPullToRefreshAttacher != null) {
 			mPullToRefreshAttacher.setRefreshableView(_view, _refreshListener);
@@ -181,7 +191,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	public boolean onOptionsItemSelected(MenuItem _item) {
 		switch (_item.getItemId()) {
 			case R.id.action_refresh:
-				refreshNewsList();
+				Fragment f = getSupportFragmentManager().findFragmentByTag(WebViewFragment.TAG);
+				if (f instanceof WebViewFragment) {
+					((WebViewFragment) f).refresh(null);
+				} else {
+					refreshNewsList();
+				}
 				break;
 		}
 		return true;
@@ -231,6 +246,22 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 		// String tag = String.valueOf(fmg.hashCode());
 		trans.replace(R.id.container_news_list, fmg, NewsListFragment.TAG);
 		// trans.addToBackStack(NewsListFragment.TAG);
+		trans.commit();
+	}
+
+
+	public void openNextPage(Fragment _f, String _tag) {
+		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+		trans.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.slide_in_from_left,
+				R.anim.slide_out_to_right);
+		trans.replace(R.id.container_news_list, _f, _tag).addToBackStack(_tag).commit();
+	}
+
+
+	public void closePage(String _tag) {
+		getSupportFragmentManager().popBackStack(_tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+		// trans.remove(_f);
 		trans.commit();
 	}
 

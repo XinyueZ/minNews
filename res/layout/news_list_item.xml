@@ -44,6 +44,7 @@
         android:src="@drawable/selector_bookmark_button" />
 
     <ImageButton
+        android:id="@+id/btn_news_be_shared"
         style="@style/Share_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
