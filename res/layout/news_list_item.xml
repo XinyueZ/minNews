@@ -43,4 +43,12 @@
         android:layout_alignParentTop="true"
         android:src="@drawable/selector_bookmark_button" />
 
+    <ImageButton
+        style="@style/Share_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_share" />
+
 </RelativeLayout>

@@ -192,13 +192,13 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	public void onCheckedChanged(CompoundButton _buttonView, boolean _isChecked) {
 		switch (_buttonView.getId()) {
 			case R.id.switch_english:
-				((de.ankri.views.Switch) findViewById(R.id.switch_english)).setChecked(_isChecked);
+				Prefs.getInstance().setSupportEnglish(_isChecked);
 				break;
 			case R.id.switch_chinese:
-				((de.ankri.views.Switch) findViewById(R.id.switch_chinese)).setChecked(_isChecked);
+				Prefs.getInstance().setSupportChinese(_isChecked);
 				break;
 			case R.id.switch_german:
-				((de.ankri.views.Switch) findViewById(R.id.switch_german)).setChecked(_isChecked);
+				Prefs.getInstance().setSupportGerman(_isChecked);
 				break;
 			default:
 				break;

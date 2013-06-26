@@ -15,7 +15,13 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="style/Theme.Sherlock.Light">
+
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="actionBarStyle">@style/ActionBar</item>
+    </style>
+
+    <style name="ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid">
+        <item name="background">@color/lightgrey</item>
     </style>
 
     <style name="Text" parent="@android:style/TextAppearance">
@@ -88,4 +94,12 @@
         <item name="android:layout_marginRight">@dimen/bookmark_button_margin_top_right</item>
         <item name="android:layout_marginTop">@dimen/bookmark_button_margin_top_right</item>
     </style>
+
+    <style name="Share_Button" parent="android:Widget.Holo.Light.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="android:layout_marginRight">@dimen/share_button_margin_bottom_right</item>
+        <item name="android:layout_marginBottom">@dimen/share_button_margin_bottom_right</item>
+    </style>
+
 </resources>
