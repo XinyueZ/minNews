@@ -53,33 +53,39 @@
 
     <style name="Text.News_Size_Text">
         <item name="font">robotoRegular</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textSize">15sp</item>
         <item name="android:typeface">monospace</item>
     </style>
 
     <style name="Text.Langauge_Choice_Text">
         <item name="font">robotoRegular</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textSize">15sp</item>
         <item name="android:typeface">monospace</item>
     </style>
 
     <style name="Switch" parent="switch_light">
         <item name="font">robotoThin</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textSize">15sp</item>
         <item name="android:typeface">monospace</item>
     </style>
 
     <style name="Sidebar">
-        <item name="android:background">@color/dark_grey</item>
+        <item name="android:background">@color/white</item>
         <item name="android:orientation">vertical</item>
         <item name="android:padding">10dp</item>
     </style>
 
     <style name="line">
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/dark_grey</item>
     </style>
 
+    <style name="Bookmark_Button" parent="android:Widget.Holo.Light.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="android:layout_marginRight">@dimen/bookmark_button_margin_top_right</item>
+        <item name="android:layout_marginTop">@dimen/bookmark_button_margin_top_right</item>
+    </style>
 </resources>

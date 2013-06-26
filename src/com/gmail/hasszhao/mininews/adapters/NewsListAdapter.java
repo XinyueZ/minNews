@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
@@ -17,6 +18,15 @@ public final class NewsListAdapter extends BaseAdapter {
 	private static final int LAYOUT = R.layout.news_list_item;
 	private final Context mContext;
 	private final List<? extends INewsListItem> mNewsListItems;
+
+
+	public interface OnNewsClickedListener {
+
+		void onNewsClicked(INewsListItem _newsItem);
+	}
+
+
+	private OnNewsClickedListener mOnNewsClickedListener;
 
 
 	public NewsListAdapter(Context _context, List<? extends INewsListItem> _newsListItems) {
@@ -76,10 +86,24 @@ public final class NewsListAdapter extends BaseAdapter {
 		} else {
 			h = (ViewHolder) _convertView.getTag();
 		}
-		INewsListItem newsItem = mNewsListItems.get(_position);
+		final INewsListItem newsItem = mNewsListItems.get(_position);
 		h.topline.setText(newsItem.getTopline());
 		h.headline.setText(newsItem.getHeadline());
 		h.date.setText(newsItem.getDate());
+		_convertView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View _v) {
+				if (mOnNewsClickedListener != null) {
+					mOnNewsClickedListener.onNewsClicked(newsItem);
+				}
+			}
+		});
 		return _convertView;
+	}
+
+
+	public void setOnNewsClickedListener(OnNewsClickedListener _onNewsClickedListener) {
+		mOnNewsClickedListener = _onNewsClickedListener;
 	}
 }

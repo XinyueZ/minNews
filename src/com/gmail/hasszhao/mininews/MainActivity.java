@@ -62,16 +62,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 		mPullToRefreshAttacher = new PullToRefreshAttacher(this);
 		showNewsListFragment();
 		createSidebar();
-		initPull2LoadSwitch();
 		initNewsSizeSeekbar();
 		initLangaugePreSelections();
-	}
-
-
-	private void initPull2LoadSwitch() {
-		de.ankri.views.Switch sw = null;
-		(sw = (de.ankri.views.Switch) findViewById(R.id.switch_pull_to_load)).setOnCheckedChangeListener(this);
-		sw.setChecked(Prefs.getInstance().isSupportPullToLoad());
 	}
 
 
@@ -199,9 +191,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	@Override
 	public void onCheckedChanged(CompoundButton _buttonView, boolean _isChecked) {
 		switch (_buttonView.getId()) {
-			case R.id.switch_pull_to_load:
-				switchPullToLoadStatus(_isChecked);
-				break;
 			case R.id.switch_english:
 				((de.ankri.views.Switch) findViewById(R.id.switch_english)).setChecked(_isChecked);
 				break;
@@ -214,12 +203,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 			default:
 				break;
 		}
-	}
-
-
-	private void switchPullToLoadStatus(boolean _support) {
-		Prefs.getInstance().setSupportPullToLoad(_support);
-		refreshNewsList();
 	}
 
 

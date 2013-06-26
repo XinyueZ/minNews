@@ -22,7 +22,7 @@
 
     <LinearLayout
         style="@style/Sidebar"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/sidebar_width"
         android:layout_height="match_parent"
         android:layout_gravity="left" >
 
@@ -32,14 +32,48 @@
             style="@style/Text.Langauge_Choice_Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/action_pull_to_load"
+            android:text="@string/title_language_list"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
+        <View
+            style="@style/line"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_marginBottom="@dimen/sidebar_line_margin_top_bottom"
+            android:layout_marginTop="@dimen/sidebar_line_margin_top_bottom" />
+
+        <!-- English(default) -->
+
         <de.ankri.views.Switch
-            android:id="@+id/switch_pull_to_load"
+            android:id="@+id/switch_english"
             style="@style/Switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/sidebar_line_margin_top_bottom"
+            android:text="@string/title_english"
+            app:textOff="@string/off"
+            app:textOn="@string/on" />
+
+        <!-- Chinese -->
+
+        <de.ankri.views.Switch
+            android:id="@+id/switch_chinese"
+            style="@style/Switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/sidebar_line_margin_top_bottom"
+            android:text="@string/title_chinese"
+            app:textOff="@string/off"
+            app:textOn="@string/on" />
+
+        <!-- German -->
+
+        <de.ankri.views.Switch
+            android:id="@+id/switch_german"
+            style="@style/Switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_german"
             app:textOff="@string/off"
             app:textOn="@string/on" />
 
@@ -49,6 +83,7 @@
             android:layout_height="1dip"
             android:layout_marginBottom="@dimen/sidebar_line_margin_top_bottom"
             android:layout_marginTop="@dimen/sidebar_line_margin_top_bottom" />
+
         <!-- Total count of loading news -->
 
         <com.gmail.hasszhao.mininews.views.FontTextView
@@ -62,67 +97,8 @@
             android:id="@+id/sb_news_count"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:max="100" />
-
-        <View
-            style="@style/line"
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:layout_marginBottom="@dimen/sidebar_line_margin_top_bottom"
-            android:layout_marginTop="@dimen/sidebar_line_margin_top_bottom" />
-        <!-- English(default) -->
-
-        <com.gmail.hasszhao.mininews.views.FontTextView
-            
-            style="@style/Text.Langauge_Choice_Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_english"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <de.ankri.views.Switch
-            android:id="@+id/switch_english"
-            style="@style/Switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:textOff="@string/off"
-            app:textOn="@string/on" />
-
-        <!-- Chinese -->
-
-        <com.gmail.hasszhao.mininews.views.FontTextView
-            
-            style="@style/Text.Langauge_Choice_Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_chinese"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <de.ankri.views.Switch
-            android:id="@+id/switch_chinese"
-            style="@style/Switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:textOff="@string/off"
-            app:textOn="@string/on" />
-
-        <!-- German -->
-
-        <com.gmail.hasszhao.mininews.views.FontTextView
-         
-            style="@style/Text.Langauge_Choice_Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_german"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <de.ankri.views.Switch
-            android:id="@+id/switch_german"
-            style="@style/Switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:textOff="@string/off"
-            app:textOn="@string/on" />
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

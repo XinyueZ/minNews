@@ -13,8 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,6 +25,7 @@ import com.gmail.hasszhao.mininews.API;
 import com.gmail.hasszhao.mininews.MainActivity;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
+import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsClickedListener;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DONews;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
@@ -42,7 +41,7 @@ import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnim
 
 
 public final class NewsListFragment extends SherlockFragment implements OnDismissCallback, Listener<DOStatus>,
-		ErrorListener, OnRefreshListener, OnItemClickListener {
+		ErrorListener, OnRefreshListener, OnNewsClickedListener {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsList";
@@ -77,7 +76,6 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	public void onViewCreated(View _view, Bundle _savedInstanceState) {
 		super.onViewCreated(_view, _savedInstanceState);
 		refreshData();
-		((ListView) _view.findViewById(R.id.activity_googlecards_listview)).setOnItemClickListener(this);
 	}
 
 
@@ -130,6 +128,7 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 			if (act != null) {
 				((MainActivity) getActivity()).refreshComplete();
 			}
+			Util.showShortToast(getActivity(), R.string.msg_refresh);
 		}
 	}
 
@@ -183,20 +182,10 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
 				mAdapter = new NewsListAdapter(getActivity(), mNewsList);
+				mAdapter.setOnNewsClickedListener(this);
 				supportCardAnim(listView);
-				if (Prefs.getInstance().isSupportPullToLoad()) {
-					((MainActivity) getActivity()).setRefreshableView(listView, this);
-				}
+				((MainActivity) getActivity()).setRefreshableView(listView, this);
 			}
-		}
-	}
-
-
-	@Override
-	public void onItemClick(AdapterView<?> _parent, View _view, int _position, long _id) {
-		if (mAdapter != null) {
-			INewsListItem newsItem = (INewsListItem) mAdapter.getItem(_position);
-			Util.openUrl(getActivity(), newsItem.getURL());
 		}
 	}
 
@@ -225,5 +214,11 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 		if (_view != null) {
 			loadData();
 		}
+	}
+
+
+	@Override
+	public void onNewsClicked(INewsListItem _newsItem) {
+		Util.openUrl(getActivity(), _newsItem.getURL());
 	}
 }

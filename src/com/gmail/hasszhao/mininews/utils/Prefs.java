@@ -34,7 +34,6 @@ public final class Prefs extends BasicPrefs {
 	private final static String OS_VERSION = "DeviceData.osversion";
 	/** The Constant SIM_COUNTRY_ISO. */
 	private final static String SIM_COUNTRY_ISO = "DeviceData.country";
-	private final static String KEY_SUPPORT_PULL_TO_LOAD = "support.pull.to.load";
 	private final static String KEY_NEWS_SIZE = "news.size";
 	private final static String KEY_SUPPORT_ENGLISH = "language.english";
 	private final static String KEY_SUPPORT_CHINESE = "language.chinese";
@@ -228,16 +227,6 @@ public final class Prefs extends BasicPrefs {
 	 */
 	private boolean setSimCountryIso(String _value) {
 		return setString(SIM_COUNTRY_ISO, _value);
-	}
-
-
-	public boolean isSupportPullToLoad() {
-		return getBoolean(KEY_SUPPORT_PULL_TO_LOAD, true);
-	}
-
-
-	public void setSupportPullToLoad(boolean _support) {
-		setBoolean(KEY_SUPPORT_PULL_TO_LOAD, _support);
 	}
 
 

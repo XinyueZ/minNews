@@ -9,10 +9,10 @@
     <string name="server_down">The server is under building!</string>
     <string name="title_hot_news">Hot News</string>
     <string name="title_news_size">News Size:%1$d pre Language</string>
+    <string name="title_language_list">News language</string>
     <string name="title_english">English</string>
     <string name="title_chinese">Chinese</string>
     <string name="title_german">German</string>
     <string name="action_refresh">Refresh</string>
-    <string name="action_pull_to_load">Pull To Load</string>
-
+    <string name="msg_refresh">Refresh after 5 seconds.</string>
 </resources>

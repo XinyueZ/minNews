@@ -7,5 +7,7 @@
     android:clipToPadding="false"
     android:divider="@null"
     android:dividerHeight="16dp"
-    android:fadingEdge="none" 
+    android:fadingEdge="none"
+    android:fastScrollEnabled="true"
     android:scrollbarStyle="outsideOverlay" />
+
