@@ -11,6 +11,7 @@
     <string name="title_news_size">News Size:%1$d pre Language</string>
     <string name="title_language_list">News language</string>
     <string name="action_refresh">Refresh</string>
+    <string name="action_share">Share</string>
     <string name="msg_refresh">Refresh after 5 seconds.</string>
 
 </resources>

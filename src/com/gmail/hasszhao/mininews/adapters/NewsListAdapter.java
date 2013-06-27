@@ -17,8 +17,8 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 public final class NewsListAdapter extends BaseAdapter {
 
 	private static final int LAYOUT = R.layout.news_list_item;
-	private final Context mContext;
-	private final List<? extends INewsListItem> mNewsListItems;
+	private Context mContext;
+	private List<? extends INewsListItem> mNewsListItems;
 
 
 	public interface OnNewsClickedListener {
@@ -40,6 +40,13 @@ public final class NewsListAdapter extends BaseAdapter {
 		super();
 		mContext = _context;
 		mNewsListItems = _newsListItems;
+	}
+
+
+	public void refresh(Context _context, List<? extends INewsListItem> _newsListItems) {
+		mContext = _context;
+		mNewsListItems = _newsListItems;
+		notifyDataSetChanged();
 	}
 
 

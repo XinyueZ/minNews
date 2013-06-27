@@ -23,10 +23,13 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.gmail.hasszhao.mininews.fragments.NewsListFragment;
 import com.gmail.hasszhao.mininews.fragments.WebViewFragment;
+import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.utils.Prefs;
+import com.gmail.hasszhao.mininews.utils.ShareUtil;
 
 
-public class MainActivity extends SherlockFragmentActivity implements OnCheckedChangeListener, OnSeekBarChangeListener {
+public class MainActivity extends SherlockFragmentActivity implements OnCheckedChangeListener, OnSeekBarChangeListener,
+		ISharable {
 
 	private static final int LAYOUT = R.layout.activity_main;
 	private static final int MIN_NEWS_SIZE = 10;
@@ -191,15 +194,37 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	public boolean onOptionsItemSelected(MenuItem _item) {
 		switch (_item.getItemId()) {
 			case R.id.action_refresh:
-				Fragment f = getSupportFragmentManager().findFragmentByTag(WebViewFragment.TAG);
-				if (f instanceof WebViewFragment) {
-					((WebViewFragment) f).refresh(null);
-				} else {
-					refreshNewsList();
-				}
+				refresh();
+				break;
+			case R.id.action_share:
+				share();
 				break;
 		}
 		return true;
+	}
+
+
+	private void refresh() {
+		Fragment f = getSupportFragmentManager().findFragmentByTag(WebViewFragment.TAG);
+		if (f instanceof WebViewFragment) {
+			((WebViewFragment) f).refresh(null);
+		} else {
+			f = getSupportFragmentManager().findFragmentByTag(NewsListFragment.TAG);
+			if (f instanceof NewsListFragment) {
+				refreshNewsList();
+			}
+		}
+	}
+
+
+	private void share() {
+		Fragment f = getSupportFragmentManager().findFragmentByTag(WebViewFragment.TAG);
+		if (f instanceof WebViewFragment) {
+			ISharable share = (ISharable) f;
+			new ShareUtil().openShare(this, share);
+		} else {
+			new ShareUtil().openShare(this, this);
+		}
 	}
 
 
@@ -273,5 +298,17 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 
 	@Override
 	public void onStopTrackingTouch(SeekBar _seekBar) {
+	}
+
+
+	@Override
+	public String getSubject() {
+		return "plackholder";
+	}
+
+
+	@Override
+	public String getText() {
+		return "plackholder";
 	}
 }

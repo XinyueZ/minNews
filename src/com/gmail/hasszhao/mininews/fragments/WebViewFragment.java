@@ -16,18 +16,21 @@ import android.webkit.WebViewClient;
 
 import com.gmail.hasszhao.mininews.MainActivity;
 import com.gmail.hasszhao.mininews.R;
+import com.gmail.hasszhao.mininews.interfaces.ISharable;
 
 
-public final class WebViewFragment extends Fragment {
+public final class WebViewFragment extends Fragment implements ISharable {
 
 	private static final int LAYOUT = R.layout.fragment_webview;
 	public static final String KEY_URL = "url";
-	public static final String TAG = "webview";
+	private static final String KEY_TOPIC = "topic";
+	public static final String TAG = "TAG.webview";
 
 
-	public static WebViewFragment newInstance(Context _context, String _url) {
+	public static WebViewFragment newInstance(Context _context, String _url, String _topic) {
 		Bundle args = new Bundle();
 		args.putString(KEY_URL, _url);
+		args.putString(KEY_TOPIC, _topic);
 		return (WebViewFragment) WebViewFragment.instantiate(_context, WebViewFragment.class.getName(), args);
 	}
 
@@ -147,5 +150,17 @@ public final class WebViewFragment extends Fragment {
 		if (v != null) {
 			((WebView) v.findViewById(R.id.wv_content)).reload();
 		}
+	}
+
+
+	@Override
+	public String getSubject() {
+		return getString(R.string.app_name);
+	}
+
+
+	@Override
+	public String getText() {
+		return getArguments().getString(KEY_TOPIC);
 	}
 }

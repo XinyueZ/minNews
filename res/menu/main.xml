@@ -2,7 +2,13 @@
 
     <item
         android:id="@+id/action_refresh"
-        android:showAsAction="never"
+        android:icon="@drawable/ic_refresh"
+        android:showAsAction="ifRoom"
         android:title="@string/action_refresh"/>
+    <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_social_share"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_share"/>
 
 </menu>
