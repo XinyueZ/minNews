@@ -8,7 +8,7 @@
     <string name="action_failed">The request can not be fired!</string>
     <string name="server_down">The server is under building!</string>
     <string name="title_hot_news">Hot News</string>
-    <string name="title_news_size">News Size:%1$d pre Language</string>
+    <string name="title_news_size">%1$d pre Language</string>
     <string name="title_language_list">News language</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_share">Share</string>

@@ -118,7 +118,7 @@ public final class WebViewFragment extends Fragment implements ISharable {
 	}
 
 
-	public void backward(View _v) {
+	public void backward() {
 		View v = getView();
 		if (v != null) {
 			WebView wv = (WebView) v.findViewById(R.id.wv_content);
@@ -134,7 +134,7 @@ public final class WebViewFragment extends Fragment implements ISharable {
 	}
 
 
-	public void forward(View _v) {
+	public void forward() {
 		View v = getView();
 		if (v != null) {
 			WebView wv = (WebView) v.findViewById(R.id.wv_content);

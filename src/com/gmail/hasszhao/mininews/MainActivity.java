@@ -72,6 +72,17 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	}
 
 
+	@Override
+	public void onBackPressed() {
+		Fragment f = getSupportFragmentManager().findFragmentByTag(WebViewFragment.TAG);
+		if (f instanceof WebViewFragment) {
+			((WebViewFragment) f).backward();
+		} else {
+			super.onBackPressed();
+		}
+	}
+
+
 	private void initNewsSizeSeekbar() {
 		SeekBar sb = (SeekBar) findViewById(R.id.sb_news_count);
 		sb.setProgress(Prefs.getInstance().getNewsSize());
@@ -211,7 +222,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 		} else {
 			f = getSupportFragmentManager().findFragmentByTag(NewsListFragment.TAG);
 			if (f instanceof NewsListFragment) {
-				refreshNewsList();
+				((NewsListFragment) f).refreshData();
 			}
 		}
 	}
@@ -246,14 +257,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	}
 
 
-	private void refreshNewsList() {
-		Fragment f = getSupportFragmentManager().findFragmentByTag(NewsListFragment.TAG);
-		if (f instanceof NewsListFragment) {
-			((NewsListFragment) f).refreshData();
-		}
-	}
-
-
 	//
 	// @Override
 	// public boolean onCreateOptionsMenu(Menu menu) {
@@ -278,8 +281,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	public void openNextPage(Fragment _f, String _tag) {
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		trans.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.slide_in_from_left,
-				R.anim.slide_out_to_right);
-		trans.replace(R.id.container_news_list, _f, _tag).addToBackStack(_tag).commit();
+				R.anim.slide_out_to_left);
+		trans.add(R.id.container_news_list, _f, _tag).addToBackStack(_tag).commit();
 	}
 
 

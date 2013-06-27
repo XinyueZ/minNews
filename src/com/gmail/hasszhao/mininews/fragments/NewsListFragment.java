@@ -184,14 +184,14 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 			View v = getView();
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
-				if (mAdapter == null) {
+				// if (mAdapter == null) {
 					mAdapter = new NewsListAdapter(getActivity(), mNewsList);
 					mAdapter.setOnNewsClickedListener(this);
 					mAdapter.setOnNewsShareListener(this);
 					supportCardAnim(listView);
-				} else {
-					mAdapter.refresh(getActivity(), mNewsList);
-				}
+				// } else {
+				// mAdapter.refresh(getActivity(), mNewsList);
+				// }
 				((MainActivity) getActivity()).setRefreshableView(listView, this);
 			}
 		}

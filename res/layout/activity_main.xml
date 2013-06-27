@@ -27,12 +27,13 @@
         android:layout_height="match_parent"
         android:layout_gravity="left" >
 
-        <!-- On/Off Pull to load -->
-
         <com.gmail.hasszhao.mininews.views.FontTextView
             style="@style/Text.Langauge_Choice_Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sidebar_block_margin"
+            android:layout_marginRight="@dimen/sidebar_block_margin"
+            android:layout_marginTop="@dimen/sidebar_block_margin"
             android:text="@string/title_language_list"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -48,7 +49,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/sidebar_line_margin_top_bottom" >
+            android:layout_marginBottom="@dimen/sidebar_line_margin_top_bottom"
+            android:layout_marginLeft="@dimen/sidebar_block_margin"
+            android:layout_marginRight="@dimen/sidebar_block_margin" >
 
             <de.ankri.views.Switch
                 android:id="@+id/switch_english"
@@ -72,7 +75,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/sidebar_line_margin_top_bottom" >
+            android:layout_marginBottom="@dimen/sidebar_line_margin_top_bottom"
+            android:layout_marginLeft="@dimen/sidebar_block_margin"
+            android:layout_marginRight="@dimen/sidebar_block_margin" >
 
             <de.ankri.views.Switch
                 android:id="@+id/switch_chinese"
@@ -95,7 +100,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sidebar_block_margin"
+            android:layout_marginRight="@dimen/sidebar_block_margin" >
 
             <de.ankri.views.Switch
                 android:id="@+id/switch_german"
@@ -129,6 +136,8 @@
             style="@style/Text.News_Size_Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sidebar_block_margin"
+            android:layout_marginRight="@dimen/sidebar_block_margin"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <SeekBar
@@ -136,7 +145,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_marginLeft="-15dp"
+            android:layout_marginRight="@dimen/sidebar_block_margin"
             android:max="100" />
     </LinearLayout>
 

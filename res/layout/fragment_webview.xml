@@ -6,7 +6,8 @@
     <WebView
         android:id="@+id/wv_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_world" />
 
     <ProgressBar
         android:id="@+id/pb_loading_url"
