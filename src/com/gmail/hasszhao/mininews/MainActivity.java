@@ -218,7 +218,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	private void refresh() {
 		Fragment f = getSupportFragmentManager().findFragmentByTag(WebViewFragment.TAG);
 		if (f instanceof WebViewFragment) {
-			((WebViewFragment) f).refresh(null);
+			((WebViewFragment) f).refresh();
 		} else {
 			f = getSupportFragmentManager().findFragmentByTag(NewsListFragment.TAG);
 			if (f instanceof NewsListFragment) {

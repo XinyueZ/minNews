@@ -8,14 +8,16 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 public final class DONews implements INewsListItem {
 
 	private final String Title;
+	private final String Content;
 	private final String Preview;
 	private final String Url;
 	private final long Date;
 
 
-	public DONews(String _title, String _preview, String _url, long _date) {
+	public DONews(String _title, String _content, String _preview, String _url, long _date) {
 		super();
 		Title = _title;
+		Content = _content;
 		Preview = _preview;
 		Url = _url;
 		Date = _date;
@@ -34,6 +36,11 @@ public final class DONews implements INewsListItem {
 
 	public String getUrl() {
 		return Url;
+	}
+
+
+	public String getContent() {
+		return Content;
 	}
 
 
@@ -60,5 +67,11 @@ public final class DONews implements INewsListItem {
 	@Override
 	public String getURL() {
 		return getUrl();
+	}
+
+
+	@Override
+	public String getFullContent() {
+		return getContent();
 	}
 }

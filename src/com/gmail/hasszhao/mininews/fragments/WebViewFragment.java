@@ -22,14 +22,14 @@ import com.gmail.hasszhao.mininews.interfaces.ISharable;
 public final class WebViewFragment extends Fragment implements ISharable {
 
 	private static final int LAYOUT = R.layout.fragment_webview;
-	public static final String KEY_URL = "url";
+	public static final String KEY_FULL_CONTENT = "full.content";
 	private static final String KEY_TOPIC = "topic";
 	public static final String TAG = "TAG.webview";
 
 
-	public static WebViewFragment newInstance(Context _context, String _url, String _topic) {
+	public static WebViewFragment newInstance(Context _context, String _fullContent, String _topic) {
 		Bundle args = new Bundle();
-		args.putString(KEY_URL, _url);
+		args.putString(KEY_FULL_CONTENT, _fullContent);
 		args.putString(KEY_TOPIC, _topic);
 		return (WebViewFragment) WebViewFragment.instantiate(_context, WebViewFragment.class.getName(), args);
 	}
@@ -74,47 +74,20 @@ public final class WebViewFragment extends Fragment implements ISharable {
 					return false;
 				}
 			});
-			if (_savedInstanceState == null) {
-				load();
-			} else {
-				reload(_savedInstanceState);
-			}
+			load();
 		}
-	}
-
-
-	@Override
-	public void onSaveInstanceState(Bundle _outState) {
-		super.onSaveInstanceState(_outState);
-		_outState.putString(KEY_URL, getCurrentWebUrl());
 	}
 
 
 	private void load() {
 		View v = getView();
 		if (v != null) {
-			String url = getArguments().getString(KEY_URL);
-			if (!TextUtils.isEmpty(url)) {
-				((WebView) v.findViewById(R.id.wv_content)).loadUrl(url);
+			String content = getArguments().getString(KEY_FULL_CONTENT);
+			if (!TextUtils.isEmpty(content)) {
+				((WebView) v.findViewById(R.id.wv_content)).loadDataWithBaseURL(null, content, "text/html", "UTF-8",
+						null);
 			}
 		}
-	}
-
-
-	private void reload(Bundle _savedInstanceState) {
-		View v = getView();
-		if (v != null) {
-			((WebView) v.findViewById(R.id.wv_content)).loadUrl(_savedInstanceState.getString(KEY_URL));
-		}
-	}
-
-
-	private String getCurrentWebUrl() {
-		View v = getView();
-		if (v != null) {
-			return ((WebView) v.findViewById(R.id.wv_content)).getUrl();
-		}
-		return null;
 	}
 
 
@@ -124,6 +97,7 @@ public final class WebViewFragment extends Fragment implements ISharable {
 			WebView wv = (WebView) v.findViewById(R.id.wv_content);
 			if (wv.canGoBack()) {
 				wv.goBack();
+				load();
 			} else {
 				Activity act = getActivity();
 				if (act instanceof MainActivity) {
@@ -145,11 +119,8 @@ public final class WebViewFragment extends Fragment implements ISharable {
 	}
 
 
-	public void refresh(View _v) {
-		View v = getView();
-		if (v != null) {
-			((WebView) v.findViewById(R.id.wv_content)).reload();
-		}
+	public void refresh() {
+		load();
 	}
 
 

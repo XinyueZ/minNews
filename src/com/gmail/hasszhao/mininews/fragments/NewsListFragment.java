@@ -185,10 +185,10 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
 				// if (mAdapter == null) {
-					mAdapter = new NewsListAdapter(getActivity(), mNewsList);
-					mAdapter.setOnNewsClickedListener(this);
-					mAdapter.setOnNewsShareListener(this);
-					supportCardAnim(listView);
+				mAdapter = new NewsListAdapter(getActivity(), mNewsList);
+				mAdapter.setOnNewsClickedListener(this);
+				mAdapter.setOnNewsShareListener(this);
+				supportCardAnim(listView);
 				// } else {
 				// mAdapter.refresh(getActivity(), mNewsList);
 				// }
@@ -230,9 +230,9 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 		// Util.openUrl(getActivity(), _newsItem.getURL());
 		Activity act = getActivity();
 		if (act instanceof MainActivity) {
-			((MainActivity) act)
-					.openNextPage(WebViewFragment.newInstance(act, _newsItem.getURL(), makeShareText(_newsItem)),
-							WebViewFragment.TAG);
+			((MainActivity) act).openNextPage(
+					WebViewFragment.newInstance(act, _newsItem.getFullContent(), makeShareText(_newsItem)),
+					WebViewFragment.TAG);
 		}
 	}
 
