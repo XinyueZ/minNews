@@ -21,6 +21,8 @@
             android:layout_height="match_parent" />
     </RelativeLayout>
 
+    <!-- Sidebar -->
+
     <LinearLayout
         style="@style/Sidebar"
         android:layout_width="@dimen/sidebar_width"

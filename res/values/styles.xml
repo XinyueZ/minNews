@@ -22,6 +22,7 @@
 
     <style name="ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid">
         <item name="background">@color/lightgrey</item>
+        <item name="displayOptions">showHome</item>
     </style>
 
     <style name="Text" parent="@android:style/TextAppearance">
@@ -40,6 +41,15 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">20sp</item>
         <item name="android:typeface">monospace</item>
+    </style>
+
+    <style name="Text.News_Details_Topline" parent="Text.News_Topline">
+        <item name="font">robotoBold</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="Text.News_Details" parent="Text.News_Topline">
+        <item name="android:padding">5dp</item>
     </style>
 
     <style name="Text.News_Date">
@@ -74,7 +84,7 @@
     </style>
 
     <style name="Sidebar">
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/white_transparent</item>
         <item name="android:orientation">vertical</item>
     </style>
 

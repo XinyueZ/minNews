@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,15 +22,17 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment;
 import com.gmail.hasszhao.mininews.fragments.NewsListFragment;
 import com.gmail.hasszhao.mininews.fragments.WebViewFragment;
+import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.utils.Prefs;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
 
 
-public class MainActivity extends SherlockFragmentActivity implements OnCheckedChangeListener, OnSeekBarChangeListener,
-		ISharable {
+public final class MainActivity extends SherlockFragmentActivity implements OnCheckedChangeListener,
+		OnSeekBarChangeListener, ISharable, OnBackStackChangedListener {
 
 	private static final int LAYOUT = R.layout.activity_main;
 	private static final int MIN_NEWS_SIZE = 10;
@@ -69,6 +72,13 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 		createSidebar();
 		initNewsSizeSeekbar();
 		initLangaugePreSelections();
+		getSupportFragmentManager().addOnBackStackChangedListener(this);
+	}
+
+
+	@Override
+	public void onBackStackChanged() {
+		invalidateOptionsMenu();
 	}
 
 
@@ -215,22 +225,33 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	}
 
 
+	private Fragment getTopFragment() {
+		if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+			return null;
+		}
+		String tag = getSupportFragmentManager().getBackStackEntryAt(
+				getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+		return getSupportFragmentManager().findFragmentByTag(tag);
+	}
+
+
 	private void refresh() {
-		Fragment f = getSupportFragmentManager().findFragmentByTag(WebViewFragment.TAG);
-		if (f instanceof WebViewFragment) {
-			((WebViewFragment) f).refresh();
+		Fragment f = getTopFragment();
+		if (f instanceof IRefreshable) {
+			IRefreshable refreshable = (IRefreshable) f;
+			refreshable.refresh();
 		} else {
-			f = getSupportFragmentManager().findFragmentByTag(NewsListFragment.TAG);
-			if (f instanceof NewsListFragment) {
-				((NewsListFragment) f).refreshData();
+			Fragment lastFragment = getSupportFragmentManager().findFragmentByTag(NewsListFragment.TAG);
+			if (lastFragment instanceof NewsListFragment) {
+				((NewsListFragment) lastFragment).refresh();
 			}
 		}
 	}
 
 
 	private void share() {
-		Fragment f = getSupportFragmentManager().findFragmentByTag(WebViewFragment.TAG);
-		if (f instanceof WebViewFragment) {
+		Fragment f = getTopFragment();
+		if (f instanceof ISharable) {
 			ISharable share = (ISharable) f;
 			new ShareUtil().openShare(this, share);
 		} else {
@@ -257,6 +278,17 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	}
 
 
+	@Override
+	public boolean onPrepareOptionsMenu(Menu _menu) {
+		if (getTopFragment() instanceof NewsDetailsFragment) {
+			_menu.findItem(R.id.action_refresh).setVisible(false);
+		} else {
+			_menu.findItem(R.id.action_refresh).setVisible(true);
+		}
+		return super.onPrepareOptionsMenu(_menu);
+	}
+
+
 	//
 	// @Override
 	// public boolean onCreateOptionsMenu(Menu menu) {
@@ -280,9 +312,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 
 	public void openNextPage(Fragment _f, String _tag) {
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+		// trans.setCustomAnimations(R.anim.slide_in_from_right,
+		// R.anim.slide_out_to_left, R.anim.slide_in_from_left,
+		// R.anim.slide_out_to_left);
 		trans.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.slide_in_from_left,
-				R.anim.slide_out_to_left);
-		trans.add(R.id.container_news_list, _f, _tag).addToBackStack(_tag).commit();
+				R.anim.slide_out_to_right);
+		trans.replace(R.id.container_news_list, _f, _tag).addToBackStack(_tag).commit();
 	}
 
 
@@ -295,16 +330,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 
 
 	@Override
-	public void onStartTrackingTouch(SeekBar _seekBar) {
-	}
-
-
-	@Override
-	public void onStopTrackingTouch(SeekBar _seekBar) {
-	}
-
-
-	@Override
 	public String getSubject() {
 		return "plackholder";
 	}
@@ -313,5 +338,15 @@ public class MainActivity extends SherlockFragmentActivity implements OnCheckedC
 	@Override
 	public String getText() {
 		return "plackholder";
+	}
+
+
+	@Override
+	public void onStartTrackingTouch(SeekBar _seekBar) {
+	}
+
+
+	@Override
+	public void onStopTrackingTouch(SeekBar _seekBar) {
 	}
 }

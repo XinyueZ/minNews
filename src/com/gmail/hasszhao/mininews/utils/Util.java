@@ -16,6 +16,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.Settings;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.URLSpan;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,8 +87,9 @@ public final class Util {
 			}
 			line = null;
 		}
-		if (content != null)
+		if (content != null) {
 			return content.toString();
+		}
 		return null;
 	}
 
@@ -366,8 +373,23 @@ public final class Util {
 
 
 	public static String uppercaseFirst(String _text) {
-		if (_text == null)
+		if (_text == null) {
 			return null;
+		}
 		return new StringBuilder().append(_text.substring(0, 1).toUpperCase()).append(_text.substring(1)).toString();
+	}
+
+
+	public static Spannable linkifyHtml(String html, int linkifyMask) {
+		Spanned text = Html.fromHtml(html);
+		URLSpan[] currentSpans = text.getSpans(0, text.length(), URLSpan.class);
+		SpannableString buffer = new SpannableString(text);
+		Linkify.addLinks(buffer, linkifyMask);
+		for (URLSpan span : currentSpans) {
+			int end = text.getSpanEnd(span);
+			int start = text.getSpanStart(span);
+			buffer.setSpan(span, start, end, 0);
+		}
+		return buffer;
 	}
 }

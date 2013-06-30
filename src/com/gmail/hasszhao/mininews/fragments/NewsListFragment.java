@@ -32,6 +32,7 @@ import com.gmail.hasszhao.mininews.dataset.DONews;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
+import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.tasks.LoadNewsListTask;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
@@ -44,7 +45,7 @@ import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnim
 
 
 public final class NewsListFragment extends SherlockFragment implements OnDismissCallback, Listener<DOStatus>,
-		ErrorListener, OnRefreshListener, OnNewsClickedListener, OnNewsShareListener {
+		ErrorListener, OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsList";
@@ -78,16 +79,26 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	@Override
 	public void onViewCreated(View _view, Bundle _savedInstanceState) {
 		super.onViewCreated(_view, _savedInstanceState);
-		refreshData();
+		if (mNewsList == null) {
+			refreshData();
+		} else {
+			initList();
+		}
 	}
 
 
 	@Override
 	public void onDestroyView() {
 		TaskHelper.getRequestQueue().cancelAll(LoadNewsListTask.TAG);
+		super.onDestroyView();
+	}
+
+
+	@Override
+	public void onDestroy() {
 		mAdapter = null;
 		mNewsList = null;
-		super.onDestroyView();
+		super.onDestroy();
 	}
 
 
@@ -231,8 +242,8 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 		Activity act = getActivity();
 		if (act instanceof MainActivity) {
 			((MainActivity) act).openNextPage(
-					WebViewFragment.newInstance(act, _newsItem.getFullContent(), makeShareText(_newsItem)),
-					WebViewFragment.TAG);
+					NewsDetailsFragment.newInstance(act, _newsItem.getTopline(), _newsItem.getFullContent(),
+							_newsItem.getURL()), NewsDetailsFragment.TAG);
 		}
 	}
 
@@ -258,5 +269,11 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 				return getString(R.string.app_name);
 			}
 		});
+	}
+
+
+	@Override
+	public void refresh() {
+		refreshData();
 	}
 }
