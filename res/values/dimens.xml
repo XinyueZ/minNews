@@ -8,5 +8,6 @@
     <dimen name="sidebar_block_margin">10dp</dimen>
     <dimen name="bookmark_button_margin_top_right">5dp</dimen>
     <dimen name="share_button_margin_bottom_right">@dimen/bookmark_button_margin_top_right</dimen>
+    <dimen name="details_box_padding">7dp</dimen>
 
 </resources>

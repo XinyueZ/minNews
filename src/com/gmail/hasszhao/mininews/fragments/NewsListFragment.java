@@ -7,6 +7,7 @@ import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefres
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import com.gmail.hasszhao.mininews.dataset.DONews;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
+import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.tasks.LoadNewsListTask;
@@ -45,7 +47,8 @@ import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnim
 
 
 public final class NewsListFragment extends SherlockFragment implements OnDismissCallback, Listener<DOStatus>,
-		ErrorListener, OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable {
+		ErrorListener, OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable,
+		INewsListItemProvider {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsList";
@@ -54,7 +57,7 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	private long mLastLoadingTime = 0;
 	private int mCallCount = 0;
 	private List<DONews> mNewsList;
-
+	private INewsListItem mSelectedNewsItem;
 
 	public static NewsListFragment newInstance(Context _context) {
 		return (NewsListFragment) NewsListFragment.instantiate(_context, NewsListFragment.class.getName());
@@ -98,6 +101,7 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	public void onDestroy() {
 		mAdapter = null;
 		mNewsList = null;
+		mSelectedNewsItem = null;
 		super.onDestroy();
 	}
 
@@ -239,11 +243,12 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	@Override
 	public void onNewsClicked(INewsListItem _newsItem) {
 		// Util.openUrl(getActivity(), _newsItem.getURL());
+		mSelectedNewsItem = _newsItem;
 		Activity act = getActivity();
 		if (act instanceof MainActivity) {
-			((MainActivity) act).openNextPage(
-					NewsDetailsFragment.newInstance(act, _newsItem.getTopline(), _newsItem.getFullContent(),
-							_newsItem.getURL()), NewsDetailsFragment.TAG);
+			Fragment f = NewsDetailsFragment.newInstance(act);
+			f.setTargetFragment(this, 0);
+			((MainActivity) act).openNextPage(f, NewsDetailsFragment.TAG);
 		}
 	}
 
@@ -275,5 +280,11 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	@Override
 	public void refresh() {
 		refreshData();
+	}
+
+
+	@Override
+	public INewsListItem getNewsListItem() {
+		return mSelectedNewsItem;
 	}
 }

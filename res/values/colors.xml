@@ -10,5 +10,8 @@
     <color name="cache_color_hint">#00000000</color>
     <color name="cyan">#00d8ff</color>
     <color name="dark_grey">#ff333333</color>
-     
+    <color name="light_blue">#ff33b5e5</color>
+    <color name="gradient_blue_0">#dbe5ec</color>
+    <color name="gradient_blue_100">#fbfcfe</color>
+
 </resources>

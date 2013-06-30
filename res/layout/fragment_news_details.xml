@@ -17,19 +17,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/white"
+            android:layout_alignParentTop="true" 
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <com.gmail.hasszhao.mininews.views.FontTextView
+        <com.gmail.hasszhao.mininews.views.FontTextView 
             android:id="@+id/tv_details_full_content"
-            style="@style/Text.News_Details"
+            style="@style/Text.News_Details"  android:linksClickable="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content"     android:autoLink="all"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/tv_details_topline"
-            android:layout_marginTop="5dp"
-            android:background="@color/white"
+            android:layout_marginTop="5dp" 
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 

@@ -24,7 +24,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment;
 import com.gmail.hasszhao.mininews.fragments.NewsListFragment;
-import com.gmail.hasszhao.mininews.fragments.WebViewFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.utils.Prefs;
@@ -82,15 +81,16 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 	}
 
 
-	@Override
-	public void onBackPressed() {
-		Fragment f = getSupportFragmentManager().findFragmentByTag(WebViewFragment.TAG);
-		if (f instanceof WebViewFragment) {
-			((WebViewFragment) f).backward();
-		} else {
-			super.onBackPressed();
-		}
-	}
+	// @Override
+	// public void onBackPressed() {
+	// Fragment f =
+	// getSupportFragmentManager().findFragmentByTag(WebViewFragment.TAG);
+	// if (f instanceof WebViewFragment) {
+	// ((WebViewFragment) f).backward();
+	// } else {
+	// super.onBackPressed();
+	// }
+	// }
 
 
 	private void initNewsSizeSeekbar() {
