@@ -14,20 +14,22 @@
         <com.gmail.hasszhao.mininews.views.FontTextView
             android:id="@+id/tv_details_topline"
             style="@style/Text.News_Details_Topline"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" 
+            android:layout_alignParentTop="true"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <com.gmail.hasszhao.mininews.views.FontTextView 
+        <com.gmail.hasszhao.mininews.views.FontTextView
             android:id="@+id/tv_details_full_content"
-            style="@style/Text.News_Details"  android:linksClickable="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"     android:autoLink="all"
+            style="@style/Text.News_Details"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/tv_details_topline"
-            android:layout_marginTop="5dp" 
+            android:layout_marginTop="5dp"
+            android:autoLink="all"
+            android:linksClickable="true"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 

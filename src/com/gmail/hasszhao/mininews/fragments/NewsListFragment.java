@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.android.volley.Request.Method;
@@ -46,9 +45,8 @@ import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 
-public final class NewsListFragment extends SherlockFragment implements OnDismissCallback, Listener<DOStatus>,
-		ErrorListener, OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable,
-		INewsListItemProvider {
+public class NewsListFragment extends SherlockFragment implements OnDismissCallback, Listener<DOStatus>, ErrorListener,
+		OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsList";
@@ -59,6 +57,7 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	private List<DONews> mNewsList;
 	private INewsListItem mSelectedNewsItem;
 
+
 	public static NewsListFragment newInstance(Context _context) {
 		return (NewsListFragment) NewsListFragment.instantiate(_context, NewsListFragment.class.getName());
 	}
@@ -67,15 +66,6 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	@Override
 	public View onCreateView(LayoutInflater _inflater, ViewGroup _container, Bundle _savedInstanceState) {
 		return _inflater.inflate(LAYOUT, _container, false);
-	}
-
-
-	@Override
-	public void onAttach(Activity _activity) {
-		super.onAttach(_activity);
-		TextView title = (TextView) View.inflate(_activity, R.layout.action_bar_title, null);
-		((MainActivity) _activity).getSupportActionBar().setCustomView(title);
-		title.setText(R.string.title_hot_news);
 	}
 
 
@@ -112,6 +102,12 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	}
 
 
+	@Override
+	public void refresh() {
+		refreshData();
+	}
+
+
 	private void loadData() {
 		long now = System.currentTimeMillis();
 		if (now - mLastLoadingTime > MAX_FRQUENT) {
@@ -129,15 +125,15 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 				}
 				if (Prefs.getInstance().isSupportEnglish()) {
 					new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-							new DOCookie(Prefs.getInstance().getNewsSize(), "en", "")).execute();
+							new DOCookie(Prefs.getInstance().getNewsSize(), "en", getQuery())).execute();
 				}
 				if (Prefs.getInstance().isSupportChinese()) {
 					new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-							new DOCookie(Prefs.getInstance().getNewsSize(), "zh", "")).execute();
+							new DOCookie(Prefs.getInstance().getNewsSize(), "zh", getQuery())).execute();
 				}
 				if (Prefs.getInstance().isSupportGerman()) {
 					new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-							new DOCookie(Prefs.getInstance().getNewsSize(), "de", "")).execute();
+							new DOCookie(Prefs.getInstance().getNewsSize(), "de", getQuery())).execute();
 				}
 			}
 			mLastLoadingTime = now;
@@ -151,8 +147,14 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 	}
 
 
+	protected String getQuery() {
+		return "";
+	}
+
+
 	@Override
 	public synchronized void onErrorResponse(VolleyError _error) {
+		Log.e("news", "Ask: API_ErrorResponse");
 		mCallCount--;
 		if (mCallCount == 0) {
 			((MainActivity) getActivity()).refreshComplete();
@@ -167,7 +169,7 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 			try {
 				switch (_response.getCode()) {
 					case API.API_OK:
-						Log.w("news", "Ask: API_OK");
+						Log.i("news", "Ask: API_OK");
 						mNewsList.addAll(TaskHelper
 								.getGson()
 								.fromJson(new String(Base64.decode(_response.getData(), Base64.DEFAULT)),
@@ -207,9 +209,19 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 				// } else {
 				// mAdapter.refresh(getActivity(), mNewsList);
 				// }
-				((MainActivity) getActivity()).setRefreshableView(listView, this);
+				if (canPullToLoad()) {
+					((MainActivity) getActivity()).setRefreshableView(listView, this);
+				}
 			}
 		}
+	}
+
+
+	/**
+	 * Should pull to load or not. Default in NewsList is true.
+	 * */
+	protected boolean canPullToLoad() {
+		return true;
 	}
 
 
@@ -274,12 +286,6 @@ public final class NewsListFragment extends SherlockFragment implements OnDismis
 				return getString(R.string.app_name);
 			}
 		});
-	}
-
-
-	@Override
-	public void refresh() {
-		refreshData();
 	}
 
 

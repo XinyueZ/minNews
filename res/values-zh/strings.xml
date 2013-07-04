@@ -7,9 +7,9 @@
     <string name="off">关</string>
     <string name="action_failed">无法发送请求!</string>
     <string name="server_down">服务器调整!</string>
-    <string name="title_hot_news">热门新闻</string>
     <string name="title_news_size">每语种新闻数目:%1$d</string>
     <string name="title_language_list">新闻语种</string>
+    <string name="title_input_search">搜索</string>
     <string name="action_refresh">刷新</string>
     <string name="action_share">分享</string>
     <string name="msg_refresh">过5秒才能刷新一次哦。</string>

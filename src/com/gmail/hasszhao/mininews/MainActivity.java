@@ -11,12 +11,16 @@ import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -24,14 +28,16 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment;
 import com.gmail.hasszhao.mininews.fragments.NewsListFragment;
+import com.gmail.hasszhao.mininews.fragments.SearchedNewsListFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.utils.Prefs;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
+import com.gmail.hasszhao.mininews.utils.Util;
 
 
 public final class MainActivity extends SherlockFragmentActivity implements OnCheckedChangeListener,
-		OnSeekBarChangeListener, ISharable, OnBackStackChangedListener {
+		OnSeekBarChangeListener, ISharable, OnBackStackChangedListener, OnEditorActionListener {
 
 	private static final int LAYOUT = R.layout.activity_main;
 	private static final int MIN_NEWS_SIZE = 10;
@@ -78,19 +84,16 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 	@Override
 	public void onBackStackChanged() {
 		invalidateOptionsMenu();
+		ifOnBackToSearchedNewsListFragment();
 	}
 
 
-	// @Override
-	// public void onBackPressed() {
-	// Fragment f =
-	// getSupportFragmentManager().findFragmentByTag(WebViewFragment.TAG);
-	// if (f instanceof WebViewFragment) {
-	// ((WebViewFragment) f).backward();
-	// } else {
-	// super.onBackPressed();
-	// }
-	// }
+	private void ifOnBackToSearchedNewsListFragment() {
+		Fragment f = getTopFragment();
+		if (!(f instanceof SearchedNewsListFragment)) {
+			((EditText) getSupportActionBar().getCustomView().findViewById(R.id.tv_input_search_key)).setText("");
+		}
+	}
 
 
 	private void initNewsSizeSeekbar() {
@@ -128,6 +131,29 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		ActionBar ab = getSupportActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setHomeButtonEnabled(true);
+		View customView = View.inflate(getApplicationContext(), R.layout.input_search_key, null);
+		ab.setCustomView(customView);
+		((EditText) customView.findViewById(R.id.tv_input_search_key)).setOnEditorActionListener(this);
+	}
+
+
+	@Override
+	public boolean onEditorAction(TextView _v, int _actionId, KeyEvent _event) {
+		switch (_v.getId()) {
+			case R.id.tv_input_search_key:
+				if (_actionId == EditorInfo.IME_ACTION_GO) {
+					startSearching(_v, _v.getText().toString());
+					return true;
+				}
+				return false;
+		}
+		return false;
+	}
+
+
+	private void startSearching(TextView _v, String _key) {
+		Util.hideKeyboard(this, _v);
+		showSearchedNewsListFragment(_key);
 	}
 
 
@@ -289,32 +315,28 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 	}
 
 
-	//
-	// @Override
-	// public boolean onCreateOptionsMenu(Menu menu) {
-	// // Inflate the menu; this adds items to the action bar if it is present.
-	// getMenuInflater().inflate(R.menu.main, menu);
-	// return true;
-	// }
 	private void showNewsListFragment() {
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		NewsListFragment fmg = NewsListFragment.newInstance(this);
-		// if (fmg instanceof OnBackStackChangedListener) {
-		// mFragmentManager.addOnBackStackChangedListener((OnBackStackChangedListener)
-		// fmg);
-		// }
-		// String tag = String.valueOf(fmg.hashCode());
 		trans.replace(R.id.container_news_list, fmg, NewsListFragment.TAG);
-		// trans.addToBackStack(NewsListFragment.TAG);
 		trans.commit();
+	}
+
+
+	private void showSearchedNewsListFragment(String _key) {
+		Fragment f = getTopFragment();
+		if (f instanceof SearchedNewsListFragment) {
+			SearchedNewsListFragment snf = (SearchedNewsListFragment) f;
+			snf.searchWitNewKey(_key);
+		} else {
+			SearchedNewsListFragment fmg = SearchedNewsListFragment.newInstance(this, _key);
+			openNextPage(fmg, SearchedNewsListFragment.TAG);
+		}
 	}
 
 
 	public void openNextPage(Fragment _f, String _tag) {
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-		// trans.setCustomAnimations(R.anim.slide_in_from_right,
-		// R.anim.slide_out_to_left, R.anim.slide_in_from_left,
-		// R.anim.slide_out_to_left);
 		trans.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.slide_in_from_left,
 				R.anim.slide_out_to_right);
 		trans.replace(R.id.container_news_list, _f, _tag).addToBackStack(_tag).commit();

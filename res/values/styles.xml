@@ -22,7 +22,7 @@
 
     <style name="ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid">
         <item name="background">@drawable/gradient_blue_to_white</item>
-        <item name="displayOptions">showHome</item>
+        <item name="displayOptions">showHome|showCustom</item>
     </style>
 
     <style name="Text" parent="@android:style/TextAppearance">
@@ -62,11 +62,19 @@
         <item name="android:paddingBottom">5dp</item>
     </style>
 
-    <style name="Text.ActionBar_Title">
+    <style name="Text.Input_Search_Key">
         <item name="font">robotoLight</item>
+        <item name="android:width">140dp</item>
+        <item name="android:background">@drawable/selector_ics_text_field</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">19sp</item>
         <item name="android:typeface">monospace</item>
+        <item name="android:inputType">text</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:minLines">1</item>
+        <item name="android:imeOptions">actionGo</item>
+        <item name="android:hint">@string/title_input_search</item>
     </style>
 
     <style name="Text.News_Size_Text" parent="Text.Langauge_Choice_Text" />
