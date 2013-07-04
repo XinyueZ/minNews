@@ -25,6 +25,10 @@
         <item name="displayOptions">showHome|showCustom</item>
     </style>
 
+    <style name="Theme_Dialog_Translucent" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <style name="Text" parent="@android:style/TextAppearance">
         <item name="android:textColorLink">@color/violet</item>
     </style>
@@ -47,6 +51,23 @@
         <item name="font">robotoBold</item>
         <item name="android:padding">@dimen/details_box_padding</item>
         <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="Text.Dialog_Title" parent="Text.News_Topline">
+        <item name="font">robotoRegular</item>
+        <item name="android:layout_marginTop">@dimen/dialog_content_padding_top</item>
+        <item name="android:layout_marginLeft">@dimen/dialog_content_padding_left</item>
+        <item name="android:layout_marginRight">@dimen/dialog_content_padding_right</item>
+        <item name="android:textColor">@color/light_blue</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+    </style>
+
+    <style name="Dialog_Sep_Line" parent="line">
+        <item name="android:layout_marginTop">@dimen/dialog_sep_line_padding_top_bottom</item>
+        <item name="android:layout_marginBottom">@dimen/dialog_sep_line_padding_top_bottom</item>
+        <item name="android:layout_marginLeft">@dimen/dialog_content_padding_left</item>
+        <item name="android:layout_marginRight">@dimen/dialog_content_padding_right</item>
     </style>
 
     <style name="Text.News_Details" parent="Text.News_Topline">
@@ -84,6 +105,11 @@
         <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textSize">15sp</item>
         <item name="android:typeface">monospace</item>
+    </style>
+
+    <style name="Text.Dialog_Radio_Text" parent="Text.Langauge_Choice_Text">
+        <item name="android:layout_marginTop">@dimen/dialog_radios_padding_top_bottom</item>
+        <item name="android:layout_marginBottom">@dimen/dialog_radios_padding_top_bottom</item>
     </style>
 
     <style name="Switch" parent="switch_light">
@@ -124,6 +150,13 @@
         <item name="android:fadingEdge">none</item>
         <item name="android:fastScrollEnabled">true</item>
         <item name="android:scrollbarStyle">outsideOverlay</item>
+    </style>
+
+    <style name="Common_Dialog">
+        <item name="android:paddingTop">@dimen/dialog_content_padding_top</item>
+        <item name="android:paddingLeft">@dimen/dialog_content_padding_left</item>
+        <item name="android:paddingRight">@dimen/dialog_content_padding_right</item>
+        <item name="android:background">@drawable/bg_overlay</item>
     </style>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.gmail.hasszhao.mininews.fragments;
+package com.gmail.hasszhao.mininews.fragments.basic;
 
 import android.support.v4.app.Fragment;
 

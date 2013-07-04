@@ -10,6 +10,10 @@
     <string name="title_news_size">每语种新闻数目:%1$d</string>
     <string name="title_language_list">新闻语种</string>
     <string name="title_input_search">搜索</string>
+    <string name="title_open_details">内容</string>
+    <string name="title_open_details_in_app">直接打开内容</string>
+    <string name="title_open_details_in_browser">打开链接（浏览器）</string>
+    <string name="title_dont_ask_again">不再询问</string>
     <string name="action_refresh">刷新</string>
     <string name="action_share">分享</string>
     <string name="msg_refresh">过5秒才能刷新一次哦。</string>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Common_Dialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.gmail.hasszhao.mininews.views.FontTextView
+        android:id="@+id/tv_dialog_title"
+        style="@style/Text.Dialog_Title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_open_details"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <View
+        android:id="@+id/line"
+        style="@style/Dialog_Sep_Line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_dialog_title" />
+
+    <RadioGroup
+        android:id="@+id/rg_open_details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/line"
+        android:background="@android:color/transparent"
+        android:orientation="vertical" >
+
+        <RadioButton
+            android:id="@+id/rb_1"
+            style="@style/Text.Dialog_Radio_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/title_open_details_in_app" />
+
+        <RadioButton
+            android:id="@+id/rb_2"
+            style="@style/Text.Dialog_Radio_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_open_details_in_browser" />
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/ch_do_not_ask_again"
+        style="@style/Text.Dialog_Radio_Text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/rg_open_details"
+        android:text="@string/title_dont_ask_again" />
+
+</RelativeLayout>
