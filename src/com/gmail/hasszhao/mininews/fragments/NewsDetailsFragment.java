@@ -1,21 +1,10 @@
 package com.gmail.hasszhao.mininews.fragments;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.xml.sax.XMLReader;
-
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.text.Html;
-import android.text.Html.ImageGetter;
-import android.text.Html.TagHandler;
-import android.text.TextUtils;
-import android.util.Log;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +14,7 @@ import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
+import com.gmail.hasszhao.mininews.utils.URLImageParser;
 
 
 public final class NewsDetailsFragment extends BasicFragment implements ISharable {
@@ -49,51 +39,21 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 		super.onActivityCreated(_savedInstanceState);
 		View v = getView();
 		if (v != null) {
-			Fragment fragment = getTargetFragment();
-			if (fragment instanceof INewsListItemProvider) {
-				INewsListItemProvider p = (INewsListItemProvider) fragment;
-				INewsListItem item = p.getNewsListItem();
-				((TextView) v.findViewById(R.id.tv_details_topline)).setText(Html.fromHtml(item.getTopline()));
-				((TextView) v.findViewById(R.id.tv_details_full_content)).setText(Html.fromHtml(item.getFullContent(),
-						new ImageGetter() {
+			loadDetails(v);
+		}
+	}
 
-							@SuppressWarnings("finally")
-							@Override
-							public Drawable getDrawable(String _source) {
-								Log.d("min", "Ask: image[" + _source + "]");
-								Drawable drawable = null;
-								URL url = null;
-								try {
-									if (!TextUtils.isEmpty(_source)) {
-										url = new URL(_source);
-										drawable = Drawable.createFromStream(url.openStream(), "");
-										drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-												drawable.getIntrinsicHeight());
-									}
-								} catch (MalformedURLException _e) {
-									_e.printStackTrace();
-								} catch (IOException _e) {
-									_e.printStackTrace();
-								} catch (NullPointerException _e) {
-									_e.printStackTrace();
-								} finally {
-									return drawable;
-								}
-							}
-						}, new TagHandler() {
 
-							@Override
-							public void handleTag(boolean _opening, String _tag, Editable _output, XMLReader _xmlReader) {
-								Log.d("min", "Ask: tag[" + _tag + "]:" + _output.toString());
-							}
-						}));
-				// ((TextView)
-				// v.findViewById(R.id.tv_details_topline)).setText(Util.linkifyHtml(
-				// getArguments().getString(KEY_TOPIC), Linkify.ALL));
-				// ((TextView)
-				// v.findViewById(R.id.tv_details_full_content)).setText(Util.linkifyHtml(getArguments()
-				// .getString(KEY_FULL_CONTENT), Linkify.ALL));
-			}
+	private void loadDetails(View v) {
+		Fragment fragment = getTargetFragment();
+		if (fragment instanceof INewsListItemProvider) {
+			INewsListItemProvider p = (INewsListItemProvider) fragment;
+			INewsListItem item = p.getNewsListItem();
+			((TextView) v.findViewById(R.id.tv_details_topline)).setText(Html.fromHtml(item.getTopline()));
+			TextView details = (TextView) v.findViewById(R.id.tv_details_full_content);
+			URLImageParser parser = new URLImageParser(details);
+			Spanned htmlSpan = Html.fromHtml(item.getFullContent(), parser, null);
+			details.setText(htmlSpan);
 		}
 	}
 

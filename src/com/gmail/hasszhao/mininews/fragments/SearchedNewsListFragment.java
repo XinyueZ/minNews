@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.gmail.hasszhao.mininews.utils.Util;
+
 
 public final class SearchedNewsListFragment extends NewsListFragment {
 
@@ -43,7 +45,11 @@ public final class SearchedNewsListFragment extends NewsListFragment {
 
 	@Override
 	protected String getQuery() {
-		return mNewSearch ? mNewSearchKey : getArguments().getString(KEY_SEARCH_KEY);
+		String key = mNewSearch ? mNewSearchKey : getArguments().getString(KEY_SEARCH_KEY);
+		if (!TextUtils.isEmpty(key)) {
+			return Util.encode(key);
+		}
+		return key;
 	}
 
 
