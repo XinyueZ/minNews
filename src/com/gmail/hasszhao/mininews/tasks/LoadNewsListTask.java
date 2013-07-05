@@ -23,7 +23,7 @@ public final class LoadNewsListTask extends AbstractGsonRequest<DOStatus> {
 			Listener<DOStatus> _listener, ErrorListener _errorListener, DOCookie _cookie) {
 		super(_context, Method.GET, _url, _clazz, _listener, _errorListener);
 		setTag(TAG);
-		setShouldCache(false);
+		setShouldCache(true);
 		mCookie = _cookie;
 	}
 

@@ -1,6 +1,6 @@
 package com.gmail.hasszhao.mininews.dataset;
 
-import com.gmail.hasszhao.mininews.utils.Prefs;
+import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 
 public final class DOCookie {

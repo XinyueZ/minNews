@@ -1,57 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Common_Dialog"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent" >
 
-    <com.gmail.hasszhao.mininews.views.FontTextView
-        android:id="@+id/tv_dialog_title"
-        style="@style/Text.Dialog_Title"
+    <ScrollView
+        android:id="@+id/sv_root"
+        style="@style/Common_Dialog"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_open_details"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_height="wrap_content"  >
 
-    <View
-        android:id="@+id/line"
-        style="@style/Dialog_Sep_Line"
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tv_dialog_title" />
+        <RelativeLayout
+            android:id="@+id/rl_dialog_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-    <RadioGroup
-        android:id="@+id/rg_open_details"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/line"
-        android:background="@android:color/transparent"
-        android:orientation="vertical" >
+            <com.gmail.hasszhao.mininews.views.FontTextView
+                android:id="@+id/tv_dialog_title"
+                style="@style/Text.Dialog_Title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_open_details"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <RadioButton
-            android:id="@+id/rb_1"
-            style="@style/Text.Dialog_Radio_Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/title_open_details_in_app" />
+            <View
+                android:id="@+id/line"
+                style="@style/Dialog_Sep_Line"
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/tv_dialog_title" />
 
-        <RadioButton
-            android:id="@+id/rb_2"
-            style="@style/Text.Dialog_Radio_Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_open_details_in_browser" />
-    </RadioGroup>
+            <RadioGroup
+                android:id="@+id/rg_open_details"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/line"
+                android:background="@android:color/transparent"
+                android:orientation="vertical" >
 
-    <CheckBox
-        android:id="@+id/ch_do_not_ask_again"
-        style="@style/Text.Dialog_Radio_Text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/rg_open_details"
-        android:text="@string/title_dont_ask_again" />
+                <RadioButton
+                    android:id="@+id/rb_open_in_app"
+                    style="@style/Text.Dialog_Radio_Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/title_open_details_in_app" />
+
+                <RadioButton
+                    android:id="@+id/rb_open_in_browser"
+                    style="@style/Text.Dialog_Radio_Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_open_details_in_browser" />
+            </RadioGroup>
+
+            <CheckBox
+                android:id="@+id/ch_do_not_ask_again"
+                style="@style/Text.Dialog_Radio_Text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/rg_open_details"
+                android:checked="false"
+                android:text="@string/title_dont_ask_again" />
+
+            <LinearLayout
+                style="@style/Text.Dialog_2_Buttons"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ch_do_not_ask_again"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/btn_open"
+                    style="@style/Text.Yellow.Ok.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btn_do_not_open"
+                    style="@style/Text.Yellow.Cancel.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

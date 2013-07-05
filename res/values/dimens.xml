@@ -9,10 +9,14 @@
     <dimen name="bookmark_button_margin_top_right">5dp</dimen>
     <dimen name="share_button_margin_bottom_right">@dimen/bookmark_button_margin_top_right</dimen>
     <dimen name="details_box_padding">7dp</dimen>
+    <dimen name="dialog_title_padding_left_right">10dp</dimen>
     <dimen name="dialog_content_padding_top">15dp</dimen>
-    <dimen name="dialog_content_padding_left">10dp</dimen>
-    <dimen name="dialog_content_padding_right">10dp</dimen>
-    <dimen name="dialog_sep_line_padding_top_bottom">10dp</dimen> 
+    <dimen name="dialog_content_padding_left">15dp</dimen>
+    <dimen name="dialog_content_padding_right">15dp</dimen>
+    <dimen name="dialog_sep_line_padding_top_bottom">10dp</dimen>
+    <dimen name="dialog_sep_line_padding_left_right">10dp</dimen>
     <dimen name="dialog_radios_padding_top_bottom">10dp</dimen>
+    <dimen name="dialog_2_buttons_right_button_padding_top">10dp</dimen>
+    <dimen name="dialog_2_buttons_right_button_padding_bottom">5dp</dimen>
 
 </resources>

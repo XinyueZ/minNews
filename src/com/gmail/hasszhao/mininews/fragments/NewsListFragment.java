@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,15 +32,16 @@ import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DONews;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
+import com.gmail.hasszhao.mininews.fragments.AskOpenDetailsMethodFragment.OpenContentMethod;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.tasks.LoadNewsListTask;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
-import com.gmail.hasszhao.mininews.utils.Prefs;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
 import com.gmail.hasszhao.mininews.utils.Util;
+import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 import com.haarman.listviewanimations.itemmanipulation.OnDismissCallback;
 import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
@@ -140,9 +142,9 @@ public class NewsListFragment extends SherlockFragment implements OnDismissCallb
 		} else {
 			Activity act = getActivity();
 			if (act != null) {
-				((MainActivity) getActivity()).refreshComplete();
+				((MainActivity) act).refreshComplete();
+				Util.showShortToast(act, R.string.msg_refresh);
 			}
-			Util.showShortToast(getActivity(), R.string.msg_refresh);
 		}
 	}
 
@@ -157,7 +159,10 @@ public class NewsListFragment extends SherlockFragment implements OnDismissCallb
 		Log.e("news", "Ask: API_ErrorResponse");
 		mCallCount--;
 		if (mCallCount == 0) {
-			((MainActivity) getActivity()).refreshComplete();
+			Activity act = getActivity();
+			if (act != null) {
+				((MainActivity) act).refreshComplete();
+			}
 		}
 	}
 
@@ -186,7 +191,10 @@ public class NewsListFragment extends SherlockFragment implements OnDismissCallb
 						break;
 				}
 				if (mCallCount == 0) {
-					((MainActivity) getActivity()).refreshComplete();
+					Activity act = getActivity();
+					if (act != null) {
+						((MainActivity) act).refreshComplete();
+					}
 				}
 			} catch (Exception _e) {
 				_e.printStackTrace();
@@ -210,7 +218,10 @@ public class NewsListFragment extends SherlockFragment implements OnDismissCallb
 				// mAdapter.refresh(getActivity(), mNewsList);
 				// }
 				if (canPullToLoad()) {
-					((MainActivity) getActivity()).setRefreshableView(listView, this);
+					Activity act = getActivity();
+					if (act != null) {
+						((MainActivity) act).setRefreshableView(listView, this);
+					}
 				}
 			}
 		}
@@ -254,13 +265,27 @@ public class NewsListFragment extends SherlockFragment implements OnDismissCallb
 
 	@Override
 	public void onNewsClicked(INewsListItem _newsItem) {
-		// Util.openUrl(getActivity(), _newsItem.getURL());
-		mSelectedNewsItem = _newsItem;
-		Activity act = getActivity();
-		if (act instanceof MainActivity) {
-			Fragment f = NewsDetailsFragment.newInstance(act);
-			f.setTargetFragment(this, 0);
-			((MainActivity) act).openNextPage(f, NewsDetailsFragment.TAG);
+		FragmentActivity act = getActivity();
+		if (act != null) {
+			mSelectedNewsItem = _newsItem;
+			if (!Prefs.getInstance().getDontAskForOpeningDetailsMethod()) {
+				MainActivity.showPopup(act, AskOpenDetailsMethodFragment.newInstance(this), null);
+			} else {
+				openDetails(OpenContentMethod.fromValue(Prefs.getInstance().getOpenDetailsMethod()));
+			}
+		}
+	}
+
+
+	@Override
+	public void openDetails(OpenContentMethod method) {
+		switch (method) {
+			case IN_APP:
+				openDetailsInApp();
+				break;
+			case IN_BROWSER:
+				openDetailsInBrowser();
+				break;
 		}
 	}
 
@@ -286,6 +311,26 @@ public class NewsListFragment extends SherlockFragment implements OnDismissCallb
 				return getString(R.string.app_name);
 			}
 		});
+	}
+
+
+	public void openDetailsInApp() {
+		Activity act = getActivity();
+		if (act instanceof MainActivity) {
+			Fragment f = NewsDetailsFragment.newInstance(act);
+			f.setTargetFragment(this, 0);
+			((MainActivity) act).openNextPage(f, NewsDetailsFragment.TAG);
+		}
+	}
+
+
+	public void openDetailsInBrowser() {
+		Activity act = getActivity();
+		if (act instanceof MainActivity && mSelectedNewsItem != null) {
+			Util.openUrl(act, mSelectedNewsItem.getURL());
+			// act.overridePendingTransition(R.anim.hyperspace_fast_in,
+			// R.anim.hyperspace_fast_out);
+		}
 	}
 
 

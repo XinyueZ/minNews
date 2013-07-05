@@ -5,12 +5,15 @@ import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefres
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -31,13 +34,14 @@ import com.gmail.hasszhao.mininews.fragments.NewsListFragment;
 import com.gmail.hasszhao.mininews.fragments.SearchedNewsListFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
-import com.gmail.hasszhao.mininews.utils.Prefs;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
 import com.gmail.hasszhao.mininews.utils.Util;
+import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 
 public final class MainActivity extends SherlockFragmentActivity implements OnCheckedChangeListener,
-		OnSeekBarChangeListener, ISharable, OnBackStackChangedListener, OnEditorActionListener {
+		OnSeekBarChangeListener, ISharable, OnBackStackChangedListener, OnEditorActionListener,
+		DrawerLayout.DrawerListener {
 
 	private static final int LAYOUT = R.layout.activity_main;
 	private static final int MIN_NEWS_SIZE = 10;
@@ -74,9 +78,9 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		initActionbar();
 		mPullToRefreshAttacher = new PullToRefreshAttacher(this);
 		showNewsListFragment();
-		createSidebar();
+		initSidebar();
 		initNewsSizeSeekbar();
-		initLangaugePreSelections();
+		initSwitches();
 		getSupportFragmentManager().addOnBackStackChangedListener(this);
 	}
 
@@ -105,7 +109,7 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 	}
 
 
-	private void initLangaugePreSelections() {
+	private void initSwitches() {
 		de.ankri.views.Switch sw = null;
 		(sw = (de.ankri.views.Switch) findViewById(R.id.switch_english)).setOnCheckedChangeListener(this);
 		sw.setChecked(Prefs.getInstance().isSupportEnglish());
@@ -113,6 +117,8 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		sw.setChecked(Prefs.getInstance().isSupportChinese());
 		(sw = (de.ankri.views.Switch) findViewById(R.id.switch_german)).setOnCheckedChangeListener(this);
 		sw.setChecked(Prefs.getInstance().isSupportGerman());
+		(sw = (de.ankri.views.Switch) findViewById(R.id.switch_open_content_type)).setOnCheckedChangeListener(this);
+		sw.setChecked(Prefs.getInstance().getDontAskForOpeningDetailsMethod());
 	}
 
 
@@ -157,46 +163,37 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 	}
 
 
-	private static class DrawerListener implements DrawerLayout.DrawerListener {
-
-		private final ActionBarDrawerToggle drawerToggle;
-
-
-		public DrawerListener(ActionBarDrawerToggle _drawerToggle) {
-			super();
-			drawerToggle = _drawerToggle;
-		}
-
-
-		@Override
-		public void onDrawerOpened(View drawerView) {
-			drawerToggle.onDrawerOpened(drawerView);
-		}
-
-
-		@Override
-		public void onDrawerClosed(View drawerView) {
-			drawerToggle.onDrawerClosed(drawerView);
-		}
-
-
-		@Override
-		public void onDrawerSlide(View drawerView, float slideOffset) {
-			drawerToggle.onDrawerSlide(drawerView, slideOffset);
-		}
-
-
-		@Override
-		public void onDrawerStateChanged(int newState) {
-			drawerToggle.onDrawerStateChanged(newState);
-		}
+	@Override
+	public void onDrawerOpened(View drawerView) {
+		mDrawerToggle.onDrawerOpened(drawerView);
+		de.ankri.views.Switch sw;
+		(sw = (de.ankri.views.Switch) findViewById(R.id.switch_open_content_type)).setOnCheckedChangeListener(this);
+		sw.setChecked(Prefs.getInstance().getDontAskForOpeningDetailsMethod());
 	}
 
 
-	private void createSidebar() {
+	@Override
+	public void onDrawerClosed(View drawerView) {
+		mDrawerToggle.onDrawerClosed(drawerView);
+	}
+
+
+	@Override
+	public void onDrawerSlide(View drawerView, float slideOffset) {
+		mDrawerToggle.onDrawerSlide(drawerView, slideOffset);
+	}
+
+
+	@Override
+	public void onDrawerStateChanged(int newState) {
+		mDrawerToggle.onDrawerStateChanged(newState);
+	}
+
+
+	private void initSidebar() {
 		DrawerLayout sidebar = (DrawerLayout) findViewById(R.id.sidebar);
-		sidebar.setDrawerListener(new DrawerListener(mDrawerToggle = new ActionBarDrawerToggle(this, sidebar,
-				R.drawable.ic_drawer, -1, -1)));
+		mDrawerToggle = new ActionBarDrawerToggle(this, sidebar, R.drawable.ic_drawer, -1, -1);
+		sidebar.setDrawerListener(this);
 		sidebar.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 	}
 
@@ -298,6 +295,9 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 			case R.id.switch_german:
 				Prefs.getInstance().setSupportGerman(_isChecked);
 				break;
+			case R.id.switch_open_content_type:
+				Prefs.getInstance().setDontAskForOpeningDetailsMethod(_isChecked);
+				break;
 			default:
 				break;
 		}
@@ -348,6 +348,27 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		// trans.remove(_f);
 		trans.commit();
+	}
+
+
+	public static void showPopup(FragmentActivity _activty, DialogFragment _dlgFrg, String _tagName) {
+		if (_dlgFrg != null) {
+			DialogFragment dialogFragment = _dlgFrg;
+			FragmentTransaction ft = _activty.getSupportFragmentManager().beginTransaction();
+			// Ensure that there's only one dialog to the user.
+			Fragment prev = _activty.getSupportFragmentManager().findFragmentByTag("dlg");
+			if (prev != null) {
+				ft.remove(prev);
+			}
+			try {
+				if (TextUtils.isEmpty(_tagName)) {
+					dialogFragment.show(ft, "dlg");
+				} else {
+					dialogFragment.show(ft, _tagName);
+				}
+			} catch (Exception _e) {
+			}
+		}
 	}
 
 

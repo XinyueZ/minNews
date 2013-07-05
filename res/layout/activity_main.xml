@@ -149,6 +149,33 @@
             android:layout_gravity="left"
             android:layout_marginRight="@dimen/sidebar_block_margin"
             android:max="100" />
+
+        <!-- Open content method -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sidebar_block_margin"
+            android:layout_marginRight="@dimen/sidebar_block_margin"
+            android:layout_marginTop="5dp" >
+
+            <de.ankri.views.Switch
+                android:id="@+id/switch_open_content_type"
+                style="@style/Switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                app:textOff="@string/off"
+                app:textOn="@string/on" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@android:color/transparent"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_open_content_method" />
+        </RelativeLayout>
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

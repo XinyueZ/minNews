@@ -1,4 +1,4 @@
-package com.gmail.hasszhao.mininews.utils;
+package com.gmail.hasszhao.mininews.utils.prefs;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -38,6 +38,8 @@ public final class Prefs extends BasicPrefs {
 	private final static String KEY_SUPPORT_ENGLISH = "language.english";
 	private final static String KEY_SUPPORT_CHINESE = "language.chinese";
 	private final static String KEY_SUPPORT_GERMAN = "language.german";
+	private final static String KEY_OPEN_DETAILS_METHOD = "details.open.method";
+	private final static String KEY_DONT_ASK_OPEN_DETAILS_METHOD = "details.ask.open.method";
 	/** The Instance. */
 	private static Prefs sInstance;
 
@@ -267,6 +269,26 @@ public final class Prefs extends BasicPrefs {
 
 	public void setNewsSize(int _size) {
 		setInt(KEY_NEWS_SIZE, _size);
+	}
+
+
+	public boolean getDontAskForOpeningDetailsMethod() {
+		return getBoolean(KEY_DONT_ASK_OPEN_DETAILS_METHOD, false);
+	}
+
+
+	public void setDontAskForOpeningDetailsMethod(boolean _ask) {
+		setBoolean(KEY_DONT_ASK_OPEN_DETAILS_METHOD, _ask);
+	}
+
+
+	public int getOpenDetailsMethod() {
+		return getInt(KEY_OPEN_DETAILS_METHOD, 0);
+	}
+
+
+	public void setOpenDetailsMethod(int _index) {
+		setInt(KEY_OPEN_DETAILS_METHOD, _index);
 	}
 
 

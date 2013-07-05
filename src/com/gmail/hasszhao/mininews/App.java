@@ -3,7 +3,7 @@ package com.gmail.hasszhao.mininews;
 import android.app.Application;
 
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
-import com.gmail.hasszhao.mininews.utils.Prefs;
+import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 
 public final class App extends Application {

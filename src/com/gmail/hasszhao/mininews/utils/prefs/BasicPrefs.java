@@ -1,4 +1,4 @@
-package com.gmail.hasszhao.mininews.utils;
+package com.gmail.hasszhao.mininews.utils.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;

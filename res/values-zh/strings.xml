@@ -14,6 +14,8 @@
     <string name="title_open_details_in_app">直接打开内容</string>
     <string name="title_open_details_in_browser">打开链接（浏览器）</string>
     <string name="title_dont_ask_again">不再询问</string>
+    <string name="title_ok">好</string>
+    <string name="title_cancel">取消</string>
     <string name="action_refresh">刷新</string>
     <string name="action_share">分享</string>
     <string name="msg_refresh">过5秒才能刷新一次哦。</string>

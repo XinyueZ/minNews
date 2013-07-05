@@ -56,18 +56,11 @@
     <style name="Text.Dialog_Title" parent="Text.News_Topline">
         <item name="font">robotoRegular</item>
         <item name="android:layout_marginTop">@dimen/dialog_content_padding_top</item>
-        <item name="android:layout_marginLeft">@dimen/dialog_content_padding_left</item>
-        <item name="android:layout_marginRight">@dimen/dialog_content_padding_right</item>
+        <item name="android:layout_marginLeft">@dimen/dialog_title_padding_left_right</item>
+        <item name="android:layout_marginRight">@dimen/dialog_title_padding_left_right</item>
         <item name="android:textColor">@color/light_blue</item>
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_alignParentTop">true</item>
-    </style>
-
-    <style name="Dialog_Sep_Line" parent="line">
-        <item name="android:layout_marginTop">@dimen/dialog_sep_line_padding_top_bottom</item>
-        <item name="android:layout_marginBottom">@dimen/dialog_sep_line_padding_top_bottom</item>
-        <item name="android:layout_marginLeft">@dimen/dialog_content_padding_left</item>
-        <item name="android:layout_marginRight">@dimen/dialog_content_padding_right</item>
     </style>
 
     <style name="Text.News_Details" parent="Text.News_Topline">
@@ -112,6 +105,29 @@
         <item name="android:layout_marginBottom">@dimen/dialog_radios_padding_top_bottom</item>
     </style>
 
+    <style name="Text.Dialog_2_Buttons" parent="Text.Langauge_Choice_Text">
+        <item name="android:layout_marginTop">@dimen/dialog_2_buttons_right_button_padding_top</item>
+        <item name="android:layout_marginBottom">@dimen/dialog_2_buttons_right_button_padding_bottom</item>
+    </style>
+
+    <style name="Text.Yellow.Button" parent="Text.Langauge_Choice_Text">
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@drawable/selector_yellow_button</item>
+    </style>
+
+    <style name="Text.Yellow.Ok.Button" parent="Text.Yellow.Button">
+        <item name="android:background">@drawable/selector_yellow_button</item>
+        <item name="android:text">@string/title_ok</item>
+        <item name="android:layout_marginRight">2dp</item>
+    </style>
+
+    <style name="Text.Yellow.Cancel.Button" parent="Text.Yellow.Button">
+        <item name="android:background">@drawable/selector_yellow_button</item>
+        <item name="android:text">@string/title_cancel</item>
+        <item name="android:layout_marginLeft">2dp</item>
+    </style>
+
     <style name="Switch" parent="switch_light">
         <item name="font">robotoThin</item>
         <item name="android:textColor">@color/dark_grey</item>
@@ -126,6 +142,13 @@
 
     <style name="line">
         <item name="android:background">@color/dark_grey</item>
+    </style>
+
+    <style name="Dialog_Sep_Line" parent="line">
+        <item name="android:layout_marginTop">@dimen/dialog_sep_line_padding_top_bottom</item>
+        <item name="android:layout_marginBottom">@dimen/dialog_sep_line_padding_top_bottom</item>
+        <item name="android:layout_marginLeft">@dimen/dialog_sep_line_padding_left_right</item>
+        <item name="android:layout_marginRight">@dimen/dialog_sep_line_padding_left_right</item>
     </style>
 
     <style name="Bookmark_Button" parent="android:Widget.Holo.Light.ImageButton">
