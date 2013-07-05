@@ -53,7 +53,7 @@ public class NewsListFragment extends SherlockFragment implements OnDismissCallb
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsList";
 	private static final int MAX_FRQUENT = 5 * 1000;
-	private NewsListAdapter mAdapter;
+	protected NewsListAdapter mAdapter;
 	private long mLastLoadingTime = 0;
 	private int mCallCount = 0;
 	private List<DONews> mNewsList;

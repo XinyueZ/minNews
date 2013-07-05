@@ -6,14 +6,30 @@
     android:background="@drawable/bg_box"
     android:paddingBottom="5dp" >
 
-    <com.gmail.hasszhao.mininews.views.FontTextView
-        android:id="@+id/tv_topline"
-        style="@style/Text.News_Topline"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_head"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_alignParentTop="true" >
+
+        <com.gmail.hasszhao.mininews.views.FixedSizeImageView
+            android:id="@+id/iv_thumb"
+            style="@style/Thumb"
+            android:layout_width="@dimen/thumb_width"
+            android:layout_height="@dimen/thumb_height"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" />
+
+        <com.gmail.hasszhao.mininews.views.FontTextView
+            android:id="@+id/tv_topline"
+            style="@style/Text.News_Topline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/iv_thumb"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </RelativeLayout>
 
     <com.gmail.hasszhao.mininews.views.FontTextView
         android:id="@+id/tv_headline"
@@ -21,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tv_topline"
+        android:layout_below="@+id/rl_head"
         android:layout_marginTop="5dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

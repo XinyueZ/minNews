@@ -1,11 +1,15 @@
 package com.gmail.hasszhao.mininews.fragments;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +20,7 @@ import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
+import com.gmail.hasszhao.mininews.utils.Util;
 
 
 public final class NewsDetailsFragment extends BasicFragment implements ISharable {
@@ -52,11 +57,17 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 			INewsListItem item = p.getNewsListItem();
 			((TextView) v.findViewById(R.id.tv_details_topline)).setText(Html.fromHtml(item.getTopline()));
 			TextView details = (TextView) v.findViewById(R.id.tv_details_full_content);
-			details.setText(Jsoup.parse(item.getFullContent()).text());
-			// URLImageParser parser = new URLImageParser(details);
-			// Spanned htmlSpan = Html.fromHtml(item.getFullContent(), parser,
-			// null);
-			// details.setText(htmlSpan);
+			Document doc = Jsoup.parse(item.getFullContent().replace("<br>", "\n\n").replace("<p>", "\n\n"));
+			details.setText(doc.text());
+			Elements media = doc.select("[src]");
+			for (Element src : media) {
+				if (src.tagName().equals("img")) {
+					Log.d("mini",
+							"Ask: "
+									+ String.format(" * %s: <%s> %sx%s (%s)", src.tagName(), src.attr("abs:src"),
+											src.attr("width"), src.attr("height"), Util.trim(src.attr("alt"), 20)));
+				}
+			}
 		}
 	}
 

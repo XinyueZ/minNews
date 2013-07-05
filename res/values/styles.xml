@@ -51,6 +51,7 @@
         <item name="font">robotoBold</item>
         <item name="android:padding">@dimen/details_box_padding</item>
         <item name="android:background">@color/white</item>
+        <item name="android:lineSpacingExtra">5dp</item>
     </style>
 
     <style name="Text.Dialog_Title" parent="Text.News_Topline">
@@ -67,6 +68,7 @@
         <item name="android:padding">@dimen/details_box_padding</item>
         <item name="android:background">@color/white</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:lineSpacingExtra">5dp</item>
     </style>
 
     <style name="Text.News_Date">
@@ -181,6 +183,13 @@
         <item name="android:paddingLeft">@dimen/dialog_content_padding_left</item>
         <item name="android:paddingRight">@dimen/dialog_content_padding_right</item>
         <item name="android:background">@drawable/bg_overlay</item>
+    </style>
+
+    <style name="Thumb">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="android:src">@drawable/ic_thumb_placeholder</item>
+        <item name="android:layout_margin">5dp</item>
     </style>
 
 </resources>

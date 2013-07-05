@@ -3,15 +3,19 @@ package com.gmail.hasszhao.mininews.adapters;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
+import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 
 
 public final class NewsListAdapter extends BaseAdapter {
@@ -75,14 +79,17 @@ public final class NewsListAdapter extends BaseAdapter {
 
 	static class ViewHolder {
 
+		ImageView thumb;
 		TextView topline;
 		TextView headline;
 		TextView date;
 		ImageButton newsShare;
 
 
-		public ViewHolder(TextView _topline, TextView _headline, TextView _date, ImageButton _newsShare) {
+		public ViewHolder(ImageView _thumb, TextView _topline, TextView _headline, TextView _date,
+				ImageButton _newsShare) {
 			super();
+			thumb = _thumb;
 			topline = _topline;
 			headline = _headline;
 			date = _date;
@@ -96,14 +103,19 @@ public final class NewsListAdapter extends BaseAdapter {
 		ViewHolder h;
 		if (_convertView == null) {
 			_convertView = View.inflate(mContext, LAYOUT, null);
-			_convertView.setTag(h = new ViewHolder((TextView) _convertView.findViewById(R.id.tv_topline),
-					(TextView) _convertView.findViewById(R.id.tv_headline), (TextView) _convertView
-							.findViewById(R.id.tv_date), (ImageButton) _convertView
-							.findViewById(R.id.btn_news_be_shared)));
+			_convertView.setTag(h = new ViewHolder((ImageView) _convertView.findViewById(R.id.iv_thumb),
+					(TextView) _convertView.findViewById(R.id.tv_topline), (TextView) _convertView
+							.findViewById(R.id.tv_headline), (TextView) _convertView.findViewById(R.id.tv_date),
+					(ImageButton) _convertView.findViewById(R.id.btn_news_be_shared)));
 		} else {
 			h = (ViewHolder) _convertView.getTag();
 		}
 		final INewsListItem newsItem = mNewsListItems.get(_position);
+		TaskHelper.getImageLoader()
+				.get(newsItem.getThumbUrl(),
+						ImageLoader.getImageListener(h.thumb, R.drawable.ic_thumb_placeholder,
+								R.drawable.ic_thumb_placeholder));
+		Log.w("mini", "Ask: " + newsItem.getThumbUrl());
 		h.topline.setText(newsItem.getTopline());
 		h.headline.setText(newsItem.getHeadline());
 		h.date.setText(newsItem.getDate());

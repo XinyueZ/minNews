@@ -2,6 +2,9 @@ package com.gmail.hasszhao.mininews.interfaces;
 
 public interface INewsListItem {
 
+	String getThumbUrl();
+
+
 	String getTopline();
 
 

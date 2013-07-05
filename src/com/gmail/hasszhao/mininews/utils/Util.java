@@ -422,4 +422,13 @@ public final class Util {
 				.replace("?", "%3F").replace("@", "%40").replace("[", "%5B").replace("\\", "%5C").replace("]", "%5D")
 				.replace("_", "%5F").replace("`", "%60").replace("{", "%7B").replace("|", "%7C").replace("}", "%7D"));
 	}
+
+
+	public static String trim(String s, int width) {
+		if (s.length() > width) {
+			return s.substring(0, width - 1) + ".";
+		} else {
+			return s;
+		}
+	}
 }
