@@ -1,10 +1,11 @@
 package com.gmail.hasszhao.mininews.fragments;
 
+import org.jsoup.Jsoup;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
-import com.gmail.hasszhao.mininews.utils.URLImageParser;
 
 
 public final class NewsDetailsFragment extends BasicFragment implements ISharable {
@@ -52,9 +52,11 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 			INewsListItem item = p.getNewsListItem();
 			((TextView) v.findViewById(R.id.tv_details_topline)).setText(Html.fromHtml(item.getTopline()));
 			TextView details = (TextView) v.findViewById(R.id.tv_details_full_content);
-			URLImageParser parser = new URLImageParser(details);
-			Spanned htmlSpan = Html.fromHtml(item.getFullContent(), parser, null);
-			details.setText(htmlSpan);
+			details.setText(Jsoup.parse(item.getFullContent()).text());
+			// URLImageParser parser = new URLImageParser(details);
+			// Spanned htmlSpan = Html.fromHtml(item.getFullContent(), parser,
+			// null);
+			// details.setText(htmlSpan);
 		}
 	}
 

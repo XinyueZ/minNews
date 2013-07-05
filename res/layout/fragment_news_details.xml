@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:background="@android:color/transparent"
         android:padding="5dp" >
 
@@ -24,11 +24,13 @@
             android:id="@+id/tv_details_full_content"
             style="@style/Text.News_Details"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/tv_details_topline"
             android:layout_marginTop="5dp"
             android:autoLink="all"
+            android:gravity="top|left"
             android:linksClickable="true"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
