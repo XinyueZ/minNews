@@ -234,20 +234,6 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 	}
 
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem _item) {
-		switch (_item.getItemId()) {
-			case R.id.action_refresh:
-				refresh();
-				break;
-			case R.id.action_share:
-				share();
-				break;
-		}
-		return true;
-	}
-
-
 	private Fragment getTopFragment() {
 		if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
 			return null;
@@ -305,11 +291,38 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem _item) {
+		switch (_item.getItemId()) {
+			case R.id.action_refresh:
+				refresh();
+				break;
+			case R.id.action_share:
+				share();
+				break;
+			case R.id.action_open_in_browser:
+				openNewsDetailsInBrowser();
+				break;
+		}
+		return true;
+	}
+
+
+	private void openNewsDetailsInBrowser() {
+		if (getTopFragment() instanceof NewsDetailsFragment) {
+			NewsDetailsFragment f = (NewsDetailsFragment) getTopFragment();
+			f.openInBrowser();
+		}
+	}
+
+
+	@Override
 	public boolean onPrepareOptionsMenu(Menu _menu) {
 		if (getTopFragment() instanceof NewsDetailsFragment) {
 			_menu.findItem(R.id.action_refresh).setVisible(false);
+			_menu.findItem(R.id.action_open_in_browser).setVisible(true);
 		} else {
 			_menu.findItem(R.id.action_refresh).setVisible(true);
+			_menu.findItem(R.id.action_open_in_browser).setVisible(false);
 		}
 		return super.onPrepareOptionsMenu(_menu);
 	}

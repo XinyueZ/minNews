@@ -16,8 +16,10 @@
     <string name="title_dont_ask_again">不再询问</string>
     <string name="title_ok">好</string>
     <string name="title_cancel">取消</string>
+    <string name="title_loading">读取</string>
     <string name="action_refresh">刷新</string>
     <string name="action_share">分享</string>
+    <string name="action_open_in_web">打开浏览器阅读</string>
     <string name="msg_refresh">过5秒才能刷新一次哦。</string>
 
 </resources>

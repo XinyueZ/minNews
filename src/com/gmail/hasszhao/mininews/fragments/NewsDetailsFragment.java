@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -88,5 +89,18 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 					.append(item.getURL()).toString();
 		}
 		return null;
+	}
+
+
+	public void openInBrowser() {
+		Activity act = getActivity();
+		if (act != null) {
+			Fragment fragment = getTargetFragment();
+			if (fragment instanceof INewsListItemProvider) {
+				INewsListItemProvider p = (INewsListItemProvider) fragment;
+				INewsListItem item = p.getNewsListItem();
+				Util.openUrl(act, item.getURL());
+			}
+		}
 	}
 }

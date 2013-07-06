@@ -3,10 +3,11 @@ package com.gmail.hasszhao.mininews.adapters;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,11 +19,13 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 
 
-public final class NewsListAdapter extends BaseAdapter {
+public final class NewsListAdapter extends BaseAdapter implements OnScrollListener {
 
+	private static final int PLACE_HOLDER = R.drawable.ic_launcher;
 	private static final int LAYOUT = R.layout.news_list_item;
 	private Context mContext;
 	private List<? extends INewsListItem> mNewsListItems;
+	private boolean mBusy = false;
 
 
 	public interface OnNewsClickedListener {
@@ -77,49 +80,46 @@ public final class NewsListAdapter extends BaseAdapter {
 	}
 
 
-	static class ViewHolder {
-
-		ImageView thumb;
-		TextView topline;
-		TextView headline;
-		TextView date;
-		ImageButton newsShare;
-
-
-		public ViewHolder(ImageView _thumb, TextView _topline, TextView _headline, TextView _date,
-				ImageButton _newsShare) {
-			super();
-			thumb = _thumb;
-			topline = _topline;
-			headline = _headline;
-			date = _date;
-			newsShare = _newsShare;
+	@Override
+	public View getView(final int _position, View _convertView, ViewGroup _parent) {
+		if (_convertView == null) {
+			_convertView = View.inflate(mContext, LAYOUT, null);
 		}
+		if (!mBusy) {
+			showListItem(_convertView, _position);
+			_convertView.setTag(null);
+		} else {
+			showListItem(_convertView);
+			_convertView.setTag(this);
+		}
+		_convertView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View _v) {
+				if (mOnNewsClickedListener != null) {
+					mOnNewsClickedListener.onNewsClicked(mNewsListItems.get(_position));
+				}
+			}
+		});
+		return _convertView;
 	}
 
 
-	@Override
-	public View getView(int _position, View _convertView, ViewGroup _parent) {
-		ViewHolder h;
-		if (_convertView == null) {
-			_convertView = View.inflate(mContext, LAYOUT, null);
-			_convertView.setTag(h = new ViewHolder((ImageView) _convertView.findViewById(R.id.iv_thumb),
-					(TextView) _convertView.findViewById(R.id.tv_topline), (TextView) _convertView
-							.findViewById(R.id.tv_headline), (TextView) _convertView.findViewById(R.id.tv_date),
-					(ImageButton) _convertView.findViewById(R.id.btn_news_be_shared)));
-		} else {
-			h = (ViewHolder) _convertView.getTag();
-		}
+	private void showListItem(View _convertView, int _position) {
 		final INewsListItem newsItem = mNewsListItems.get(_position);
-		TaskHelper.getImageLoader()
-				.get(newsItem.getThumbUrl(),
-						ImageLoader.getImageListener(h.thumb, R.drawable.ic_thumb_placeholder,
-								R.drawable.ic_thumb_placeholder));
-		Log.w("mini", "Ask: " + newsItem.getThumbUrl());
-		h.topline.setText(newsItem.getTopline());
-		h.headline.setText(newsItem.getHeadline());
-		h.date.setText(newsItem.getDate());
-		h.newsShare.setOnClickListener(new OnClickListener() {
+		ImageView thumb = (ImageView) _convertView.findViewById(R.id.iv_thumb);
+		TaskHelper.getImageLoader().get(newsItem.getThumbUrl(),
+				ImageLoader.getImageListener(thumb, PLACE_HOLDER, PLACE_HOLDER));
+		TextView topline = (TextView) _convertView.findViewById(R.id.tv_topline);
+		TextView headline = (TextView) _convertView.findViewById(R.id.tv_headline);
+		TextView date = (TextView) _convertView.findViewById(R.id.tv_date);
+		ImageButton newsShare = (ImageButton) _convertView.findViewById(R.id.btn_news_be_shared);
+		ImageButton bookmark = (ImageButton) _convertView.findViewById(R.id.btn_bookmark);
+		topline.setText(newsItem.getTopline());
+		headline.setText(newsItem.getHeadline());
+		date.setText(newsItem.getDate());
+		newsShare.setVisibility(View.VISIBLE);
+		newsShare.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View _v) {
@@ -128,16 +128,23 @@ public final class NewsListAdapter extends BaseAdapter {
 				}
 			}
 		});
-		_convertView.setOnClickListener(new OnClickListener() {
+		bookmark.setVisibility(View.VISIBLE);
+	}
 
-			@Override
-			public void onClick(View _v) {
-				if (mOnNewsClickedListener != null) {
-					mOnNewsClickedListener.onNewsClicked(newsItem);
-				}
-			}
-		});
-		return _convertView;
+
+	private void showListItem(View _convertView) {
+		ImageView thumb = (ImageView) _convertView.findViewById(R.id.iv_thumb);
+		thumb.setImageResource(R.drawable.ic_launcher);
+		TextView topline = (TextView) _convertView.findViewById(R.id.tv_topline);
+		TextView headline = (TextView) _convertView.findViewById(R.id.tv_headline);
+		TextView date = (TextView) _convertView.findViewById(R.id.tv_date);
+		ImageButton newsShare = (ImageButton) _convertView.findViewById(R.id.btn_news_be_shared);
+		ImageButton bookmark = (ImageButton) _convertView.findViewById(R.id.btn_bookmark);
+		topline.setText(R.string.title_loading);
+		headline.setText(R.string.title_loading);
+		date.setText(R.string.title_loading);
+		newsShare.setVisibility(View.GONE);
+		bookmark.setVisibility(View.GONE);
 	}
 
 
@@ -148,5 +155,47 @@ public final class NewsListAdapter extends BaseAdapter {
 
 	public void setOnNewsShareListener(OnNewsShareListener _onNewsShareListener) {
 		mOnNewsShareListener = _onNewsShareListener;
+	}
+
+
+	@Override
+	public void onScroll(AbsListView _view, int _firstVisibleItem, int _visibleItemCount, int _totalItemCount) {
+	}
+
+
+	@Override
+	public void onScrollStateChanged(AbsListView _view, int _scrollState) {
+		switch (_scrollState) {
+			case OnScrollListener.SCROLL_STATE_IDLE:
+				mBusy = false;
+				int first = _view.getFirstVisiblePosition();
+				int count = _view.getChildCount();
+				for (int i = 0; i < count; i++) {
+					View convertView = _view.getChildAt(i);
+					if (convertView.getTag() != null) {
+						int position = first + i;
+						showListItem(convertView, position);
+					}
+				}
+				break;
+			case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+				mBusy = true;
+				// int count = _view.getChildCount();
+				// for (int i = 0; i < count; i++) {
+				// View convertView = _view.getChildAt(i);
+				// if (convertView.getTag() != null) {
+				// ImageButton newsShare = (ImageButton)
+				// convertView.findViewById(R.id.btn_news_be_shared);
+				// ImageButton bookmark = (ImageButton)
+				// convertView.findViewById(R.id.btn_bookmark);
+				// newsShare.setVisibility(View.GONE);
+				// bookmark.setVisibility(View.GONE);
+				// }
+				// }
+				break;
+			case OnScrollListener.SCROLL_STATE_FLING:
+				mBusy = true;
+				break;
+		}
 	}
 }

@@ -52,6 +52,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <ImageButton
+        android:id="@+id/btn_bookmark"
         style="@style/Bookmark_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

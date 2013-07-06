@@ -213,6 +213,7 @@ public class NewsListFragment extends SherlockFragment implements OnDismissCallb
 				mAdapter = new NewsListAdapter(getActivity(), mNewsList);
 				mAdapter.setOnNewsClickedListener(this);
 				mAdapter.setOnNewsShareListener(this);
+				listView.setOnScrollListener(mAdapter);
 				supportCardAnim(listView);
 				// } else {
 				// mAdapter.refresh(getActivity(), mNewsList);

@@ -16,8 +16,10 @@
     <string name="title_dont_ask_again">Do not ask again.</string>
     <string name="title_ok">Ok</string>
     <string name="title_cancel">Cancel</string>
+    <string name="title_loading">Loading</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_share">Share</string>
+    <string name="action_open_in_web">Open in browser</string>
     <string name="msg_refresh">Refresh after 5 seconds.</string>
 
 </resources>
