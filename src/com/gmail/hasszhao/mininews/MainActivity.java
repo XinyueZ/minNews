@@ -29,8 +29,10 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.gmail.hasszhao.mininews.fragments.LoadingFragment;
 import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment;
 import com.gmail.hasszhao.mininews.fragments.NewsListFragment;
+import com.gmail.hasszhao.mininews.fragments.NewsPagersFragment;
 import com.gmail.hasszhao.mininews.fragments.SearchedNewsListFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
@@ -43,6 +45,7 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		OnSeekBarChangeListener, ISharable, OnBackStackChangedListener, OnEditorActionListener,
 		DrawerLayout.DrawerListener {
 
+	private static final String DLG_TAG = "dlg";
 	private static final int LAYOUT = R.layout.activity_main;
 	private static final int MIN_NEWS_SIZE = 10;
 	private PullToRefreshAttacher mPullToRefreshAttacher;
@@ -77,7 +80,8 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		setContentView(LAYOUT);
 		initActionbar();
 		mPullToRefreshAttacher = new PullToRefreshAttacher(this);
-		showNewsListFragment();
+		// showNewsListFragment();
+		showNewsPagersFragment();
 		initSidebar();
 		initNewsSizeSeekbar();
 		initSwitches();
@@ -88,11 +92,11 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 	@Override
 	public void onBackStackChanged() {
 		invalidateOptionsMenu();
-		ifOnBackToSearchedNewsListFragment();
+		ifOnBackFromSearchedNewsListFragment();
 	}
 
 
-	private void ifOnBackToSearchedNewsListFragment() {
+	private void ifOnBackFromSearchedNewsListFragment() {
 		Fragment f = getTopFragment();
 		if (!(f instanceof SearchedNewsListFragment)) {
 			((EditText) getSupportActionBar().getCustomView().findViewById(R.id.tv_input_search_key)).setText("");
@@ -250,9 +254,10 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 			IRefreshable refreshable = (IRefreshable) f;
 			refreshable.refresh();
 		} else {
-			Fragment lastFragment = getSupportFragmentManager().findFragmentByTag(NewsListFragment.TAG);
-			if (lastFragment instanceof NewsListFragment) {
-				((NewsListFragment) lastFragment).refresh();
+			Fragment lastFragment = getSupportFragmentManager().findFragmentByTag(NewsPagersFragment.TAG);
+			if (lastFragment instanceof IRefreshable) {
+				IRefreshable refreshable = (IRefreshable) lastFragment;
+				refreshable.refresh();
 			}
 		}
 	}
@@ -274,18 +279,30 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		switch (_buttonView.getId()) {
 			case R.id.switch_english:
 				Prefs.getInstance().setSupportEnglish(_isChecked);
+				updatePages();
 				break;
 			case R.id.switch_chinese:
 				Prefs.getInstance().setSupportChinese(_isChecked);
+				updatePages();
 				break;
 			case R.id.switch_german:
 				Prefs.getInstance().setSupportGerman(_isChecked);
+				updatePages();
 				break;
 			case R.id.switch_open_content_type:
 				Prefs.getInstance().setDontAskForOpeningDetailsMethod(_isChecked);
 				break;
 			default:
 				break;
+		}
+	}
+
+
+	private void updatePages() {
+		NewsPagersFragment f = (NewsPagersFragment) getSupportFragmentManager().findFragmentByTag(
+				NewsPagersFragment.TAG);
+		if (f != null) {
+			f.updatePages();
 		}
 	}
 
@@ -328,10 +345,29 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 	}
 
 
+	/**
+	 * Use ViewPager to show all news.
+	 * 
+	 * */
+	private void showNewsPagersFragment() {
+		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+		NewsPagersFragment fmg = NewsPagersFragment.newInstance(this);
+		trans.replace(R.id.container_news, fmg, NewsPagersFragment.TAG);
+		trans.commit();
+	}
+
+
+	/**
+	 * Use single page to show all news.
+	 * 
+	 * @deprecated We use now ViewPager to show all news per langauge.
+	 * */
+	@SuppressWarnings("unused")
+	@Deprecated
 	private void showNewsListFragment() {
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		NewsListFragment fmg = NewsListFragment.newInstance(this);
-		trans.replace(R.id.container_news_list, fmg, NewsListFragment.TAG);
+		trans.replace(R.id.container_news, fmg, NewsListFragment.TAG);
 		trans.commit();
 	}
 
@@ -352,7 +388,7 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		trans.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.slide_in_from_left,
 				R.anim.slide_out_to_right);
-		trans.replace(R.id.container_news_list, _f, _tag).addToBackStack(_tag).commit();
+		trans.replace(R.id.container_news, _f, _tag).addToBackStack(_tag).commit();
 	}
 
 
@@ -369,18 +405,31 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 			DialogFragment dialogFragment = _dlgFrg;
 			FragmentTransaction ft = _activty.getSupportFragmentManager().beginTransaction();
 			// Ensure that there's only one dialog to the user.
-			Fragment prev = _activty.getSupportFragmentManager().findFragmentByTag("dlg");
+			Fragment prev = _activty.getSupportFragmentManager().findFragmentByTag(DLG_TAG);
 			if (prev != null) {
 				ft.remove(prev);
 			}
 			try {
 				if (TextUtils.isEmpty(_tagName)) {
-					dialogFragment.show(ft, "dlg");
+					dialogFragment.show(ft, DLG_TAG);
 				} else {
 					dialogFragment.show(ft, _tagName);
 				}
 			} catch (Exception _e) {
 			}
+		}
+	}
+
+
+	public synchronized void showLoadingFragment(int _max) {
+		showPopup(this, LoadingFragment.newInstance(getApplicationContext(), _max), DLG_TAG);
+	}
+
+
+	public synchronized void setLoadingFragmentStep(int _step) {
+		Fragment runningDlg = getSupportFragmentManager().findFragmentByTag(DLG_TAG);
+		if (runningDlg instanceof LoadingFragment) {
+			((LoadingFragment) runningDlg).setStep(_step);
 		}
 	}
 

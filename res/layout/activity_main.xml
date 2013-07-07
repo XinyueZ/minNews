@@ -16,7 +16,7 @@
         tools:context=".MainActivity" >
 
         <FrameLayout
-            android:id="@+id/container_news_list"
+            android:id="@+id/container_news"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </RelativeLayout>

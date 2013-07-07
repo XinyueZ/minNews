@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent" > 
+    <ScrollView
+        android:id="@+id/sv_root"
+        style="@style/Prograssbar_Dialog"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:id="@+id/rl_dialog_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <com.actionbarsherlock.internal.widget.IcsProgressBar
+                android:id="@+id/pb_loading"
+              style="@style/Widget.Sherlock.ProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
