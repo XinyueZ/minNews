@@ -60,7 +60,7 @@ public class BasicDialogFragment extends DialogFragment {
 	public void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
 		setCancelable(true);
-		setStyle(SherlockDialogFragment.STYLE_NO_TITLE, R.style.Theme_Dialog_Translucent);
+		setStyle(SherlockDialogFragment.STYLE_NO_TITLE, R.style.Dialog_Translucent);
 	}
 
 

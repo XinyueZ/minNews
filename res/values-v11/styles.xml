@@ -19,4 +19,5 @@
         <item name="android:displayOptions">showHome|showCustom</item>
     </style>
 
+    <style name="NoActionBar" parent="@android:style/Theme.Holo.NoActionBar" />
 </resources>

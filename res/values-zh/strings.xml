@@ -17,6 +17,7 @@
     <string name="title_ok">好</string>
     <string name="title_cancel">取消</string>
     <string name="title_loading">读取</string>
+     <string name="title_loading_you_data">读取数据</string>
     <string name="action_refresh">刷新</string>
     <string name="action_share">分享</string>
     <string name="action_open_in_web">打开浏览器阅读</string>

@@ -45,6 +45,7 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		OnSeekBarChangeListener, ISharable, OnBackStackChangedListener, OnEditorActionListener,
 		DrawerLayout.DrawerListener {
 
+	public static final String ACTION = "com.gmail.hasszhao.mininews.MainActivity";
 	private static final String DLG_TAG = "dlg";
 	private static final int LAYOUT = R.layout.activity_main;
 	private static final int MIN_NEWS_SIZE = 10;
@@ -388,7 +389,7 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		trans.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.slide_in_from_left,
 				R.anim.slide_out_to_right);
-		trans.replace(R.id.container_news, _f, _tag).addToBackStack(_tag).commit();
+		trans.add(R.id.container_news, _f, _tag).addToBackStack(_tag).commit();
 	}
 
 

@@ -25,7 +25,9 @@
         <item name="displayOptions">showHome|showCustom</item>
     </style>
 
-    <style name="Theme_Dialog_Translucent" parent="android:Theme.Dialog">
+    <style name="NoActionBar" parent="Theme.Sherlock.Light.NoActionBar" />
+
+    <style name="Dialog_Translucent" parent="android:Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
@@ -180,7 +182,7 @@
     </style>
 
     <style name="NewsList" parent="android:Widget.Holo.Light.ListView">
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:background">@drawable/bg_world</item>
         <item name="android:cacheColorHint">@color/cache_color_hint</item>
         <item name="android:clipToPadding">false</item>
         <item name="android:divider">@null</item>
@@ -206,6 +208,20 @@
         <item name="android:contentDescription">@null</item>
         <item name="android:src">@drawable/ic_launcher</item>
         <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="Splash_Icon">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="Text.Splash_Loading">
+        <item name="font">robotoRegular</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:text">@string/title_loading_you_data</item>
+        <item name="android:layout_centerHorizontal">true</item>
     </style>
 
 </resources>

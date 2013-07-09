@@ -23,6 +23,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.gmail.hasszhao.mininews.API;
+import com.gmail.hasszhao.mininews.App;
 import com.gmail.hasszhao.mininews.MainActivity;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
@@ -59,6 +60,14 @@ public class NewsListPageFragment extends SherlockFragment implements OnDismissC
 	private long mLastLoadingTime = 0;
 	private List<DONews> mNewsList;
 	private INewsListItem mSelectedNewsItem;
+
+
+	@Override
+	public void onAttach(Activity _activity) {
+		super.onAttach(_activity);
+		Activity act = _activity;
+		mNewsList = ((App) act.getApplication()).getListNews(getArguments().getString(KEY_LANGUAGE));
+	}
 
 
 	public static NewsListPageFragment newInstance(Context _context, String _language) {
