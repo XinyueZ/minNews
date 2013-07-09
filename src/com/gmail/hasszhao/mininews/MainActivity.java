@@ -300,10 +300,9 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 
 
 	private void updatePages() {
-		NewsPagersFragment f = (NewsPagersFragment) getSupportFragmentManager().findFragmentByTag(
-				NewsPagersFragment.TAG);
-		if (f != null) {
-			f.updatePages();
+		Fragment f = getTopFragment();
+		if (f instanceof NewsPagersFragment) {
+			((NewsPagersFragment) f).updatePages();
 		}
 	}
 
