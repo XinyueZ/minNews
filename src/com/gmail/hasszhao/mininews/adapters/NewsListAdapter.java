@@ -3,6 +3,7 @@ package com.gmail.hasszhao.mininews.adapters;
 import java.util.List;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -115,8 +116,8 @@ public final class NewsListAdapter extends BaseAdapter implements OnScrollListen
 		TextView date = (TextView) _convertView.findViewById(R.id.tv_date);
 		ImageButton newsShare = (ImageButton) _convertView.findViewById(R.id.btn_news_be_shared);
 		ImageButton bookmark = (ImageButton) _convertView.findViewById(R.id.btn_bookmark);
-		topline.setText(newsItem.getTopline());
-		headline.setText(newsItem.getHeadline());
+		topline.setText(Html.fromHtml(newsItem.getTopline()));
+		headline.setText(Html.fromHtml(newsItem.getHeadline()));
 		date.setText(newsItem.getDate());
 		newsShare.setVisibility(View.VISIBLE);
 		newsShare.setOnClickListener(new OnClickListener() {

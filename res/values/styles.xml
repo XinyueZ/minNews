@@ -54,18 +54,34 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">20sp</item>
         <item name="android:typeface">monospace</item>
+    </style>
+
+    <style name="Text.News_Headline" parent="Text.Headline">
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">2</item>
         <item name="android:lines">2</item>
     </style>
 
-    <style name="Text.News_Headline" parent="Text.Headline" />
+    <style name="Text.News_Details_Headline" parent="Text.Headline">
+        <item name="font">robotoBold</item>
+        <item name="android:autoLink">all</item>
+        <item name="android:gravity">top|left</item>
+        <item name="android:lineSpacingExtra">@dimen/lineSpacingExtra</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:linksClickable">true</item>
+        <item name="android:padding">@dimen/details_box_padding</item>
+        <item name="android:layout_marginBottom">@dimen/details_box_margin</item>
+    </style>
 
     <style name="Text.News_Details_Topline" parent="Text.Topline">
         <item name="font">robotoBold</item>
         <item name="android:padding">@dimen/details_box_padding</item>
         <item name="android:background">@color/white</item>
-        <item name="android:lineSpacingExtra">5dp</item>
+        <item name="android:lineSpacingExtra">@dimen/lineSpacingExtra</item>
+        <item name="android:autoLink">all</item>
+        <item name="android:gravity">top|left</item>
+        <item name="android:linksClickable">true</item>
+        <item name="android:layout_marginBottom">@dimen/details_box_margin</item>
     </style>
 
     <style name="Text.Dialog_Title" parent="Text.Topline">
@@ -82,7 +98,10 @@
         <item name="android:padding">@dimen/details_box_padding</item>
         <item name="android:background">@color/white</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:lineSpacingExtra">5dp</item>
+        <item name="android:lineSpacingExtra">@dimen/lineSpacingExtra</item>
+        <item name="android:autoLink">all</item>
+        <item name="android:gravity">top|left</item>
+        <item name="android:linksClickable">true</item>
     </style>
 
     <style name="Text.News_Date">
@@ -221,7 +240,9 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:text">@string/title_loading_you_data</item>
+        <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginBottom">@dimen/splash_between</item>
     </style>
 
 </resources>

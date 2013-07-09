@@ -53,6 +53,7 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 			INewsListItemProvider p = (INewsListItemProvider) fragment;
 			INewsListItem item = p.getNewsListItem();
 			((TextView) v.findViewById(R.id.tv_details_topline)).setText(Html.fromHtml(item.getTopline()));
+			((TextView) v.findViewById(R.id.tv_details_headline)).setText(Html.fromHtml(item.getHeadline()));
 			TextView details = (TextView) v.findViewById(R.id.tv_details_full_content);
 			new LoadDetailsContent(details) {
 

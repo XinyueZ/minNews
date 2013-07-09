@@ -11,20 +11,18 @@
         android:src="@drawable/ic_splash" />
 
     <com.gmail.hasszhao.mininews.views.FontTextView
-        android:id="@+id/tv_details_topline"
+        android:id="@+id/tv_splash_text"
         style="@style/Text.Splash_Loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/pb_loading"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <com.actionbarsherlock.internal.widget.IcsProgressBar
-        android:id="@+id/pb_loading"
         style="@style/Widget.Sherlock.ProgressBar"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/tv_splash_text"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="@dimen/splash_between" />
 
 </RelativeLayout>
