@@ -7,9 +7,15 @@ import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader.ImageContainer;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.gmail.hasszhao.mininews.MainActivity;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
@@ -17,10 +23,12 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.tasks.LoadDetailsContent;
+import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.Util;
+import com.gmail.hasszhao.mininews.views.WrapImageTextView;
 
 
-public final class NewsDetailsFragment extends BasicFragment implements ISharable {
+public final class NewsDetailsFragment extends BasicFragment implements ISharable, ImageListener, OnClickListener {
 
 	private static final int LAYOUT = R.layout.fragment_news_details;
 	public static final String TAG = "TAG.NewsDetailsFragment";
@@ -53,9 +61,11 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 			INewsListItemProvider p = (INewsListItemProvider) fragment;
 			INewsListItem item = p.getNewsListItem();
 			((TextView) v.findViewById(R.id.tv_details_topline)).setText(Html.fromHtml(item.getTopline()));
-			((TextView) v.findViewById(R.id.tv_details_headline)).setText(Html.fromHtml(item.getHeadline()));
+			loadHeadline(item);
 			TextView details = (TextView) v.findViewById(R.id.tv_details_full_content);
-			new LoadDetailsContent(details) {
+			Button fallback = (Button) v.findViewById(R.id.btn_visit_article_site);
+			fallback.setOnClickListener(this);
+			new LoadDetailsContent(details, fallback, item) {
 
 				@Override
 				protected void onPreExecute() {
@@ -74,21 +84,7 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 						((MainActivity) act).setLoadingFragmentStep(1);
 					}
 				};
-			}.execute(item.getURL());
-			// Document doc = Jsoup.parse(item.getFullContent().replace("<br>",
-			// "\n\n").replace("<p>", "\n\n"));
-			// details.setText(doc.text());
-			// Elements media = doc.select("[src]");
-			// for (Element src : media) {
-			// if (src.tagName().equals("img")) {
-			// Log.d("mini",
-			// "Ask: "
-			// + String.format(" * %s: <%s> %sx%s (%s)", src.tagName(),
-			// src.attr("abs:src"),
-			// src.attr("width"), src.attr("height"), Util.trim(src.attr("alt"),
-			// 20)));
-			// }
-			// }
+			}.execute();
 		}
 	}
 
@@ -119,6 +115,57 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 			if (fragment instanceof INewsListItemProvider) {
 				INewsListItemProvider p = (INewsListItemProvider) fragment;
 				INewsListItem item = p.getNewsListItem();
+				Util.openUrl(act, item.getURL());
+			}
+		}
+	}
+
+
+	@Override
+	public void onErrorResponse(VolleyError _error) {
+	}
+
+
+	@Override
+	public void onResponse(ImageContainer _response, boolean _isImmediate) {
+		showHeadline(_response);
+	}
+
+
+	private void loadHeadline(INewsListItem item) {
+		int maxW = (int) getResources().getDimension(R.dimen.thumb_width);
+		int maxH = (int) getResources().getDimension(R.dimen.thumb_height);
+		TaskHelper.getImageLoader().get(item.getThumbUrl(), this, maxW, maxH);
+	}
+
+
+	private void showHeadline(ImageContainer _response) {
+		Fragment fragment = getTargetFragment();
+		if (fragment instanceof INewsListItemProvider) {
+			INewsListItemProvider p = (INewsListItemProvider) fragment;
+			INewsListItem item = p.getNewsListItem();
+			View v = getView();
+			if (v != null && _response != null && _response.getBitmap() != null) {
+				ImageView iv = (ImageView) v.findViewById(R.id.iv_thumb);
+				iv.setImageBitmap(_response.getBitmap());
+			}
+			WrapImageTextView tv = (WrapImageTextView) v.findViewById(R.id.tv_details_headline_with_image);
+			tv.setVisibility(View.VISIBLE);
+			tv.setTextSize((int) getResources().getDimension(R.dimen.font_size_details_headline));
+			tv.setText(Html.fromHtml(item.getHeadline()));
+			tv.invalidate();
+		}
+	}
+
+
+	@Override
+	public void onClick(View _v) {
+		Fragment fragment = getTargetFragment();
+		if (fragment instanceof INewsListItemProvider) {
+			INewsListItemProvider p = (INewsListItemProvider) fragment;
+			INewsListItem item = p.getNewsListItem();
+			Activity act = getActivity();
+			if (act != null) {
 				Util.openUrl(act, item.getURL());
 			}
 		}

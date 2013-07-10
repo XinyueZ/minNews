@@ -3,6 +3,9 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">5dp</dimen>
     <dimen name="activity_vertical_margin">5dp</dimen>
+    <dimen name="font_size_topline">23sp</dimen>
+    <dimen name="font_size_headline">20sp</dimen>
+    <dimen name="font_size_details_headline">20sp</dimen>
     <dimen name="thumb_width">80dp</dimen>
     <dimen name="thumb_height">80dp</dimen>
     <dimen name="sidebar_width">200dp</dimen>

@@ -20,14 +20,44 @@
             android:layout_alignParentTop="true"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <com.gmail.hasszhao.mininews.views.FontTextView
-            android:id="@+id/tv_details_headline"
-            style="@style/Text.News_Details_Headline"
+        <FrameLayout
+            android:id="@+id/container_details_headline"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/tv_details_topline"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_marginBottom="@dimen/details_box_margin"
+            android:background="@color/white"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" >
+
+            <com.gmail.hasszhao.mininews.views.WrapImageTextView
+                android:id="@+id/tv_details_headline_with_image"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:visibility="gone" >
+
+                <com.gmail.hasszhao.mininews.views.FixedSizeImageView
+                    android:id="@+id/iv_thumb"
+                    style="@style/Thumb_Details"
+                    android:layout_width="@dimen/thumb_width"
+                    android:layout_height="@dimen/thumb_height"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp" />
+            </com.gmail.hasszhao.mininews.views.WrapImageTextView>
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/btn_visit_article_site"
+            style="@style/Text.Yellow.Long.Button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/container_details_headline"
+            android:text="@string/title_visit" />
 
         <com.gmail.hasszhao.mininews.views.FontTextView
             android:id="@+id/tv_details_full_content"
@@ -35,7 +65,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tv_details_headline"
+            android:layout_below="@+id/btn_visit_article_site"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 

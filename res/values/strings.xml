@@ -14,10 +14,11 @@
     <string name="title_open_details_in_app">Open content in the App</string>
     <string name="title_open_details_in_browser">Open link in browser</string>
     <string name="title_dont_ask_again">Do not ask again.</string>
-    <string name="title_ok">Ok</string>
+    <string name="title_ok">OK</string>
     <string name="title_cancel">Cancel</string>
     <string name="title_loading">Loading</string>
     <string name="title_loading_you_data">Data is being loaded.</string>
+    <string name="title_visit">Visit the article site</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_share">Share</string>
     <string name="action_open_in_web">Open in browser</string>

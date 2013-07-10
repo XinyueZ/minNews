@@ -150,10 +150,7 @@ public class NewsListPageFragment extends SherlockFragment implements OnDismissC
 	@Override
 	public synchronized void onErrorResponse(VolleyError _error) {
 		Log.e("news", "Ask: API_ErrorResponse");
-		Activity act = getActivity();
-		if (act != null) {
-			((MainActivity) act).refreshComplete();
-		}
+		stepDone();
 	}
 
 
@@ -205,6 +202,11 @@ public class NewsListPageFragment extends SherlockFragment implements OnDismissC
 				// }
 			}
 		}
+		stepDone();
+	}
+
+
+	private void stepDone() {
 		FragmentActivity act = getActivity();
 		if (act instanceof MainActivity) {
 			((MainActivity) act).setLoadingFragmentStep(1);

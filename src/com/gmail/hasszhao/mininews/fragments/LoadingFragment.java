@@ -28,7 +28,7 @@ public final class LoadingFragment extends BasicDialogFragment {
 	@Override
 	public void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
-		setCancelable(false);
+		setCancelable(true);
 	}
 
 
