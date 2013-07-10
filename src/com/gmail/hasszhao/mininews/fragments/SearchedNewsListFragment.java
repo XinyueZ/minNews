@@ -3,7 +3,6 @@ package com.gmail.hasszhao.mininews.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.AbsListView;
 
 import com.gmail.hasszhao.mininews.utils.Util;
 
@@ -67,13 +66,14 @@ public final class SearchedNewsListFragment extends NewsListFragment {
 	}
 
 
-	@Override
-	public void onDismiss(AbsListView _listView, int[] _reverseSortedPositions) {
-		if (mAdapter != null) {
-			for (int position : _reverseSortedPositions) {
-				mAdapter.remove(position);
-			}
-			mAdapter.notifyDataSetChanged();
-		}
-	}
+	// @Override
+	// public void onDismiss(AbsListView _listView, int[]
+	// _reverseSortedPositions) {
+	// if (mAdapter != null) {
+	// for (int position : _reverseSortedPositions) {
+	// mAdapter.remove(position);
+	// }
+	// mAdapter.notifyDataSetChanged();
+	// }
+	// }
 }

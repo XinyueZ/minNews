@@ -14,10 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.android.volley.Request.Method;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -33,6 +31,7 @@ import com.gmail.hasszhao.mininews.dataset.DONews;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 import com.gmail.hasszhao.mininews.fragments.AskOpenDetailsMethodFragment.OpenContentMethod;
+import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
@@ -42,13 +41,11 @@ import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
-import com.haarman.listviewanimations.itemmanipulation.OnDismissCallback;
-import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 
-public class NewsListFragment extends SherlockFragment implements OnDismissCallback, Listener<DOStatus>, ErrorListener,
-		OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider {
+public class NewsListFragment extends BasicFragment implements Listener<DOStatus>, ErrorListener, OnRefreshListener,
+		OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsList";
@@ -239,20 +236,9 @@ public class NewsListFragment extends SherlockFragment implements OnDismissCallb
 
 	private void supportCardAnim(ListView listView) {
 		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(
-				new SwipeDismissAdapter(mAdapter, this));
+				new SwingBottomInAnimationAdapter(mAdapter, BOTTOM_IN_SEC));
 		swingBottomInAnimationAdapter.setAbsListView(listView);
 		listView.setAdapter(swingBottomInAnimationAdapter);
-	}
-
-
-	@Override
-	public void onDismiss(AbsListView _listView, int[] _reverseSortedPositions) {
-		// if (mAdapter != null) {
-		// for (int position : _reverseSortedPositions) {
-		// mAdapter.remove(position);
-		// }
-		// mAdapter.notifyDataSetChanged();
-		// }
 	}
 
 
