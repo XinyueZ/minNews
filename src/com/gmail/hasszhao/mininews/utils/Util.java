@@ -14,6 +14,7 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import android.text.Spanned;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -43,6 +45,13 @@ public final class Util {
 	public static final String UTF_8 = "UTF-8";
 	private static final int STREAM_CACHE = 1024 * 1024;
 	private static final String T_URL = "http://tinyurl.com/api-create.php?url=";
+
+
+	public static int dip2Pixels(int _dip, Context _context) {
+		Resources r = _context.getResources();
+		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _dip, r.getDisplayMetrics());
+		return px;
+	}
 
 
 	public static String getTinyUrl(String _longUrl) {

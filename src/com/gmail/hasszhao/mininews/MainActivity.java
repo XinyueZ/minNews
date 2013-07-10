@@ -114,6 +114,16 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 	}
 
 
+	public void setSidebarEnable(boolean _enable) {
+		if (!_enable) {
+			((DrawerLayout) findViewById(R.id.sidebar)).setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		} else {
+			((DrawerLayout) findViewById(R.id.sidebar)).setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+		}
+		mDrawerToggle.setDrawerIndicatorEnabled(_enable);
+	}
+
+
 	private void initSwitches() {
 		de.ankri.views.Switch sw = null;
 		(sw = (de.ankri.views.Switch) findViewById(R.id.switch_english)).setOnCheckedChangeListener(this);
@@ -310,17 +320,28 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 	@Override
 	public boolean onOptionsItemSelected(MenuItem _item) {
 		switch (_item.getItemId()) {
+			case android.R.id.home:
+				goUp();
+				return true;
 			case R.id.action_refresh:
 				refresh();
-				break;
+				return true;
 			case R.id.action_share:
 				share();
-				break;
+				return true;
 			case R.id.action_open_in_browser:
 				openNewsDetailsInBrowser();
-				break;
+				return true;
 		}
-		return true;
+		return false;
+	}
+
+
+	private void goUp() {
+		Fragment f = getTopFragment();
+		if (f instanceof NewsDetailsFragment) {
+			closePage(NewsDetailsFragment.TAG);
+		}
 	}
 
 

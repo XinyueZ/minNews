@@ -34,6 +34,16 @@ public final class NewsPagersFragment extends BasicFragment implements IRefresha
 
 
 	@Override
+	public void onResume() {
+		MainActivity act = (MainActivity) getActivity();
+		if (act != null) {
+			act.setSidebarEnable(true);
+		}
+		super.onResume();
+	}
+
+
+	@Override
 	public void onViewCreated(View _view, Bundle _savedInstanceState) {
 		super.onViewCreated(_view, _savedInstanceState);
 		updatePages();

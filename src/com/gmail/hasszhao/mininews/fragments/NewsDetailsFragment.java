@@ -41,6 +41,7 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 
 	@Override
 	public View onCreateView(LayoutInflater _inflater, ViewGroup _container, Bundle _savedInstanceState) {
+		setSidebarEnable(false);
 		return _inflater.inflate(LAYOUT, _container, false);
 	}
 
@@ -51,6 +52,21 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 		View v = getView();
 		if (v != null) {
 			loadDetails(v);
+		}
+	}
+
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		setSidebarEnable(true);
+	}
+
+
+	private void setSidebarEnable(boolean _enable) {
+		MainActivity act = (MainActivity) getActivity();
+		if (act != null) {
+			act.setSidebarEnable(_enable);
 		}
 	}
 
