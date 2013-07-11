@@ -13,6 +13,7 @@ import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.adapters.NewsListPagesAdapter;
 import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
+import com.viewpagerindicator.CirclePageIndicator;
 
 
 public final class NewsPagersFragment extends BasicFragment implements IRefreshable {
@@ -75,6 +76,8 @@ public final class NewsPagersFragment extends BasicFragment implements IRefresha
 				// I still use setAdapter to refresh data.
 				vp.setAdapter(mAdapter);
 			}
+			CirclePageIndicator indicator = (CirclePageIndicator) view.findViewById(R.id.vp_indicator);
+			indicator.setViewPager(vp);
 		}
 	}
 

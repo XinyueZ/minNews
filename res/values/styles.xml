@@ -18,6 +18,7 @@
 
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="actionBarStyle">@style/ActionBar</item>
+ 
     </style>
 
     <style name="ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid">

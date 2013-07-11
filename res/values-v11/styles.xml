@@ -11,7 +11,7 @@
     <style name="AppTheme" parent="android:style/Theme.Holo.Light">
 
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item> 
     </style>
 
     <style name="ActionBar" parent="android:style/Widget.Holo.ActionBar">
@@ -20,4 +20,5 @@
     </style>
 
     <style name="NoActionBar" parent="@android:style/Theme.Holo.NoActionBar" />
+
 </resources>

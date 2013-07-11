@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomCirclePageIndicator">
+        <item name="fillColor">@color/cyan</item>
+        <item name="strokeColor">@color/dark_grey</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="radius">7dp</item>
+        <item name="centered">true</item>
+    </style>
+
+</resources>

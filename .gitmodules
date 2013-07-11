@@ -10,3 +10,6 @@
 [submodule "submodules/SwitchCompatLibrary"]
 	path = submodules/SwitchCompatLibrary
 	url = https://github.com/ankri/SwitchCompatLibrary.git 
+[submodule "submodules/Android-ViewPagerIndicator"]
+	path = submodules/Android-ViewPagerIndicator
+	url = https://github.com/JakeWharton/Android-ViewPagerIndicator.git

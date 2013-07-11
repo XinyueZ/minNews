@@ -41,12 +41,6 @@ public final class NewsListPagesAdapter extends FragmentStatePagerAdapter {
 	}
 
 
-	// @Override
-	// public int getItemPosition(Object _object) {
-	// return POSITION_NONE;
-	// }
-
-
 	@Override
 	public Fragment getItem(int _arg0) {
 		return NewsListPageFragment.newInstance(mContext, mLanguages.get(_arg0));

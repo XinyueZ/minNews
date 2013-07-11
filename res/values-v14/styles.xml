@@ -22,4 +22,5 @@
     </style>
 
     <style name="NoActionBar" parent="@android:style/Theme.Holo.NoActionBar" />
+
 </resources>
