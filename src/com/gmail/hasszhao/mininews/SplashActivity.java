@@ -40,9 +40,9 @@ public final class SplashActivity extends Activity implements ErrorListener {
 
 
 	@Override
-	protected void onDestroy() {
+	public void onBackPressed() {
 		TaskHelper.getRequestQueue().cancelAll(LoadNewsListTask.TAG);
-		super.onDestroy();
+		super.onBackPressed();
 	}
 
 
@@ -82,18 +82,15 @@ public final class SplashActivity extends Activity implements ErrorListener {
 		}
 		if (Prefs.getInstance().isSupportEnglish()) {
 			new LoadNewsListTask(this.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class,
-					new ResponseListener(this, "en"), this, new DOCookie(1, "en", ""))
-					.execute();
+					new ResponseListener(this, "en"), this, new DOCookie(1, "en", "")).execute();
 		}
 		if (Prefs.getInstance().isSupportChinese()) {
 			new LoadNewsListTask(this.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class,
-					new ResponseListener(this, "zh"), this, new DOCookie(1, "zh", ""))
-					.execute();
+					new ResponseListener(this, "zh"), this, new DOCookie(1, "zh", "")).execute();
 		}
 		if (Prefs.getInstance().isSupportGerman()) {
 			new LoadNewsListTask(this.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class,
-					new ResponseListener(this, "de"), this, new DOCookie(1, "de", ""))
-					.execute();
+					new ResponseListener(this, "de"), this, new DOCookie(1, "de", "")).execute();
 		}
 	}
 
@@ -151,11 +148,9 @@ public final class SplashActivity extends Activity implements ErrorListener {
 								Log.i("news", "Ask: API_OK");
 								((App) act.getApplication()).addListNews(
 										mLangauge,
-										TaskHelper
-												.getGson()
-												.fromJson(
-														new String(Base64.decode(_response.getData(), Base64.DEFAULT)),
-														ListNews.class).getPulledNewss());
+										TaskHelper.getGson().fromJson(
+												new String(Base64.decode(_response.getData(), Base64.DEFAULT)),
+												ListNews.class));
 								break;
 							case API.API_ACTION_FAILED:
 								Log.e("news", "Ask: API_ACTION_FAILED");

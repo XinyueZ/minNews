@@ -1,5 +1,20 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_googlecards_listview"
-    style="@style/NewsList" 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent" >
+
+    <ListView
+        android:id="@+id/activity_googlecards_listview"
+        style="@style/NewsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <FrameLayout
+        android:id="@+id/container_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

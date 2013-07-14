@@ -1,5 +1,6 @@
 package com.gmail.hasszhao.mininews.dataset.list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.util.Log;
@@ -9,7 +10,7 @@ import com.gmail.hasszhao.mininews.dataset.DONews;
 
 public final class ListNews {
 
-	private final List<DONews> PulledNewss;
+	private List<DONews> PulledNewss;
 	private final int Count;
 
 
@@ -22,6 +23,9 @@ public final class ListNews {
 
 	public List<DONews> getPulledNewss() {
 		Log.d("mini", "Ask: Count: " + Count);
+		if (PulledNewss == null) {
+			return PulledNewss = new ArrayList<DONews>();
+		}
 		return PulledNewss;
 	}
 

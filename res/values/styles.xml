@@ -18,7 +18,6 @@
 
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="actionBarStyle">@style/ActionBar</item>
- 
     </style>
 
     <style name="ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid">
@@ -50,6 +49,8 @@
         <item name="android:textSize">21sp</item>
     </style>
 
+    <style name="Text.Error_Topline" parent="Text.Topline" />
+
     <style name="Text.Headline">
         <item name="font">robotoThin</item>
         <item name="android:textColor">@color/black</item>
@@ -62,6 +63,8 @@
         <item name="android:maxLines">2</item>
         <item name="android:lines">2</item>
     </style>
+
+    <style name="Text.Error_Headline" parent="Text.Headline" />
 
     <style name="Text.News_Details_Topline" parent="Text.Topline">
         <item name="font">robotoBold</item>
@@ -116,7 +119,6 @@
         <item name="android:imeOptions">actionGo</item>
         <item name="android:hint">@string/title_input_search</item>
     </style>
- 
 
     <style name="Text.Langauge_Choice_Text">
         <item name="font">robotoRegular</item>
@@ -217,12 +219,12 @@
     </style>
 
     <style name="Thumb" parent="Thumb_Details">
+        <item name="android:contentDescription">@null</item>
         <item name="android:layout_margin">5dp</item>
     </style>
 
     <style name="Thumb_Details">
         <item name="android:background">@android:color/transparent</item>
-        <item name="android:contentDescription">@null</item>
         <item name="android:src">@drawable/ic_launcher</item>
     </style>
 

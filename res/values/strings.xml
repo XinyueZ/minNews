@@ -18,9 +18,11 @@
     <string name="title_loading">Loading</string>
     <string name="title_loading_you_data">Data is being loaded.</string>
     <string name="title_visit">Visit the article site</string>
+    <string name="title_error">Oppps~~</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_share">Share</string>
     <string name="action_open_in_web">Open in browser</string>
     <string name="msg_refresh">Refresh after 5 seconds.</string>
+    <string name="msg_error">The server has been down because of some problems, there are several hours to wait for it return.</string>
 
 </resources>

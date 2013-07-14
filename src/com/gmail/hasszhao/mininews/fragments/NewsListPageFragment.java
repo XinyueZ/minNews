@@ -1,8 +1,5 @@
 package com.gmail.hasszhao.mininews.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.app.Activity;
 import android.content.Context;
@@ -24,11 +21,12 @@ import com.gmail.hasszhao.mininews.API;
 import com.gmail.hasszhao.mininews.App;
 import com.gmail.hasszhao.mininews.MainActivity;
 import com.gmail.hasszhao.mininews.R;
+import com.gmail.hasszhao.mininews.adapters.NewsEndlessListAdapter;
+import com.gmail.hasszhao.mininews.adapters.NewsEndlessListAdapter.ICallNext;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsClickedListener;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsShareListener;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
-import com.gmail.hasszhao.mininews.dataset.DONews;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 import com.gmail.hasszhao.mininews.fragments.AskOpenDetailsMethodFragment.OpenContentMethod;
@@ -46,15 +44,16 @@ import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnim
 
 
 public class NewsListPageFragment extends BasicFragment implements Listener<DOStatus>, ErrorListener,
-		OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider {
+		OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider, ICallNext {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsList.Page";
 	private static final String KEY_LANGUAGE = "NewsList.Page.language";
 	private static final int MAX_FRQUENT = 5 * 1000;
-	protected NewsListAdapter mAdapter;
+	private NewsListAdapter mAdapter;
+	private NewsEndlessListAdapter mNewsEndlessListAdapter;
 	private long mLastLoadingTime = 0;
-	private List<DONews> mNewsList;
+	private ListNews mNewsList;
 	private INewsListItem mSelectedNewsItem;
 
 
@@ -83,10 +82,10 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 	@Override
 	public void onViewCreated(View _view, Bundle _savedInstanceState) {
 		super.onViewCreated(_view, _savedInstanceState);
-		if (mNewsList == null) {
-			refreshData();
-		} else {
+		if (mNewsList != null && mNewsList.getPulledNewss().size() > 0) {
 			initList();
+		} else {
+			loadData();
 		}
 	}
 
@@ -107,14 +106,9 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 	}
 
 
-	private void refreshData() {
-		loadData();
-	}
-
-
 	@Override
 	public void refresh() {
-		refreshData();
+		loadData();
 	}
 
 
@@ -123,16 +117,13 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 		if (now - mLastLoadingTime > MAX_FRQUENT) {
 			Activity act = getActivity();
 			if (act != null) {
-				mNewsList = new ArrayList<DONews>();
+				Log.e("mini", "No data, try to load.");
 				new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
 						new DOCookie(1, getArguments().getString(KEY_LANGUAGE), getQuery())).execute();
 			}
 			mLastLoadingTime = now;
 		} else {
-			Activity act = getActivity();
-			if (act instanceof MainActivity) {
-				((MainActivity) act).setLoadingFragmentStep(1);
-			}
+			stepDone();
 		}
 	}
 
@@ -144,7 +135,8 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 	@Override
 	public synchronized void onErrorResponse(VolleyError _error) {
-		Log.e("news", "Ask: API_ErrorResponse");
+		openFragment(ErrorFragment.newInstance(getActivity(), getString(R.string.title_error),
+				getString(R.string.msg_error)), ErrorFragment.TAG);
 		stepDone();
 	}
 
@@ -156,17 +148,18 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 				switch (_response.getCode()) {
 					case API.API_OK:
 						Log.i("news", "Ask: API_OK");
-						mNewsList.addAll(TaskHelper
-								.getGson()
-								.fromJson(new String(Base64.decode(_response.getData(), Base64.DEFAULT)),
-										ListNews.class).getPulledNewss());
+						mNewsList.getPulledNewss().addAll(
+								TaskHelper
+										.getGson()
+										.fromJson(new String(Base64.decode(_response.getData(), Base64.DEFAULT)),
+												ListNews.class).getPulledNewss());
+						closeFragment(ErrorFragment.TAG);
 						initList();
 						break;
 					case API.API_ACTION_FAILED:
-						Log.e("news", "Ask: API_ACTION_FAILED");
-						break;
 					case API.API_SERVER_DOWN:
-						Log.e("news", "Ask: API_SERVER_DOWN");
+						openFragment(ErrorFragment.newInstance(getActivity(), getString(R.string.title_error),
+								getString(R.string.msg_error)), ErrorFragment.TAG);
 						break;
 				}
 				stepDone();
@@ -178,19 +171,22 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 
 	private void initList() {
-		if (mNewsList != null && mNewsList.size() > 0) {
+		Activity act = getActivity();
+		if (act != null && mNewsList != null && mNewsList.getPulledNewss().size() > 0) {
 			// Log.d("news", "Ask: news size:" + newsList.size());
 			View v = getView();
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
 				if (mAdapter == null) {
-					mAdapter = new NewsListAdapter(getActivity(), mNewsList);
+					mAdapter = new NewsListAdapter(getActivity(), mNewsList.getPulledNewss());
 					mAdapter.setOnNewsClickedListener(this);
 					mAdapter.setOnNewsShareListener(this);
-					listView.setOnScrollListener(mAdapter);
-					supportCardAnim(listView);
+					// supportCardAnim(listView);
+					listView.setAdapter(new NewsEndlessListAdapter(act.getApplicationContext(), mAdapter, mNewsList
+							.getCount(), this));
 				} else {
-					mAdapter.refresh(getActivity(), mNewsList);
+					// mAdapter.refresh(getActivity(), mNewsList);
+					mNewsEndlessListAdapter.onDataReady();
 				}
 			}
 		}
@@ -319,5 +315,15 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 	@Override
 	public INewsListItem getNewsListItem() {
 		return mSelectedNewsItem;
+	}
+
+
+	@Override
+	public void callNext(int _index) {
+		Activity act = getActivity();
+		if (act instanceof MainActivity) {
+			new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
+					new DOCookie(_index, getArguments().getString(KEY_LANGUAGE), getQuery())).execute();
+		}
 	}
 }
