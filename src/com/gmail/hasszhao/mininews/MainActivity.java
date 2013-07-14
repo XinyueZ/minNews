@@ -20,8 +20,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -41,14 +39,12 @@ import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 
-public final class MainActivity extends SherlockFragmentActivity implements OnCheckedChangeListener,
-		OnSeekBarChangeListener, ISharable, OnBackStackChangedListener, OnEditorActionListener,
-		DrawerLayout.DrawerListener {
+public final class MainActivity extends SherlockFragmentActivity implements OnCheckedChangeListener, ISharable,
+		OnBackStackChangedListener, OnEditorActionListener, DrawerLayout.DrawerListener {
 
 	public static final String ACTION = "com.gmail.hasszhao.mininews.MainActivity";
 	private static final String DLG_TAG = "dlg";
 	private static final int LAYOUT = R.layout.activity_main;
-	private static final int MIN_NEWS_SIZE = 10;
 	private PullToRefreshAttacher mPullToRefreshAttacher;
 	private ActionBarDrawerToggle mDrawerToggle;
 
@@ -84,7 +80,6 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		// showNewsListFragment();
 		showNewsPagersFragment();
 		initSidebar();
-		initNewsSizeSeekbar();
 		initSwitches();
 		getSupportFragmentManager().addOnBackStackChangedListener(this);
 	}
@@ -102,15 +97,6 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		if (!(f instanceof SearchedNewsListFragment)) {
 			((EditText) getSupportActionBar().getCustomView().findViewById(R.id.tv_input_search_key)).setText("");
 		}
-	}
-
-
-	private void initNewsSizeSeekbar() {
-		SeekBar sb = (SeekBar) findViewById(R.id.sb_news_count);
-		sb.setProgress(Prefs.getInstance().getNewsSize());
-		sb.setOnSeekBarChangeListener(this);
-		((TextView) findViewById(R.id.tv_news_size)).setText(String.format(getString(R.string.title_news_size),
-				sb.getProgress()));
 	}
 
 
@@ -134,17 +120,6 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		sw.setChecked(Prefs.getInstance().isSupportGerman());
 		(sw = (de.ankri.views.Switch) findViewById(R.id.switch_open_content_type)).setOnCheckedChangeListener(this);
 		sw.setChecked(Prefs.getInstance().getDontAskForOpeningDetailsMethod());
-	}
-
-
-	@Override
-	public void onProgressChanged(SeekBar _seekBar, int _progress, boolean _fromUser) {
-		if (_progress < MIN_NEWS_SIZE) {
-			_seekBar.setProgress(MIN_NEWS_SIZE);
-		}
-		((TextView) findViewById(R.id.tv_news_size)).setText(String.format(getString(R.string.title_news_size),
-				_seekBar.getProgress()));
-		Prefs.getInstance().setNewsSize(_seekBar.getProgress());
 	}
 
 
@@ -464,15 +439,5 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 	@Override
 	public String getText() {
 		return "plackholder";
-	}
-
-
-	@Override
-	public void onStartTrackingTouch(SeekBar _seekBar) {
-	}
-
-
-	@Override
-	public void onStopTrackingTouch(SeekBar _seekBar) {
 	}
 }

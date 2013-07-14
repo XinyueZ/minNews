@@ -82,17 +82,17 @@ public final class SplashActivity extends Activity implements ErrorListener {
 		}
 		if (Prefs.getInstance().isSupportEnglish()) {
 			new LoadNewsListTask(this.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class,
-					new ResponseListener(this, "en"), this, new DOCookie(Prefs.getInstance().getNewsSize(), "en", ""))
+					new ResponseListener(this, "en"), this, new DOCookie(1, "en", ""))
 					.execute();
 		}
 		if (Prefs.getInstance().isSupportChinese()) {
 			new LoadNewsListTask(this.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class,
-					new ResponseListener(this, "zh"), this, new DOCookie(Prefs.getInstance().getNewsSize(), "zh", ""))
+					new ResponseListener(this, "zh"), this, new DOCookie(1, "zh", ""))
 					.execute();
 		}
 		if (Prefs.getInstance().isSupportGerman()) {
 			new LoadNewsListTask(this.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class,
-					new ResponseListener(this, "de"), this, new DOCookie(Prefs.getInstance().getNewsSize(), "de", ""))
+					new ResponseListener(this, "de"), this, new DOCookie(1, "de", ""))
 					.execute();
 		}
 	}

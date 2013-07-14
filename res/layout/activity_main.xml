@@ -131,25 +131,6 @@
             android:layout_marginBottom="@dimen/sidebar_line_margin_top_bottom"
             android:layout_marginTop="@dimen/sidebar_line_margin_top_bottom" />
 
-        <!-- Total count of loading news -->
-
-        <com.gmail.hasszhao.mininews.views.FontTextView
-            android:id="@+id/tv_news_size"
-            style="@style/Text.News_Size_Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/sidebar_block_margin"
-            android:layout_marginRight="@dimen/sidebar_block_margin"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <SeekBar
-            android:id="@+id/sb_news_count"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginRight="@dimen/sidebar_block_margin"
-            android:max="100" />
-
         <!-- Open content method -->
 
         <RelativeLayout

@@ -124,15 +124,15 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 				}
 				if (Prefs.getInstance().isSupportEnglish()) {
 					new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-							new DOCookie(Prefs.getInstance().getNewsSize(), "en", getQuery())).execute();
+							new DOCookie(1, "en", getQuery())).execute();
 				}
 				if (Prefs.getInstance().isSupportChinese()) {
 					new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-							new DOCookie(Prefs.getInstance().getNewsSize(), "zh", getQuery())).execute();
+							new DOCookie(1, "zh", getQuery())).execute();
 				}
 				if (Prefs.getInstance().isSupportGerman()) {
 					new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-							new DOCookie(Prefs.getInstance().getNewsSize(), "de", getQuery())).execute();
+							new DOCookie(1, "de", getQuery())).execute();
 				}
 			}
 			mLastLoadingTime = now;

@@ -6,8 +6,7 @@
     <string name="on">开</string>
     <string name="off">关</string>
     <string name="action_failed">无法发送请求!</string>
-    <string name="server_down">服务器调整!</string>
-    <string name="title_news_size">每语种新闻数目:%1$d</string>
+    <string name="server_down">服务器调整!</string> 
     <string name="title_language_list">新闻语种</string>
     <string name="title_input_search">搜索</string>
     <string name="title_open_details">内容</string>

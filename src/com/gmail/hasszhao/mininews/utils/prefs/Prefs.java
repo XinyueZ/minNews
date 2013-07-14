@@ -34,7 +34,6 @@ public final class Prefs extends BasicPrefs {
 	private final static String OS_VERSION = "DeviceData.osversion";
 	/** The Constant SIM_COUNTRY_ISO. */
 	private final static String SIM_COUNTRY_ISO = "DeviceData.country";
-	private final static String KEY_NEWS_SIZE = "news.size";
 	private final static String KEY_SUPPORT_ENGLISH = "language.english";
 	private final static String KEY_SUPPORT_CHINESE = "language.chinese";
 	private final static String KEY_SUPPORT_GERMAN = "language.german";
@@ -259,16 +258,6 @@ public final class Prefs extends BasicPrefs {
 
 	public void setSupportGerman(boolean _support) {
 		setBoolean(KEY_SUPPORT_GERMAN, _support);
-	}
-
-
-	public int getNewsSize() {
-		return getInt(KEY_NEWS_SIZE, 10);
-	}
-
-
-	public void setNewsSize(int _size) {
-		setInt(KEY_NEWS_SIZE, _size);
 	}
 
 

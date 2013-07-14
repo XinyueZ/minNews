@@ -116,8 +116,7 @@
         <item name="android:imeOptions">actionGo</item>
         <item name="android:hint">@string/title_input_search</item>
     </style>
-
-    <style name="Text.News_Size_Text" parent="Text.Langauge_Choice_Text" />
+ 
 
     <style name="Text.Langauge_Choice_Text">
         <item name="font">robotoRegular</item>

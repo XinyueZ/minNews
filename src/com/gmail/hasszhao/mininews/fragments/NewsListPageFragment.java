@@ -125,7 +125,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 			if (act != null) {
 				mNewsList = new ArrayList<DONews>();
 				new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-						new DOCookie(Prefs.getInstance().getNewsSize(), getArguments().getString(KEY_LANGUAGE),
+						new DOCookie(1, getArguments().getString(KEY_LANGUAGE),
 								getQuery())).execute();
 			}
 			mLastLoadingTime = now;
