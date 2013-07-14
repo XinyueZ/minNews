@@ -206,15 +206,15 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 			View v = getView();
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
-				// if (mAdapter == null) {
-				mAdapter = new NewsListAdapter(getActivity(), mNewsList);
-				mAdapter.setOnNewsClickedListener(this);
-				mAdapter.setOnNewsShareListener(this);
-				listView.setOnScrollListener(mAdapter);
-				supportCardAnim(listView);
-				// } else {
-				// mAdapter.refresh(getActivity(), mNewsList);
-				// }
+				if (mAdapter == null) {
+					mAdapter = new NewsListAdapter(getActivity(), mNewsList);
+					mAdapter.setOnNewsClickedListener(this);
+					mAdapter.setOnNewsShareListener(this);
+					listView.setOnScrollListener(mAdapter);
+					supportCardAnim(listView);
+				} else {
+					mAdapter.refresh(getActivity(), mNewsList);
+				}
 				if (canPullToLoad()) {
 					Activity act = getActivity();
 					if (act != null) {

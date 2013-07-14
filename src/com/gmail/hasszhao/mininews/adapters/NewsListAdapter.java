@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -178,21 +179,11 @@ public final class NewsListAdapter extends BaseAdapter implements OnScrollListen
 						showListItem(convertView, position);
 					}
 				}
+				Log.d("mini", "Ask: first: " + first + ", last: " + _view.getLastVisiblePosition() + ", childCount:"
+						+ count);
 				break;
 			case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
 				mBusy = true;
-				// int count = _view.getChildCount();
-				// for (int i = 0; i < count; i++) {
-				// View convertView = _view.getChildAt(i);
-				// if (convertView.getTag() != null) {
-				// ImageButton newsShare = (ImageButton)
-				// convertView.findViewById(R.id.btn_news_be_shared);
-				// ImageButton bookmark = (ImageButton)
-				// convertView.findViewById(R.id.btn_bookmark);
-				// newsShare.setVisibility(View.GONE);
-				// bookmark.setVisibility(View.GONE);
-				// }
-				// }
 				break;
 			case OnScrollListener.SCROLL_STATE_FLING:
 				mBusy = true;

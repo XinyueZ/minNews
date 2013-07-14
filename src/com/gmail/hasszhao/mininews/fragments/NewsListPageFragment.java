@@ -125,8 +125,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 			if (act != null) {
 				mNewsList = new ArrayList<DONews>();
 				new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-						new DOCookie(1, getArguments().getString(KEY_LANGUAGE),
-								getQuery())).execute();
+						new DOCookie(1, getArguments().getString(KEY_LANGUAGE), getQuery())).execute();
 			}
 			mLastLoadingTime = now;
 		} else {
@@ -170,10 +169,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 						Log.e("news", "Ask: API_SERVER_DOWN");
 						break;
 				}
-				Activity act = getActivity();
-				if (act != null) {
-					((MainActivity) act).refreshComplete();
-				}
+				stepDone();
 			} catch (Exception _e) {
 				_e.printStackTrace();
 			}
@@ -187,15 +183,15 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 			View v = getView();
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
-				// if (mAdapter == null) {
-				mAdapter = new NewsListAdapter(getActivity(), mNewsList);
-				mAdapter.setOnNewsClickedListener(this);
-				mAdapter.setOnNewsShareListener(this);
-				listView.setOnScrollListener(mAdapter);
-				supportCardAnim(listView);
-				// } else {
-				// mAdapter.refresh(getActivity(), mNewsList);
-				// }
+				if (mAdapter == null) {
+					mAdapter = new NewsListAdapter(getActivity(), mNewsList);
+					mAdapter.setOnNewsClickedListener(this);
+					mAdapter.setOnNewsShareListener(this);
+					listView.setOnScrollListener(mAdapter);
+					supportCardAnim(listView);
+				} else {
+					mAdapter.refresh(getActivity(), mNewsList);
+				}
 			}
 		}
 		stepDone();
@@ -206,6 +202,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 		FragmentActivity act = getActivity();
 		if (act instanceof MainActivity) {
 			((MainActivity) act).setLoadingFragmentStep(1);
+			((MainActivity) act).refreshComplete();
 		}
 	}
 
