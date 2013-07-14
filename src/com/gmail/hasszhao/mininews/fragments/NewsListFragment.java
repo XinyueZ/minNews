@@ -153,7 +153,8 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 
 	@Override
 	public synchronized void onErrorResponse(VolleyError _error) {
-		Log.e("news", "Ask: API_ErrorResponse");
+		openFragment(ErrorFragment.newInstance(getActivity(), getString(R.string.title_error),
+				getString(R.string.msg_error)), ErrorFragment.TAG);
 		mCallCount--;
 		if (mCallCount == 0) {
 			Activity act = getActivity();
@@ -181,11 +182,9 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 						}
 						break;
 					case API.API_ACTION_FAILED:
-						Log.e("news", "Ask: API_ACTION_FAILED");
-						break;
 					case API.API_SERVER_DOWN:
-						Log.e("news", "Ask: API_SERVER_DOWN");
-						break;
+						openFragment(ErrorFragment.newInstance(getActivity(), getString(R.string.title_error),
+								getString(R.string.msg_error)), ErrorFragment.TAG);
 				}
 				if (mCallCount == 0) {
 					Activity act = getActivity();
