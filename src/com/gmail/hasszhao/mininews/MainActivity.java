@@ -31,7 +31,7 @@ import com.gmail.hasszhao.mininews.fragments.LoadingFragment;
 import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment;
 import com.gmail.hasszhao.mininews.fragments.NewsListFragment;
 import com.gmail.hasszhao.mininews.fragments.NewsPagersFragment;
-import com.gmail.hasszhao.mininews.fragments.SearchedNewsListFragment;
+import com.gmail.hasszhao.mininews.fragments.SearchedNewsPagersFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
@@ -94,7 +94,7 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 
 	private void ifOnBackFromSearchedNewsListFragment() {
 		Fragment f = getTopFragment();
-		if (!(f instanceof SearchedNewsListFragment)) {
+		if (f == null) {
 			((EditText) getSupportActionBar().getCustomView().findViewById(R.id.tv_input_search_key)).setText("");
 		}
 	}
@@ -369,14 +369,15 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 
 
 	private void showSearchedNewsListFragment(String _key) {
-		Fragment f = getTopFragment();
-		if (f instanceof SearchedNewsListFragment) {
-			SearchedNewsListFragment snf = (SearchedNewsListFragment) f;
-			snf.searchWitNewKey(_key);
-		} else {
-			SearchedNewsListFragment fmg = SearchedNewsListFragment.newInstance(this, _key);
-			openNextPage(fmg, SearchedNewsListFragment.TAG);
-		}
+		// Fragment f = getTopFragment();
+		// if (f instanceof SearchedNewsPagersFragment) {
+		// SearchedNewsPagersFragment snf = (SearchedNewsPagersFragment) f;
+		// snf.searchWitNewKey(_key);
+		// } else
+		// {
+		SearchedNewsPagersFragment fmg = SearchedNewsPagersFragment.newInstance(this, _key);
+		openNextPage(fmg, SearchedNewsPagersFragment.TAG);
+		// }
 	}
 
 

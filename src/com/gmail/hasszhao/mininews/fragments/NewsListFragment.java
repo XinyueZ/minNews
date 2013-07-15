@@ -1,8 +1,5 @@
 package com.gmail.hasszhao.mininews.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.app.Activity;
 import android.content.Context;
@@ -27,7 +24,6 @@ import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsClickedListener;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsShareListener;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
-import com.gmail.hasszhao.mininews.dataset.DONews;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 import com.gmail.hasszhao.mininews.fragments.AskOpenDetailsMethodFragment.OpenContentMethod;
@@ -48,12 +44,12 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 		OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
-	public static final String TAG = "TAG.NewsList";
+	public static final String TAG = "TAG.NewsListFragment";
 	private static final int MAX_FRQUENT = 5 * 1000;
 	protected NewsListAdapter mAdapter;
 	private long mLastLoadingTime = 0;
 	private int mCallCount = 0;
-	private List<DONews> mNewsList;
+	private ListNews mNewsList;
 	private INewsListItem mSelectedNewsItem;
 
 
@@ -112,7 +108,6 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 		if (now - mLastLoadingTime > MAX_FRQUENT) {
 			Activity act = getActivity();
 			if (act != null) {
-				mNewsList = new ArrayList<DONews>();
 				if (Prefs.getInstance().isSupportEnglish()) {
 					mCallCount++;
 				}
@@ -173,18 +168,21 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 				switch (_response.getCode()) {
 					case API.API_OK:
 						Log.i("news", "Ask: API_OK");
-						mNewsList.addAll(TaskHelper
-								.getGson()
-								.fromJson(new String(Base64.decode(_response.getData(), Base64.DEFAULT)),
-										ListNews.class).getPulledNewss());
+						mNewsList.getPulledNewss().addAll(
+								TaskHelper
+										.getGson()
+										.fromJson(new String(Base64.decode(_response.getData(), Base64.DEFAULT)),
+												ListNews.class).getPulledNewss());
 						if (mCallCount == 0) {
 							initList();
 						}
 						break;
 					case API.API_ACTION_FAILED:
 					case API.API_SERVER_DOWN:
-						openFragment(ErrorFragment.newInstance(getActivity(), getString(R.string.title_error),
-								getString(R.string.msg_error)), ErrorFragment.TAG);
+						if (mCallCount == 0) {
+							openFragment(ErrorFragment.newInstance(getActivity(), getString(R.string.title_error),
+									getString(R.string.msg_error)), ErrorFragment.TAG);
+						}
 				}
 				if (mCallCount == 0) {
 					Activity act = getActivity();
@@ -200,7 +198,7 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 
 
 	private void initList() {
-		if (mNewsList != null && mNewsList.size() > 0) {
+		if (mNewsList != null && mNewsList.getPulledNewss().size() > 0) {
 			// Log.d("news", "Ask: news size:" + newsList.size());
 			View v = getView();
 			if (v != null) {
@@ -243,6 +241,10 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 	@Override
 	public void onRefreshStarted(View _view) {
 		if (_view != null) {
+			View v = getView();
+			if (v != null && mNewsList != null) {
+				mNewsList.getPulledNewss().clear();
+			}
 			loadData();
 		}
 	}

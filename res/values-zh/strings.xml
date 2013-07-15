@@ -23,5 +23,5 @@
     <string name="action_share">分享</string>
     <string name="action_open_in_web">打开浏览器阅读</string>
     <string name="msg_refresh">过5秒才能刷新一次哦。</string>
-	<string name="msg_error">服务器出现故障，需要数小时等待它恢复工作。</string>
+	<string name="msg_error">服务器出现故障，需要数小时等待它恢复工作。</string> 
 </resources>

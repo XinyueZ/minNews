@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import com.gmail.hasszhao.mininews.utils.Util;
 
 
-public final class SearchedNewsListFragment extends NewsListFragment {
+public final class SearchedNewsListPageFragment extends NewsListPageFragment {
 
 	public static final String TAG = "TAG.Searched.NewsList";
 	private static final String KEY_SEARCH_KEY = "Searched.key";
@@ -27,11 +27,12 @@ public final class SearchedNewsListFragment extends NewsListFragment {
 	}
 
 
-	public static SearchedNewsListFragment newInstance(Context _context, String _key) {
+	public static SearchedNewsListPageFragment newInstance(Context _context, String _language, String _key) {
 		Bundle args = new Bundle();
+		args.putString(KEY_LANGUAGE, _language);
 		args.putString(KEY_SEARCH_KEY, TextUtils.isEmpty(_key) ? "" : _key);
-		return (SearchedNewsListFragment) SearchedNewsListFragment.instantiate(_context,
-				SearchedNewsListFragment.class.getName(), args);
+		return (SearchedNewsListPageFragment) SearchedNewsListPageFragment.instantiate(_context,
+				SearchedNewsListPageFragment.class.getName(), args);
 	}
 
 
@@ -58,22 +59,4 @@ public final class SearchedNewsListFragment extends NewsListFragment {
 		mNewSearchKey = _key;
 		refresh();
 	}
-
-
-	@Override
-	protected boolean canPullToLoad() {
-		return false;
-	}
-
-
-	// @Override
-	// public void onDismiss(AbsListView _listView, int[]
-	// _reverseSortedPositions) {
-	// if (mAdapter != null) {
-	// for (int position : _reverseSortedPositions) {
-	// mAdapter.remove(position);
-	// }
-	// mAdapter.notifyDataSetChanged();
-	// }
-	// }
 }

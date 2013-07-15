@@ -16,15 +16,18 @@ import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.viewpagerindicator.CirclePageIndicator;
 
 
-public final class NewsPagersFragment extends BasicFragment implements IRefreshable {
+public class NewsPagersFragment extends BasicFragment implements IRefreshable {
 
 	private static final int LAYOUT = R.layout.fragment_news_pages;
+	protected static final String KEY_SEARCH_KEY = "Searched.key";
 	public static final String TAG = "TAG.NewsPagersFragment";
 	private NewsListPagesAdapter mAdapter;
 
 
 	public static NewsPagersFragment newInstance(Context _context) {
-		return (NewsPagersFragment) NewsPagersFragment.instantiate(_context, NewsPagersFragment.class.getName());
+		Bundle args = new Bundle();
+		args.putString(KEY_SEARCH_KEY, null);
+		return (NewsPagersFragment) NewsPagersFragment.instantiate(_context, NewsPagersFragment.class.getName(), args);
 	}
 
 
@@ -60,13 +63,15 @@ public final class NewsPagersFragment extends BasicFragment implements IRefresha
 		if (view != null) {
 			ViewPager vp = (ViewPager) view.findViewById(R.id.vp_news_pages);
 			if (mAdapter == null) {
-				mAdapter = new NewsListPagesAdapter(getChildFragmentManager(), getActivity().getApplicationContext());
+				mAdapter = new NewsListPagesAdapter(getChildFragmentManager(), getActivity().getApplicationContext(),
+						getArguments().getString(KEY_SEARCH_KEY));
 				showLoadingFragment();
 				vp.setOffscreenPageLimit(mAdapter.getCount());
 				vp.setAdapter(mAdapter);
 			} else {
 				showLoadingFragment();
-				mAdapter.setData(getChildFragmentManager(), getActivity().getApplicationContext());
+				mAdapter.setData(getChildFragmentManager(), getActivity().getApplicationContext(), getArguments()
+						.getString(KEY_SEARCH_KEY));
 				// There's a workaround, but it seems doesn't work for my case
 				// that after closing sub-fragment of details.
 				//

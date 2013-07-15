@@ -1,9 +1,6 @@
 package com.gmail.hasszhao.mininews.adapters;
 
-import java.util.List;
-
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -14,6 +11,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.gmail.hasszhao.mininews.R;
+import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 
@@ -23,7 +21,7 @@ public final class NewsListAdapter extends BaseAdapter {
 	private static final int PLACE_HOLDER = R.drawable.ic_launcher;
 	private static final int LAYOUT = R.layout.news_list_item;
 	private Context mContext;
-	private List<? extends INewsListItem> mNewsListItems;
+	private ListNews mNewsListItems;
 
 
 	public interface OnNewsClickedListener {
@@ -41,14 +39,14 @@ public final class NewsListAdapter extends BaseAdapter {
 	private OnNewsShareListener mOnNewsShareListener;
 
 
-	public NewsListAdapter(Context _context, List<? extends INewsListItem> _newsListItems) {
+	public NewsListAdapter(Context _context, ListNews _newsListItems) {
 		super();
 		mContext = _context;
 		mNewsListItems = _newsListItems;
 	}
 
 
-	public void refresh(Context _context, List<? extends INewsListItem> _newsListItems) {
+	public void refresh(Context _context, ListNews _newsListItems) {
 		mContext = _context;
 		mNewsListItems = _newsListItems;
 		notifyDataSetChanged();
@@ -56,19 +54,19 @@ public final class NewsListAdapter extends BaseAdapter {
 
 
 	public void remove(int _i) {
-		mNewsListItems.remove(_i);
+		mNewsListItems.getPulledNewss().remove(_i);
 	}
 
 
 	@Override
 	public int getCount() {
-		return mNewsListItems.size();
+		return mNewsListItems.getPulledNewss().size();
 	}
 
 
 	@Override
 	public Object getItem(int _position) {
-		return mNewsListItems.get(_position);
+		return mNewsListItems.getPulledNewss().get(_position);
 	}
 
 
@@ -111,10 +109,10 @@ public final class NewsListAdapter extends BaseAdapter {
 		} else {
 			h = (ViewHolder) _convertView.getTag();
 		}
-		final INewsListItem newsItem = mNewsListItems.get(_position);
+		final INewsListItem newsItem = mNewsListItems.getPulledNewss().get(_position);
 		TaskHelper.getImageLoader().get(newsItem.getThumbUrl(),
 				ImageLoader.getImageListener(h.thumb, PLACE_HOLDER, PLACE_HOLDER));
-		Log.w("mini", "Ask: " + newsItem.getThumbUrl());
+		// Log.w("mini", "Ask: " + newsItem.getThumbUrl());
 		h.topline.setText(newsItem.getTopline());
 		h.headline.setText(newsItem.getHeadline());
 		h.date.setText(newsItem.getDate());
@@ -150,7 +148,7 @@ public final class NewsListAdapter extends BaseAdapter {
 	}
 
 
-	public List<? extends INewsListItem> getNewsListItems() {
+	public ListNews getNewsListItems() {
 		return mNewsListItems;
 	}
 }

@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 
 import com.commonsware.cwac.endless.EndlessAdapter;
 import com.gmail.hasszhao.mininews.R;
-import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
+import com.gmail.hasszhao.mininews.dataset.DONews;
+import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 
 
 public final class NewsEndlessListAdapter extends EndlessAdapter {
 
 	private final Context mContext;
-	private final int maxCount;
-	private final List<? extends INewsListItem> mNewsList;
+	private final ListNews mNewsList;
 
 
 	public interface ICallNext {
@@ -27,10 +27,9 @@ public final class NewsEndlessListAdapter extends EndlessAdapter {
 	private final ICallNext mCallNext;
 
 
-	public NewsEndlessListAdapter(Context _context, NewsListAdapter _newsListAdapter, int _maxCount, ICallNext _callNext) {
+	public NewsEndlessListAdapter(Context _context, NewsListAdapter _newsListAdapter, ICallNext _callNext) {
 		super(_newsListAdapter);
 		mContext = _context;
-		maxCount = _maxCount;
 		mNewsList = _newsListAdapter.getNewsListItems();
 		mCallNext = _callNext;
 	}
@@ -44,12 +43,14 @@ public final class NewsEndlessListAdapter extends EndlessAdapter {
 
 	@Override
 	protected boolean cacheInBackground() throws Exception {
-		return mNewsList.size() < maxCount;
+		List<DONews> list = mNewsList.getPulledNewss();
+		int sz = list.size();
+		mCallNext.callNext(sz + 1);
+		return sz < mNewsList.getCount();
 	}
 
 
 	@Override
 	protected void appendCachedData() {
-		mCallNext.callNext(mNewsList.size());
 	}
 }

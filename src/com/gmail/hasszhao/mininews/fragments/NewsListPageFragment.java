@@ -40,17 +40,15 @@ import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
-import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 
 public class NewsListPageFragment extends BasicFragment implements Listener<DOStatus>, ErrorListener,
 		OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider, ICallNext {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
-	public static final String TAG = "TAG.NewsList.Page";
-	private static final String KEY_LANGUAGE = "NewsList.Page.language";
+	public static final String TAG = "TAG.NewsListPageFragment";
+	protected static final String KEY_LANGUAGE = "NewsList.Page.language";
 	private static final int MAX_FRQUENT = 5 * 1000;
-	private NewsListAdapter mAdapter;
 	private NewsEndlessListAdapter mNewsEndlessListAdapter;
 	private long mLastLoadingTime = 0;
 	private ListNews mNewsList;
@@ -99,7 +97,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 	@Override
 	public void onDestroy() {
-		mAdapter = null;
+		mNewsEndlessListAdapter = null;
 		mNewsList = null;
 		mSelectedNewsItem = null;
 		super.onDestroy();
@@ -117,7 +115,6 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 		if (now - mLastLoadingTime > MAX_FRQUENT) {
 			Activity act = getActivity();
 			if (act != null) {
-				Log.e("mini", "No data, try to load.");
 				new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
 						new DOCookie(1, getArguments().getString(KEY_LANGUAGE), getQuery())).execute();
 			}
@@ -177,13 +174,13 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 			View v = getView();
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
-				if (mAdapter == null) {
-					mAdapter = new NewsListAdapter(getActivity(), mNewsList.getPulledNewss());
-					mAdapter.setOnNewsClickedListener(this);
-					mAdapter.setOnNewsShareListener(this);
-					// supportCardAnim(listView);
-					listView.setAdapter(new NewsEndlessListAdapter(act.getApplicationContext(), mAdapter, mNewsList
-							.getCount(), this));
+				if (mNewsEndlessListAdapter == null) {
+					NewsListAdapter adapter = new NewsListAdapter(getActivity(), mNewsList);
+					adapter.setOnNewsClickedListener(this);
+					adapter.setOnNewsShareListener(this);
+					mNewsEndlessListAdapter = new NewsEndlessListAdapter(act.getApplicationContext(), adapter, this);
+					mNewsEndlessListAdapter.setRunInBackground(false);
+					listView.setAdapter(mNewsEndlessListAdapter);
 				} else {
 					// mAdapter.refresh(getActivity(), mNewsList);
 					mNewsEndlessListAdapter.onDataReady();
@@ -225,17 +222,13 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 	}
 
 
-	private void supportCardAnim(ListView listView) {
-		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(
-				new SwingBottomInAnimationAdapter(mAdapter, BOTTOM_IN_SEC));
-		swingBottomInAnimationAdapter.setAbsListView(listView);
-		listView.setAdapter(swingBottomInAnimationAdapter);
-	}
-
-
 	@Override
 	public void onRefreshStarted(View _view) {
 		if (_view != null) {
+			View v = getView();
+			if (v != null && mNewsList != null) {
+				mNewsList.getPulledNewss().clear();
+			}
 			loadData();
 		}
 	}

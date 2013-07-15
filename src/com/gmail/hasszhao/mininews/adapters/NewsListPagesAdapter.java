@@ -7,8 +7,10 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.text.TextUtils;
 
 import com.gmail.hasszhao.mininews.fragments.NewsListPageFragment;
+import com.gmail.hasszhao.mininews.fragments.SearchedNewsListPageFragment;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 
@@ -16,15 +18,16 @@ public final class NewsListPagesAdapter extends FragmentStatePagerAdapter {
 
 	private final List<String> mLanguages = new ArrayList<String>();
 	private Context mContext;
+	private String mSearchedKey;
 
 
-	public NewsListPagesAdapter(FragmentManager _fm, Context _context) {
+	public NewsListPagesAdapter(FragmentManager _fm, Context _context, String _searchedKey) {
 		super(_fm);
-		setData(_fm, _context);
+		setData(_fm, _context, _searchedKey);
 	}
 
 
-	public void setData(FragmentManager _fm, Context _context) {
+	public void setData(FragmentManager _fm, Context _context, String _searchedKey) {
 		if (mLanguages.size() > 0) {
 			mLanguages.clear();
 		}
@@ -38,12 +41,17 @@ public final class NewsListPagesAdapter extends FragmentStatePagerAdapter {
 			mLanguages.add("zh");
 		}
 		mContext = _context;
+		mSearchedKey = _searchedKey;
 	}
 
 
 	@Override
 	public Fragment getItem(int _arg0) {
-		return NewsListPageFragment.newInstance(mContext, mLanguages.get(_arg0));
+		if (TextUtils.isEmpty(mSearchedKey)) {
+			return NewsListPageFragment.newInstance(mContext, mLanguages.get(_arg0));
+		} else {
+			return SearchedNewsListPageFragment.newInstance(mContext, mLanguages.get(_arg0), mSearchedKey);
+		}
 	}
 
 
