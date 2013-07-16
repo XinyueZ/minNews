@@ -1,12 +1,10 @@
-package com.gmail.hasszhao.mininews.fragments.container;
+package com.gmail.hasszhao.mininews.fragments.viewpagers;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.gmail.hasszhao.mininews.activities.MainActivity;
 
 
 public final class SearchedNewsPagersFragment extends NewsPagersFragment {
@@ -24,15 +22,15 @@ public final class SearchedNewsPagersFragment extends NewsPagersFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater _inflater, ViewGroup _container, Bundle _savedInstanceState) {
-		setSidebarEnable(false);
 		return super.onCreateView(_inflater, _container, _savedInstanceState);
 	}
 
 
-	private void setSidebarEnable(boolean _enable) {
-		MainActivity act = (MainActivity) getActivity();
-		if (act != null) {
-			act.setSidebarEnable(_enable);
-		}
+	@Override
+	public void onResume() {
+		super.onResume();
+		// Must do it, because the parent will show it, which is staying on
+		// bottom(start-site).
+		setSidebarEnable(false);
 	}
 }

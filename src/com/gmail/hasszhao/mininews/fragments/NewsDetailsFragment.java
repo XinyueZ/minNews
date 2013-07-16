@@ -56,19 +56,8 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 	}
 
 
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		setSidebarEnable(true);
-	}
 
 
-	private void setSidebarEnable(boolean _enable) {
-		MainActivity act = (MainActivity) getActivity();
-		if (act != null) {
-			act.setSidebarEnable(_enable);
-		}
-	}
 
 
 	private void loadDetails(View v) {

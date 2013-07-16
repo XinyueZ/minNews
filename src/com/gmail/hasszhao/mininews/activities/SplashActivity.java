@@ -170,10 +170,7 @@ public final class SplashActivity extends BasicActivity implements ErrorListener
 												ListNews.class));
 								break;
 							case API.API_ACTION_FAILED:
-								Log.e("news", "Ask: API_ACTION_FAILED");
-								break;
 							case API.API_SERVER_DOWN:
-								Log.e("news", "Ask: API_SERVER_DOWN");
 								break;
 						}
 						if (act.getCallCount() == 0) {

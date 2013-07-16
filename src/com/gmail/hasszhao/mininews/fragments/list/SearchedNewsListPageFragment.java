@@ -1,5 +1,6 @@
 package com.gmail.hasszhao.mininews.fragments.list;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -58,5 +59,11 @@ public final class SearchedNewsListPageFragment extends NewsListPageFragment {
 		mNewSearch = true;
 		mNewSearchKey = _key;
 		refresh();
+	}
+
+
+	@Override
+	protected void payload(Activity _activity) {
+		// Do not use any pay-loaded-data.
 	}
 }

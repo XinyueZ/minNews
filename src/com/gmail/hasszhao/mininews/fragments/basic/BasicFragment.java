@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.gmail.hasszhao.mininews.R;
+import com.gmail.hasszhao.mininews.activities.MainActivity;
 
 
 public abstract class BasicFragment extends SherlockFragment {
@@ -28,6 +29,21 @@ public abstract class BasicFragment extends SherlockFragment {
 			FragmentTransaction trans = getChildFragmentManager().beginTransaction();
 			// trans.remove(_f);
 			trans.commit();
+		}
+	}
+
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		setSidebarEnable(true);
+	}
+
+
+	protected void setSidebarEnable(boolean _enable) {
+		MainActivity act = (MainActivity) getActivity();
+		if (act != null) {
+			act.setSidebarEnable(_enable);
 		}
 	}
 }

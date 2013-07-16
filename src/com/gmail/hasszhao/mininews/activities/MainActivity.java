@@ -28,10 +28,10 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment;
-import com.gmail.hasszhao.mininews.fragments.container.NewsPagersFragment;
-import com.gmail.hasszhao.mininews.fragments.container.SearchedNewsPagersFragment;
 import com.gmail.hasszhao.mininews.fragments.dialog.LoadingFragment;
 import com.gmail.hasszhao.mininews.fragments.list.NewsListFragment;
+import com.gmail.hasszhao.mininews.fragments.viewpagers.NewsPagersFragment;
+import com.gmail.hasszhao.mininews.fragments.viewpagers.SearchedNewsPagersFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
@@ -377,6 +377,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 		// {
 		SearchedNewsPagersFragment fmg = SearchedNewsPagersFragment.newInstance(this, _key);
 		addOpenNextPage(fmg, SearchedNewsPagersFragment.TAG);
+		setSidebarEnable(false);
 		// }
 	}
 

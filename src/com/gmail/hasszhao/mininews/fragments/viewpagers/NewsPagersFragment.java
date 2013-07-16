@@ -1,4 +1,4 @@
-package com.gmail.hasszhao.mininews.fragments.container;
+package com.gmail.hasszhao.mininews.fragments.viewpagers;
 
 import android.app.Activity;
 import android.content.Context;
@@ -40,10 +40,7 @@ public class NewsPagersFragment extends BasicFragment implements IRefreshable {
 
 	@Override
 	public void onResume() {
-		MainActivity act = (MainActivity) getActivity();
-		if (act != null) {
-			act.setSidebarEnable(true);
-		}
+		setSidebarEnable(true);
 		super.onResume();
 	}
 
