@@ -120,8 +120,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 		if (now - mLastLoadingTime > MAX_FRQUENT) {
 			Activity act = getActivity();
 			if (act != null) {
-				new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-						new DOCookie(1, getArguments().getString(KEY_LANGUAGE), getQuery())).execute();
+				callNext(1);
 			}
 			mLastLoadingTime = now;
 		} else {
@@ -332,7 +331,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 	@Override
 	public void retry() {
-		refresh();
+		callNext(mNewsList == null ? 1 : mNewsList.getPulledNewss().size() + 1);
 	}
 
 
