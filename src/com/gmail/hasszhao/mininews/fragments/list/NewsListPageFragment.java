@@ -28,11 +28,11 @@ import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsShareListener;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
+import com.gmail.hasszhao.mininews.fragments.ErrorFragment;
 import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment;
+import com.gmail.hasszhao.mininews.fragments.ErrorFragment.ErrorType;
+import com.gmail.hasszhao.mininews.fragments.ErrorFragment.IErrorResponsible;
 import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
-import com.gmail.hasszhao.mininews.fragments.basic.ErrorFragment;
-import com.gmail.hasszhao.mininews.fragments.basic.ErrorFragment.ErrorType;
-import com.gmail.hasszhao.mininews.fragments.basic.ErrorFragment.IErrorResponsible;
 import com.gmail.hasszhao.mininews.fragments.dialog.AskOpenDetailsMethodFragment;
 import com.gmail.hasszhao.mininews.fragments.dialog.AskOpenDetailsMethodFragment.OpenContentMethod;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
@@ -136,7 +136,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 	@Override
 	public synchronized void onErrorResponse(VolleyError _error) {
-		openFragment(ErrorFragment.newInstance(getActivity(), ErrorType.DATA_LOADING_ERROR), ErrorFragment.TAG);
+		replaceOpenFragment(ErrorFragment.newInstance(getActivity(), ErrorType.DATA_LOADING_ERROR), ErrorFragment.TAG);
 		stepDone();
 	}
 
@@ -163,7 +163,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 						break;
 					case API.API_ACTION_FAILED:
 					case API.API_SERVER_DOWN:
-						openFragment(ErrorFragment.newInstance(getActivity(), ErrorType.SERVER_ERROR),
+						replaceOpenFragment(ErrorFragment.newInstance(getActivity(), ErrorType.SERVER_ERROR),
 								ErrorFragment.TAG);
 						break;
 				}
@@ -298,7 +298,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 		if (act instanceof MainActivity) {
 			Fragment f = NewsDetailsFragment.newInstance(act);
 			f.setTargetFragment(this, 0);
-			((MainActivity) act).openNextPage(f, NewsDetailsFragment.TAG);
+			((MainActivity) act).addOpenNextPage(f, NewsDetailsFragment.TAG);
 		}
 	}
 

@@ -75,14 +75,14 @@ public class LoadDetailsContent extends AsyncTask<String, Document, Document> {
 		} else {
 			showFallback();
 		}
-	}
-
-
-	private void showFallback() {
 		Button btn = mVisitWeb.get();
 		if (btn != null) {
 			btn.setVisibility(View.VISIBLE);
 		}
+	}
+
+
+	private void showFallback() {
 		TextView tv = mOutput.get();
 		if (tv != null) {
 			org.jsoup.nodes.Document doc = Jsoup.parse(mNewsItem.getFullContent().replace("<br>", "\n\n")

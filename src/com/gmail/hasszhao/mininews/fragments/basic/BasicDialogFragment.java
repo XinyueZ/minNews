@@ -1,7 +1,6 @@
 package com.gmail.hasszhao.mininews.fragments.basic;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -11,7 +10,7 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.gmail.hasszhao.mininews.R;
 
 
-public class BasicDialogFragment extends DialogFragment {
+public class BasicDialogFragment extends SherlockDialogFragment {
 
 	private final AnimationListener mInListener = new AnimationListener() {
 

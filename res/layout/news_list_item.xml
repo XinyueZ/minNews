@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
 
-        <com.gmail.hasszhao.mininews.views.FixedSizeImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/iv_thumb"
             style="@style/Thumb"
             android:layout_width="@dimen/thumb_width"

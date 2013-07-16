@@ -1,5 +1,6 @@
-package com.gmail.hasszhao.mininews.fragments.basic;
+package com.gmail.hasszhao.mininews.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -90,12 +91,25 @@ public class ErrorFragment extends Fragment implements OnClickListener {
 				showRetry = true;
 				Fragment f = getTargetFragment();
 				if (f instanceof IErrorResponsible) {
+					// Not good but it works: for fragment.
 					if (((IErrorResponsible) f).isDataCached()) {
 						topline = getString(R.string.title_error);
 						headline = getString(R.string.msg_error_data_cant_be_loaded_but_read_cached);
 					} else {
 						topline = getString(R.string.title_error);
 						headline = getString(R.string.msg_error_data_cant_be_loaded);
+					}
+				} else {
+					// Not good but it works: for activity.
+					Activity act = getActivity();
+					if (act instanceof IErrorResponsible) {
+						if (((IErrorResponsible) act).isDataCached()) {
+							topline = getString(R.string.title_error);
+							headline = getString(R.string.msg_error_data_cant_be_loaded_but_read_cached);
+						} else {
+							topline = getString(R.string.title_error);
+							headline = getString(R.string.msg_error_data_cant_be_loaded);
+						}
 					}
 				}
 				break;
@@ -111,11 +125,28 @@ public class ErrorFragment extends Fragment implements OnClickListener {
 	}
 
 
+	private void retry(IErrorResponsible _resp) {
+		View v = getView();
+		if (v != null) {
+			v.findViewById(R.id.pb_retry).setVisibility(View.VISIBLE);
+			v.findViewById(R.id.btn_retry).setEnabled(false);
+		}
+		_resp.retry();
+	}
+
+
 	@Override
 	public void onClick(View _v) {
 		Fragment f = getTargetFragment();
 		if (f instanceof IErrorResponsible) {
-			((IErrorResponsible) f).retry();
+			// Not good but it works: for fragment.
+			retry((IErrorResponsible) f);
+		} else {
+			Activity act = getActivity();
+			if (act instanceof IErrorResponsible) {
+				// Not good but it works: for activity.
+				retry((IErrorResponsible) act);
+			}
 		}
 	}
 }

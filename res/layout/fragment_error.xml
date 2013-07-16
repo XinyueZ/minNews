@@ -39,15 +39,30 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_error_headline"
-        android:paddingBottom="5dp" >
+        android:layout_below="@+id/tv_error_headline" >
+
+        <ProgressBar
+            android:id="@+id/pb_retry"
+            style="?android:attr/progressBarStyleSmallInverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/btn_retry"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_retry"
             style="@style/Text.Yellow.Retry.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:layout_below="@+id/btn_retry" />
     </RelativeLayout>
 
 </RelativeLayout>

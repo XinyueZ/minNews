@@ -18,11 +18,18 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ProgressBar
+        android:id="@+id/pb_loading"
         style="?android:attr/progressBarStyleInverse"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_above="@+id/tv_splash_text"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/splash_between" />
+
+    <FrameLayout
+        android:id="@+id/container_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

@@ -24,7 +24,6 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.gmail.hasszhao.mininews.R;
@@ -40,7 +39,7 @@ import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 
-public final class MainActivity extends SherlockFragmentActivity implements OnCheckedChangeListener, ISharable,
+public final class MainActivity extends BasicActivity implements OnCheckedChangeListener, ISharable,
 		OnBackStackChangedListener, OnEditorActionListener, DrawerLayout.DrawerListener {
 
 	public static final String ACTION = "com.gmail.hasszhao.mininews.MainActivity";
@@ -377,12 +376,12 @@ public final class MainActivity extends SherlockFragmentActivity implements OnCh
 		// } else
 		// {
 		SearchedNewsPagersFragment fmg = SearchedNewsPagersFragment.newInstance(this, _key);
-		openNextPage(fmg, SearchedNewsPagersFragment.TAG);
+		addOpenNextPage(fmg, SearchedNewsPagersFragment.TAG);
 		// }
 	}
 
 
-	public void openNextPage(Fragment _f, String _tag) {
+	public void addOpenNextPage(Fragment _f, String _tag) {
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		trans.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.slide_in_from_left,
 				R.anim.slide_out_to_right);

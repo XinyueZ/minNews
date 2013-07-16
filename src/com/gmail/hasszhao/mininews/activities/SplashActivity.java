@@ -2,7 +2,6 @@ package com.gmail.hasszhao.mininews.activities;
 
 import java.lang.ref.WeakReference;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
@@ -22,15 +21,29 @@ import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
+import com.gmail.hasszhao.mininews.fragments.ErrorFragment;
+import com.gmail.hasszhao.mininews.fragments.ErrorFragment.ErrorType;
+import com.gmail.hasszhao.mininews.fragments.ErrorFragment.IErrorResponsible;
 import com.gmail.hasszhao.mininews.tasks.LoadNewsListTask;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 
-public final class SplashActivity extends Activity implements ErrorListener {
+public final class SplashActivity extends BasicActivity implements ErrorListener, IErrorResponsible {
 
 	public static final String ACTION = "com.gmail.hasszhao.mininews.SplashActivity";
 	private int mCallCount = 0;
+
+
+	private static boolean errorHandling(SplashActivity act) {
+		boolean hasSomePayloaded = ((App) act.getApplication()).hasSomePayloaded();
+		if (!hasSomePayloaded) {
+			act.findViewById(R.id.pb_loading).setVisibility(View.GONE);
+			act.replaceOpenFragment(ErrorFragment.newInstance(act, ErrorType.DATA_LOADING_ERROR), ErrorFragment.TAG);
+			return true;
+		}
+		return false;
+	}
 
 
 	@Override
@@ -67,13 +80,13 @@ public final class SplashActivity extends Activity implements ErrorListener {
 
 			@Override
 			public void onAnimationStart(Animation animation) {
-				payloading();
+				load();
 			}
 		});
 	}
 
 
-	private void payloading() {
+	private void load() {
 		if (Prefs.getInstance().isSupportEnglish()) {
 			mCallCount++;
 		}
@@ -118,10 +131,11 @@ public final class SplashActivity extends Activity implements ErrorListener {
 
 	@Override
 	public synchronized void onErrorResponse(VolleyError _error) {
-		Log.e("news", "Ask: API_ErrorResponse");
 		mCallCount--;
 		if (mCallCount == 0) {
-			startMainActivity();
+			if (!errorHandling(this)) {
+				startMainActivity();
+			}
 		}
 	}
 
@@ -163,7 +177,9 @@ public final class SplashActivity extends Activity implements ErrorListener {
 								break;
 						}
 						if (act.getCallCount() == 0) {
-							act.startMainActivity();
+							if (!errorHandling(act)) {
+								act.startMainActivity();
+							}
 						}
 					} catch (Exception _e) {
 						_e.printStackTrace();
@@ -171,5 +187,17 @@ public final class SplashActivity extends Activity implements ErrorListener {
 				}
 			}
 		}
+	}
+
+
+	@Override
+	public void retry() {
+		load();
+	}
+
+
+	@Override
+	public boolean isDataCached() {
+		return false;
 	}
 }

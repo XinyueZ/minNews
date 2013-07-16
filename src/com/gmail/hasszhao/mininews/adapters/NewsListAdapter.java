@@ -6,10 +6,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
@@ -78,14 +77,14 @@ public final class NewsListAdapter extends BaseAdapter {
 
 	static class ViewHolder {
 
-		ImageView thumb;
+		NetworkImageView thumb;
 		TextView topline;
 		TextView headline;
 		TextView date;
 		ImageButton newsShare;
 
 
-		public ViewHolder(ImageView _thumb, TextView _topline, TextView _headline, TextView _date,
+		public ViewHolder(NetworkImageView _thumb, TextView _topline, TextView _headline, TextView _date,
 				ImageButton _newsShare) {
 			super();
 			thumb = _thumb;
@@ -102,7 +101,7 @@ public final class NewsListAdapter extends BaseAdapter {
 		ViewHolder h;
 		if (_convertView == null) {
 			_convertView = View.inflate(mContext, LAYOUT, null);
-			_convertView.setTag(h = new ViewHolder((ImageView) _convertView.findViewById(R.id.iv_thumb),
+			_convertView.setTag(h = new ViewHolder((NetworkImageView) _convertView.findViewById(R.id.iv_thumb),
 					(TextView) _convertView.findViewById(R.id.tv_topline), (TextView) _convertView
 							.findViewById(R.id.tv_headline), (TextView) _convertView.findViewById(R.id.tv_date),
 					(ImageButton) _convertView.findViewById(R.id.btn_news_be_shared)));
@@ -110,9 +109,8 @@ public final class NewsListAdapter extends BaseAdapter {
 			h = (ViewHolder) _convertView.getTag();
 		}
 		final INewsListItem newsItem = mNewsListItems.getPulledNewss().get(_position);
-		TaskHelper.getImageLoader().get(newsItem.getThumbUrl(),
-				ImageLoader.getImageListener(h.thumb, PLACE_HOLDER, PLACE_HOLDER));
-		// Log.w("mini", "Ask: " + newsItem.getThumbUrl());
+		h.thumb.setDefaultImageResId(PLACE_HOLDER);
+		h.thumb.setImageUrl(newsItem.getThumbUrl(), TaskHelper.getImageLoader());
 		h.topline.setText(newsItem.getTopline());
 		h.headline.setText(newsItem.getHeadline());
 		h.date.setText(newsItem.getDate());
