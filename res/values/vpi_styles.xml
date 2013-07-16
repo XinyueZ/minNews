@@ -3,7 +3,7 @@
 
     <style name="CustomCirclePageIndicator">
         <item name="fillColor">@color/cyan</item>
-        <item name="strokeColor">@color/dark_grey</item>
+        <item name="strokeColor">@color/lightgrey</item>
         <item name="strokeWidth">2dp</item>
         <item name="radius">5dp</item>
         <item name="centered">true</item>
