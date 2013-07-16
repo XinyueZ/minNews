@@ -15,7 +15,7 @@ public final class DONews implements INewsListItem {
 	private final long Date;
 
 
-	private DONews(String _title, String _content, String _preview, String _url, String _imageUrl, long _date) {
+	public DONews(String _title, String _content, String _preview, String _url, String _imageUrl, long _date) {
 		super();
 		Title = _title;
 		Content = _content;

@@ -9,13 +9,17 @@ import com.gmail.hasszhao.mininews.dataset.DONews;
 public final class ListNews {
 
 	private List<DONews> PulledNewss;
-	private final int Count;
+	private int Count;
 
 
 	public ListNews(List<DONews> _pulledNewss, int _count) {
 		super();
 		PulledNewss = _pulledNewss;
 		Count = _count;
+	}
+
+
+	private ListNews() {
 	}
 
 
@@ -30,5 +34,14 @@ public final class ListNews {
 	/** Return the max count of news on the server ready. */
 	public int getCount() {
 		return Count;
+	}
+
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		ListNews obj = new ListNews();
+		obj.getPulledNewss().addAll(this.PulledNewss);
+		obj.Count = this.Count;
+		return obj;
 	}
 }

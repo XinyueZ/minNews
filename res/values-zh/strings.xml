@@ -6,7 +6,7 @@
     <string name="on">开</string>
     <string name="off">关</string>
     <string name="action_failed">无法发送请求!</string>
-    <string name="server_down">服务器调整!</string> 
+    <string name="server_down">服务器调整!</string>
     <string name="title_language_list">新闻语种</string>
     <string name="title_input_search">搜索</string>
     <string name="title_open_details">内容</string>
@@ -17,11 +17,15 @@
     <string name="title_cancel">取消</string>
     <string name="title_loading">读取</string>
     <string name="title_loading_you_data">读取数据</string>
-    <string name="title_visit">直接访问</string>
+    <string name="title_visit">查看原文</string>
     <string name="title_error">哦哈~~</string>
     <string name="action_refresh">刷新</string>
     <string name="action_share">分享</string>
     <string name="action_open_in_web">打开浏览器阅读</string>
+    <string name="action_retry">重试</string>
     <string name="msg_refresh">过5秒才能刷新一次哦。</string>
-	<string name="msg_error">服务器出现故障，需要数小时等待它恢复工作。</string> 
+    <string name="msg_error">服务器出现故障，需要数小时等待它恢复工作。</string>
+    <string name="msg_data_cant_be_loaded">无法读取数据，请重试。</string>
+    <string name="msg_data_cant_be_loaded_but_read_cached">无法读取数据，但是可以读取缓冲内容。</string>
+
 </resources>

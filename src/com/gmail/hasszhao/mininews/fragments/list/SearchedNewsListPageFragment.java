@@ -1,4 +1,4 @@
-package com.gmail.hasszhao.mininews.fragments;
+package com.gmail.hasszhao.mininews.fragments.list;
 
 import android.content.Context;
 import android.os.Bundle;

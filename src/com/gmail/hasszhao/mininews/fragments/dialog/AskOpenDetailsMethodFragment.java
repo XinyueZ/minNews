@@ -1,4 +1,4 @@
-package com.gmail.hasszhao.mininews.fragments;
+package com.gmail.hasszhao.mininews.fragments.dialog;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -55,7 +55,7 @@ public final class AskOpenDetailsMethodFragment extends BasicDialogFragment impl
 
 	public static AskOpenDetailsMethodFragment newInstance(Fragment _parentFragment) {
 		AskOpenDetailsMethodFragment f = (AskOpenDetailsMethodFragment) AskOpenDetailsMethodFragment.instantiate(
-				_parentFragment.getActivity().getApplicationContext(), AskOpenDetailsMethodFragment.class.getName());
+				_parentFragment.getActivity().getApplication(), AskOpenDetailsMethodFragment.class.getName());
 		f.setTargetFragment(_parentFragment, 0);
 		return f;
 	}

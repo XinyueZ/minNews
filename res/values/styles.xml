@@ -148,6 +148,12 @@
         <item name="android:text">@string/title_ok</item>
         <item name="android:layout_marginRight">2dp</item>
     </style>
+    
+    <style name="Text.Yellow.Retry.Button" parent="Text.Yellow.Button">
+        <item name="android:background">@drawable/selector_yellow_button</item>
+        <item name="android:text">@string/action_retry</item>
+        <item name="android:layout_marginRight">2dp</item>
+    </style>
 
     <style name="Text.Yellow.Cancel.Button" parent="Text.Yellow.Button">
         <item name="android:background">@drawable/selector_yellow_button</item>

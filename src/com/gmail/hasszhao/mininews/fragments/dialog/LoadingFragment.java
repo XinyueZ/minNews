@@ -1,10 +1,11 @@
-package com.gmail.hasszhao.mininews.fragments;
+package com.gmail.hasszhao.mininews.fragments.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.actionbarsherlock.internal.widget.IcsProgressBar;
 import com.gmail.hasszhao.mininews.R;
@@ -37,7 +38,7 @@ public final class LoadingFragment extends BasicDialogFragment {
 		super.onViewCreated(_view, _savedInstanceState);
 		View v = getView();
 		if (v != null) {
-			IcsProgressBar pb = (IcsProgressBar) v.findViewById(R.id.pb_loading);
+			ProgressBar pb = (ProgressBar) v.findViewById(R.id.pb_loading);
 			if (_savedInstanceState != null) {
 				pb.setProgress(_savedInstanceState.getInt(KEY_PROGRESS));
 			} else {
@@ -67,7 +68,7 @@ public final class LoadingFragment extends BasicDialogFragment {
 	public synchronized void setStep(int _step) {
 		View v = getView();
 		if (v != null) {
-			IcsProgressBar pb = (IcsProgressBar) v.findViewById(R.id.pb_loading);
+			ProgressBar pb = (ProgressBar) v.findViewById(R.id.pb_loading);
 			pb.setProgress(_step);
 			if (pb.getProgress() >= pb.getMax()) {
 				dismiss();

@@ -18,4 +18,6 @@ public interface INewsListItem {
 
 
 	String getURL();
+
+
 }

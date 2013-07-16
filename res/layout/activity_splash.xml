@@ -17,8 +17,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <com.actionbarsherlock.internal.widget.IcsProgressBar
-        style="@style/Widget.Sherlock.ProgressBar"
+    <ProgressBar
+        style="?android:attr/progressBarStyleInverse"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_above="@+id/tv_splash_text"

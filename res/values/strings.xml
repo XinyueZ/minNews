@@ -22,7 +22,10 @@
     <string name="action_refresh">Refresh</string>
     <string name="action_share">Share</string>
     <string name="action_open_in_web">Open in browser</string>
+    <string name="action_retry">Retry</string>
     <string name="msg_refresh">Refresh after 5 seconds.</string>
-    <string name="msg_error">The server has been down because of some problems, there are several hours to wait for it return.</string>
+    <string name="msg_error_from_server">The server has been down because of some problems, there are several hours to wait for it return.</string>
+    <string name="msg_error_data_cant_be_loaded">Data can not be loaded at moment, you can retry.</string>
+    <string name="msg_error_data_cant_be_loaded_but_read_cached">Data can not be loaded at moment, you can read cached data.</string>
 
 </resources>

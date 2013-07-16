@@ -9,8 +9,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.text.TextUtils;
 
-import com.gmail.hasszhao.mininews.fragments.NewsListPageFragment;
-import com.gmail.hasszhao.mininews.fragments.SearchedNewsListPageFragment;
+import com.gmail.hasszhao.mininews.fragments.list.NewsListPageFragment;
+import com.gmail.hasszhao.mininews.fragments.list.SearchedNewsListPageFragment;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 

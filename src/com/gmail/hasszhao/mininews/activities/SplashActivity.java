@@ -1,4 +1,4 @@
-package com.gmail.hasszhao.mininews;
+package com.gmail.hasszhao.mininews.activities;
 
 import java.lang.ref.WeakReference;
 
@@ -16,6 +16,9 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.gmail.hasszhao.mininews.API;
+import com.gmail.hasszhao.mininews.App;
+import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;

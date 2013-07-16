@@ -1,4 +1,4 @@
-package com.gmail.hasszhao.mininews.fragments;
+package com.gmail.hasszhao.mininews.fragments.container;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,10 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.gmail.hasszhao.mininews.MainActivity;
 import com.gmail.hasszhao.mininews.R;
+import com.gmail.hasszhao.mininews.activities.MainActivity;
 import com.gmail.hasszhao.mininews.adapters.NewsListPagesAdapter;
 import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
+import com.gmail.hasszhao.mininews.fragments.list.NewsListPageFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.viewpagerindicator.CirclePageIndicator;
 

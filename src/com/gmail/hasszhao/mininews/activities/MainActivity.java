@@ -1,4 +1,4 @@
-package com.gmail.hasszhao.mininews;
+package com.gmail.hasszhao.mininews.activities;
 
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshAttacher;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
@@ -27,11 +27,12 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.gmail.hasszhao.mininews.fragments.LoadingFragment;
+import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment;
-import com.gmail.hasszhao.mininews.fragments.NewsListFragment;
-import com.gmail.hasszhao.mininews.fragments.NewsPagersFragment;
-import com.gmail.hasszhao.mininews.fragments.SearchedNewsPagersFragment;
+import com.gmail.hasszhao.mininews.fragments.container.NewsPagersFragment;
+import com.gmail.hasszhao.mininews.fragments.container.SearchedNewsPagersFragment;
+import com.gmail.hasszhao.mininews.fragments.dialog.LoadingFragment;
+import com.gmail.hasszhao.mininews.fragments.list.NewsListFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
