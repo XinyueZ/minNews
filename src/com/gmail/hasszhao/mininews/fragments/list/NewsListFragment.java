@@ -50,9 +50,7 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsListFragment";
-	private static final int MAX_FRQUENT = 5 * 1000;
 	protected NewsListAdapter mAdapter;
-	private long mLastLoadingTime = 0;
 	private int mCallCount = 0;
 	private ListNews mNewsList;
 	private INewsListItem mSelectedNewsItem;
@@ -114,38 +112,28 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 
 
 	private void loadData() {
-		long now = System.currentTimeMillis();
-		if (now - mLastLoadingTime > MAX_FRQUENT) {
-			Activity act = getActivity();
-			if (act != null) {
-				if (Prefs.getInstance().isSupportEnglish()) {
-					mCallCount++;
-				}
-				if (Prefs.getInstance().isSupportChinese()) {
-					mCallCount++;
-				}
-				if (Prefs.getInstance().isSupportGerman()) {
-					mCallCount++;
-				}
-				if (Prefs.getInstance().isSupportEnglish()) {
-					new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-							new DOCookie(1, "en", getQuery())).execute();
-				}
-				if (Prefs.getInstance().isSupportChinese()) {
-					new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-							new DOCookie(1, "zh", getQuery())).execute();
-				}
-				if (Prefs.getInstance().isSupportGerman()) {
-					new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-							new DOCookie(1, "de", getQuery())).execute();
-				}
+		Activity act = getActivity();
+		if (act != null) {
+			if (Prefs.getInstance().isSupportEnglish()) {
+				mCallCount++;
 			}
-			mLastLoadingTime = now;
-		} else {
-			Activity act = getActivity();
-			if (act != null) {
-				((MainActivity) act).refreshComplete();
-				Util.showShortToast(act, R.string.msg_refresh);
+			if (Prefs.getInstance().isSupportChinese()) {
+				mCallCount++;
+			}
+			if (Prefs.getInstance().isSupportGerman()) {
+				mCallCount++;
+			}
+			if (Prefs.getInstance().isSupportEnglish()) {
+				new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
+						new DOCookie(1, "en", getQuery())).execute();
+			}
+			if (Prefs.getInstance().isSupportChinese()) {
+				new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
+						new DOCookie(1, "zh", getQuery())).execute();
+			}
+			if (Prefs.getInstance().isSupportGerman()) {
+				new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
+						new DOCookie(1, "de", getQuery())).execute();
 			}
 		}
 	}

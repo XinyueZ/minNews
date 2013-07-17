@@ -3,6 +3,7 @@ package com.gmail.hasszhao.mininews.adapters;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -46,6 +47,7 @@ public final class NewsEndlessListAdapter extends EndlessAdapter {
 		List<DONews> list = mNewsList.getPulledNewss();
 		int sz = list.size();
 		mCallNext.callNext(sz + 1);
+		Log.d("mini", "Ask: sz=" + sz);
 		return sz < mNewsList.getCount();
 	}
 

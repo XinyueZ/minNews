@@ -53,9 +53,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsListPageFragment";
 	protected static final String KEY_LANGUAGE = "NewsList.Page.language";
-	private static final int MAX_FRQUENT = 5 * 1000;
 	private NewsEndlessListAdapter mNewsEndlessListAdapter;
-	private long mLastLoadingTime = 0;
 	private ListNews mNewsList;
 	private INewsListItem mSelectedNewsItem;
 
@@ -127,21 +125,19 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 		View v = getView();
 		if (v != null && mNewsList != null) {
 			mNewsList.getPulledNewss().clear();
+			// In order to let lazy-loading still work after "All-refreshing"
+			// being finished.
+			mNewsList = null;
+			mNewsEndlessListAdapter = null;
 		}
 		loadData();
 	}
 
 
 	private void loadData() {
-		long now = System.currentTimeMillis();
-		if (now - mLastLoadingTime > MAX_FRQUENT) {
-			Activity act = getActivity();
-			if (act != null) {
-				callNext(1);
-			}
-			mLastLoadingTime = now;
-		} else {
-			stepDone();
+		Activity act = getActivity();
+		if (act != null) {
+			callNext(1);
 		}
 	}
 
