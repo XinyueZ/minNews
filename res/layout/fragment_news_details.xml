@@ -27,7 +27,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/tv_details_topline"
             android:layout_marginBottom="@dimen/details_box_margin"
-            android:background="@color/white"
+            android:background="@drawable/rounded_solid_white"
             android:paddingLeft="5dp"
             android:paddingRight="5dp" >
 

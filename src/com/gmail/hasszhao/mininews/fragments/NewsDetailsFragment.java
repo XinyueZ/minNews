@@ -26,6 +26,7 @@ import com.gmail.hasszhao.mininews.tasks.LoadDetailsContent;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.views.WrapImageTextView;
+import com.jimplush.goose.Article;
 
 
 public final class NewsDetailsFragment extends BasicFragment implements ISharable, ImageListener, OnClickListener {
@@ -56,10 +57,6 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 	}
 
 
-
-
-
-
 	private void loadDetails(View v) {
 		Fragment fragment = getTargetFragment();
 		if (fragment instanceof INewsListItemProvider) {
@@ -82,7 +79,7 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 
 
 				@Override
-				protected void onPostExecute(org.w3c.dom.Document _result) {
+				protected void onPostExecute(Article _result) {
 					super.onPostExecute(_result);
 					Activity act = getActivity();
 					if (act instanceof MainActivity) {
