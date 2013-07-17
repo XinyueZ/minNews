@@ -124,6 +124,10 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 	@Override
 	public void refresh() {
+		View v = getView();
+		if (v != null && mNewsList != null) {
+			mNewsList.getPulledNewss().clear();
+		}
 		loadData();
 	}
 
@@ -246,11 +250,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 	@Override
 	public void onRefreshStarted(View _view) {
 		if (_view != null) {
-			View v = getView();
-			if (v != null && mNewsList != null) {
-				mNewsList.getPulledNewss().clear();
-			}
-			loadData();
+			refresh();
 		}
 	}
 

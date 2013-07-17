@@ -29,7 +29,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment;
 import com.gmail.hasszhao.mininews.fragments.dialog.LoadingFragment;
-import com.gmail.hasszhao.mininews.fragments.list.NewsListFragment;
 import com.gmail.hasszhao.mininews.fragments.viewpagers.NewsPagersFragment;
 import com.gmail.hasszhao.mininews.fragments.viewpagers.SearchedNewsPagersFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
@@ -240,6 +239,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 			IRefreshable refreshable = (IRefreshable) f;
 			refreshable.refresh();
 		} else {
+			// The bottom site(viewpager) is now exposed to user.
 			Fragment lastFragment = getSupportFragmentManager().findFragmentByTag(NewsPagersFragment.TAG);
 			if (lastFragment instanceof IRefreshable) {
 				IRefreshable refreshable = (IRefreshable) lastFragment;
@@ -349,21 +349,6 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		NewsPagersFragment fmg = NewsPagersFragment.newInstance(this);
 		trans.replace(R.id.container_news, fmg, NewsPagersFragment.TAG);
-		trans.commit();
-	}
-
-
-	/**
-	 * Use single page to show all news.
-	 * 
-	 * @deprecated We use now ViewPager to show all news per langauge.
-	 * */
-	@SuppressWarnings("unused")
-	@Deprecated
-	private void showNewsListFragment() {
-		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-		NewsListFragment fmg = NewsListFragment.newInstance(this);
-		trans.replace(R.id.container_news, fmg, NewsListFragment.TAG);
 		trans.commit();
 	}
 

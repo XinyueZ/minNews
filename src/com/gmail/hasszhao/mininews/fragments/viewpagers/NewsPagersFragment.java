@@ -14,6 +14,7 @@ import com.gmail.hasszhao.mininews.adapters.NewsListPagesAdapter;
 import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.fragments.list.NewsListPageFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
+import com.gmail.hasszhao.mininews.utils.Util;
 import com.viewpagerindicator.CirclePageIndicator;
 
 
@@ -114,6 +115,7 @@ public class NewsPagersFragment extends BasicFragment implements IRefreshable {
 				f = (NewsListPageFragment) mAdapter.instantiateItem(vp, i);
 				f.refresh();
 			}
+			Util.showLongToast(getActivity().getApplicationContext(), R.string.msg_refresh_all);
 		}
 	}
 }

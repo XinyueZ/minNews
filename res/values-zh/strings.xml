@@ -24,6 +24,7 @@
     <string name="action_open_in_web">打开浏览器阅读</string>
     <string name="action_retry">重试</string>
     <string name="msg_refresh">过5秒才能刷新一次哦。</string>
+    <string name="msg_refresh_all">更新所有页面.</string>
     <string name="msg_error">服务器出现故障，需要数小时等待它恢复工作。</string>
     <string name="msg_data_cant_be_loaded">无法读取数据，请重试。</string>
     <string name="msg_data_cant_be_loaded_but_read_cached">无法读取数据，但是可以读取缓冲内容。</string>

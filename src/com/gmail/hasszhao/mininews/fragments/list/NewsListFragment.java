@@ -44,6 +44,7 @@ import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 
+@Deprecated
 public class NewsListFragment extends BasicFragment implements Listener<DOStatus>, ErrorListener, OnRefreshListener,
 		OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider, IErrorResponsible {
 
