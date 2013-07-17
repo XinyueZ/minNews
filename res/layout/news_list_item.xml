@@ -29,6 +29,26 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/iv_thumb"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal" >
+
+            <com.gmail.hasszhao.mininews.views.FixedSizeImageView
+                android:id="@+id/iv_bunner_thumb_1"
+                style="@style/Thumb_Banner"
+                android:layout_width="@dimen/banner_thumb_width"
+                android:layout_height="@dimen/banner_thumb_height" />
+
+            <com.gmail.hasszhao.mininews.views.FixedSizeImageView
+                android:id="@+id/iv_bunner_thumb_2"
+                style="@style/Thumb_Banner"
+                android:layout_width="@dimen/banner_thumb_width"
+                android:layout_height="@dimen/banner_thumb_height" />
+        </LinearLayout>
     </RelativeLayout>
 
     <com.gmail.hasszhao.mininews.views.FontTextView

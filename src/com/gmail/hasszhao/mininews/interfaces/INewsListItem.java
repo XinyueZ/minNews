@@ -20,4 +20,8 @@ public interface INewsListItem {
 	String getURL();
 
 
+	boolean isHot();
+
+
+	boolean isNew();
 }

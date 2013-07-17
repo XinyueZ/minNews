@@ -6,6 +6,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -82,16 +83,20 @@ public final class NewsListAdapter extends BaseAdapter {
 		TextView headline;
 		TextView date;
 		ImageButton newsShare;
+		ImageView banner1;
+		ImageView banner2;
 
 
-		public ViewHolder(NetworkImageView _thumb, TextView _topline, TextView _headline, TextView _date,
-				ImageButton _newsShare) {
+		private ViewHolder(NetworkImageView _thumb, TextView _topline, TextView _headline, TextView _date,
+				ImageButton _newsShare, ImageView _banner1, ImageView _banner2) {
 			super();
 			thumb = _thumb;
 			topline = _topline;
 			headline = _headline;
 			date = _date;
 			newsShare = _newsShare;
+			banner1 = _banner1;
+			banner2 = _banner2;
 		}
 	}
 
@@ -104,7 +109,9 @@ public final class NewsListAdapter extends BaseAdapter {
 			_convertView.setTag(h = new ViewHolder((NetworkImageView) _convertView.findViewById(R.id.iv_thumb),
 					(TextView) _convertView.findViewById(R.id.tv_topline), (TextView) _convertView
 							.findViewById(R.id.tv_headline), (TextView) _convertView.findViewById(R.id.tv_date),
-					(ImageButton) _convertView.findViewById(R.id.btn_news_be_shared)));
+					(ImageButton) _convertView.findViewById(R.id.btn_news_be_shared), (ImageView) _convertView
+							.findViewById(R.id.iv_bunner_thumb_1), (ImageView) _convertView
+							.findViewById(R.id.iv_bunner_thumb_2)));
 		} else {
 			h = (ViewHolder) _convertView.getTag();
 		}
@@ -132,6 +139,21 @@ public final class NewsListAdapter extends BaseAdapter {
 				}
 			}
 		});
+		if (newsItem.isHot() && newsItem.isNew()) {
+			h.banner1.setVisibility(View.VISIBLE);
+			h.banner1.setImageResource(R.drawable.ic_banner_hot_item);
+			h.banner2.setVisibility(View.VISIBLE);
+			h.banner2.setImageResource(R.drawable.ic_banner_new);
+		} else {
+			h.banner2.setVisibility(View.INVISIBLE);
+			if (newsItem.isHot()) {
+				h.banner1.setImageResource(R.drawable.ic_banner_hot_item);
+			} else if (newsItem.isNew()) {
+				h.banner1.setImageResource(R.drawable.ic_banner_new);
+			} else {
+				h.banner1.setVisibility(View.INVISIBLE);
+			}
+		}
 		return _convertView;
 	}
 

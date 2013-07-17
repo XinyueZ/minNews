@@ -148,7 +148,7 @@
         <item name="android:text">@string/title_ok</item>
         <item name="android:layout_marginRight">2dp</item>
     </style>
-    
+
     <style name="Text.Yellow.Retry.Button" parent="Text.Yellow.Button">
         <item name="android:background">@drawable/selector_yellow_button</item>
         <item name="android:text">@string/action_retry</item>
@@ -225,11 +225,15 @@
     </style>
 
     <style name="Thumb" parent="Thumb_Details">
-        <item name="android:contentDescription">@null</item>
         <item name="android:layout_margin">5dp</item>
     </style>
 
+    <style name="Thumb_Banner" parent="Thumb_Details">
+        <item name="android:src">@drawable/ic_banner_hot_item</item>
+    </style>
+
     <style name="Thumb_Details">
+        <item name="android:contentDescription">@null</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:src">@drawable/ic_launcher</item>
     </style>

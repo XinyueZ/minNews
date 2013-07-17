@@ -7,15 +7,18 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 
 public final class DONews implements INewsListItem {
 
+	private static final int ONE_HOUR = 60 * 60 * 1000;
 	private final String Title;
 	private final String Content;
 	private final String Preview;
 	private final String Url;
 	private final String ImageUrl;
 	private final long Date;
+	private final boolean IsHot;
 
 
-	public DONews(String _title, String _content, String _preview, String _url, String _imageUrl, long _date) {
+	private DONews(String _title, String _content, String _preview, String _url, String _imageUrl, long _date,
+			boolean _isHot) {
 		super();
 		Title = _title;
 		Content = _content;
@@ -23,18 +26,19 @@ public final class DONews implements INewsListItem {
 		Url = _url;
 		ImageUrl = _imageUrl;
 		Date = _date;
+		IsHot = _isHot;
 	}
 
 
 	@Override
 	public String getTopline() {
-		return getTitle();
+		return Title;
 	}
 
 
 	@Override
 	public String getHeadline() {
-		return getPreview();
+		return Preview;
 	}
 
 
@@ -46,43 +50,30 @@ public final class DONews implements INewsListItem {
 
 	@Override
 	public String getURL() {
-		return getUrl();
+		return Url;
 	}
 
 
 	@Override
 	public String getFullContent() {
-		return getContent();
+		return Content;
 	}
 
 
 	@Override
 	public String getThumbUrl() {
-		return getImageUrl();
-	}
-
-
-	public String getTitle() {
-		return Title;
-	}
-
-
-	public String getContent() {
-		return Content;
-	}
-
-
-	public String getPreview() {
-		return Preview;
-	}
-
-
-	public String getUrl() {
-		return Url;
-	}
-
-
-	public String getImageUrl() {
 		return ImageUrl;
+	}
+
+
+	@Override
+	public boolean isHot() {
+		return IsHot;
+	}
+
+
+	@Override
+	public boolean isNew() {
+		return System.currentTimeMillis() - Date <= ONE_HOUR;
 	}
 }
