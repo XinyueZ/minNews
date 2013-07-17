@@ -12,7 +12,8 @@ public abstract class BasicActivity extends SherlockFragmentActivity {
 
 	protected void replaceOpenFragment(Fragment _f, String _tag) {
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-		trans.setCustomAnimations(R.anim.slide_top_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_top_out);
+		trans.setCustomAnimations(R.anim.hyperspace_fast_in, R.anim.hyperspace_fast_out, R.anim.fade_in,
+				R.anim.hyperspace_fast_out);
 		trans.replace(R.id.container_error, _f, _tag).commit();
 	}
 
