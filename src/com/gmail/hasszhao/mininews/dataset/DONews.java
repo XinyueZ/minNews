@@ -1,6 +1,6 @@
 package com.gmail.hasszhao.mininews.dataset;
 
-import java.util.Calendar;
+import android.text.format.DateUtils;
 
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 
@@ -40,9 +40,7 @@ public final class DONews implements INewsListItem {
 
 	@Override
 	public String getDate() {
-		Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(Date);
-		return c.getTime().toString();
+		return DateUtils.getRelativeTimeSpanString(Date).toString();
 	}
 
 
