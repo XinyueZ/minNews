@@ -24,4 +24,7 @@ public interface INewsListItem {
 
 
 	boolean isNew();
+
+
+	long getTime();
 }

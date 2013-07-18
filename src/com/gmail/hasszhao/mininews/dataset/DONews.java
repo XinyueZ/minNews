@@ -17,7 +17,7 @@ public final class DONews implements INewsListItem {
 	private final boolean IsHot;
 
 
-	private DONews(String _title, String _content, String _preview, String _url, String _imageUrl, long _date,
+	public DONews(String _title, String _content, String _preview, String _url, String _imageUrl, long _date,
 			boolean _isHot) {
 		super();
 		Title = _title;
@@ -75,5 +75,11 @@ public final class DONews implements INewsListItem {
 	@Override
 	public boolean isNew() {
 		return System.currentTimeMillis() - Date <= ONE_HOUR;
+	}
+
+
+	@Override
+	public long getTime() {
+		return Date;
 	}
 }

@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.android.volley.Request.Method;
@@ -17,11 +19,13 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.gmail.hasszhao.mininews.API;
+import com.gmail.hasszhao.mininews.App;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.activities.MainActivity;
 import com.gmail.hasszhao.mininews.adapters.NewsEndlessListAdapter;
 import com.gmail.hasszhao.mininews.adapters.NewsEndlessListAdapter.ICallNext;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
+import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsBookmarkedListener;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsClickedListener;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsShareListener;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
@@ -47,7 +51,7 @@ import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 public class NewsListPageFragment extends BasicFragment implements Listener<DOStatus>, ErrorListener,
 		OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider, ICallNext,
-		IErrorResponsible {
+		IErrorResponsible, OnNewsBookmarkedListener {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsListPageFragment";
@@ -176,9 +180,11 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
 				if (mNewsEndlessListAdapter == null) {
-					NewsListAdapter adapter = new NewsListAdapter(getActivity(), getListNews());
+					NewsListAdapter adapter = new NewsListAdapter(getActivity().getApplicationContext(), getListNews());
 					adapter.setOnNewsClickedListener(this);
 					adapter.setOnNewsShareListener(this);
+					adapter.setOnNewsBookmarkedListener(this);
+					adapter.setAppDB(((App) getActivity().getApplication()).getAppDB());
 					mNewsEndlessListAdapter = new NewsEndlessListAdapter(act.getApplicationContext(), adapter, this);
 					mNewsEndlessListAdapter.setRunInBackground(false);
 					listView.setAdapter(mNewsEndlessListAdapter);
@@ -327,5 +333,17 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 	@Override
 	public boolean isDataCached() {
 		return getListNews() != null && getListNews().getPulledNewss().size() > 0;
+	}
+
+
+	@Override
+	public void onNewsBookmarked(ImageButton _button, INewsListItem _newsItem) {
+		Activity act = getActivity();
+		if (act != null) {
+			App app = (App) act.getApplication();
+			boolean success = app.getAppDB().insertNewsItem(_newsItem);
+			Log.d("Mini", "Ask: DB: Insert:" + success);
+			_button.setSelected(true);
+		}
 	}
 }

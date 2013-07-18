@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
+import com.gmail.hasszhao.mininews.db.AppDatabase;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 
@@ -22,6 +23,7 @@ public final class NewsListAdapter extends BaseAdapter {
 	private static final int LAYOUT = R.layout.news_list_item;
 	private Context mContext;
 	private ListNews mNewsListItems;
+	private AppDatabase mAppDB;
 
 
 	public interface OnNewsClickedListener {
@@ -34,9 +36,15 @@ public final class NewsListAdapter extends BaseAdapter {
 		void onNewsShare(INewsListItem _newsItem);
 	}
 
+	public interface OnNewsBookmarkedListener {
+
+		void onNewsBookmarked(ImageButton _button, INewsListItem _newsItem);
+	}
+
 
 	private OnNewsClickedListener mOnNewsClickedListener;
 	private OnNewsShareListener mOnNewsShareListener;
+	private OnNewsBookmarkedListener mOnNewsBookmarkedListener;
 
 
 	public NewsListAdapter(Context _context, ListNews _newsListItems) {
@@ -83,18 +91,20 @@ public final class NewsListAdapter extends BaseAdapter {
 		TextView headline;
 		TextView date;
 		ImageButton newsShare;
+		ImageButton bookmarked;
 		ImageView banner1;
 		ImageView banner2;
 
 
 		private ViewHolder(NetworkImageView _thumb, TextView _topline, TextView _headline, TextView _date,
-				ImageButton _newsShare, ImageView _banner1, ImageView _banner2) {
+				ImageButton _newsShare, ImageButton _bookmarked, ImageView _banner1, ImageView _banner2) {
 			super();
 			thumb = _thumb;
 			topline = _topline;
 			headline = _headline;
 			date = _date;
 			newsShare = _newsShare;
+			bookmarked = _bookmarked;
 			banner1 = _banner1;
 			banner2 = _banner2;
 		}
@@ -103,13 +113,14 @@ public final class NewsListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int _position, View _convertView, ViewGroup _parent) {
-		ViewHolder h;
+		final ViewHolder h;
 		if (_convertView == null) {
 			_convertView = View.inflate(mContext, LAYOUT, null);
 			_convertView.setTag(h = new ViewHolder((NetworkImageView) _convertView.findViewById(R.id.iv_thumb),
 					(TextView) _convertView.findViewById(R.id.tv_topline), (TextView) _convertView
 							.findViewById(R.id.tv_headline), (TextView) _convertView.findViewById(R.id.tv_date),
-					(ImageButton) _convertView.findViewById(R.id.btn_news_be_shared), (ImageView) _convertView
+					(ImageButton) _convertView.findViewById(R.id.btn_news_be_shared), (ImageButton) _convertView
+							.findViewById(R.id.btn_bookmark), (ImageView) _convertView
 							.findViewById(R.id.iv_bunner_thumb_1), (ImageView) _convertView
 							.findViewById(R.id.iv_bunner_thumb_2)));
 		} else {
@@ -127,6 +138,16 @@ public final class NewsListAdapter extends BaseAdapter {
 			public void onClick(View _v) {
 				if (mOnNewsShareListener != null) {
 					mOnNewsShareListener.onNewsShare(newsItem);
+				}
+			}
+		});
+		h.bookmarked.setSelected(mAppDB.isNewsBookmarked(newsItem));
+		h.bookmarked.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View _v) {
+				if (mOnNewsBookmarkedListener != null) {
+					mOnNewsBookmarkedListener.onNewsBookmarked(h.bookmarked, newsItem);
 				}
 			}
 		});
@@ -170,5 +191,15 @@ public final class NewsListAdapter extends BaseAdapter {
 
 	public ListNews getNewsListItems() {
 		return mNewsListItems;
+	}
+
+
+	public synchronized void setOnNewsBookmarkedListener(OnNewsBookmarkedListener _onNewsBookmarkedListener) {
+		mOnNewsBookmarkedListener = _onNewsBookmarkedListener;
+	}
+
+
+	public synchronized void setAppDB(AppDatabase _appDB) {
+		mAppDB = _appDB;
 	}
 }

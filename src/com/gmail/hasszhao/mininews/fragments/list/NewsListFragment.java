@@ -206,7 +206,7 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
 				if (mAdapter == null) {
-					mAdapter = new NewsListAdapter(getActivity(), mNewsList);
+					mAdapter = new NewsListAdapter(getActivity().getApplicationContext(), mNewsList);
 					mAdapter.setOnNewsClickedListener(this);
 					mAdapter.setOnNewsShareListener(this);
 					supportCardAnim(listView);

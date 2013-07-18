@@ -20,7 +20,7 @@ public abstract class BasicFragment extends SherlockFragment {
 	protected void replaceOpenFragment(Fragment _f, String _tag) {
 		FragmentTransaction trans = getChildFragmentManager().beginTransaction();
 		trans.setCustomAnimations(R.anim.slide_top_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_top_out);
-		trans.replace(R.id.container_error, _f, _tag).addToBackStack(_tag).commit();
+		trans.replace(R.id.container_error, _f, _tag).commit();
 		_f.setTargetFragment(this, 0);
 	}
 
