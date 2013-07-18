@@ -5,19 +5,20 @@ import java.lang.ref.WeakReference;
 import org.jsoup.Jsoup;
 
 import android.os.AsyncTask;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
-import com.jimplush.goose.Article;
-import com.jimplush.goose.Configuration;
-import com.jimplush.goose.ContentExtractor;
+import com.gravity.goose.Article;
+import com.gravity.goose.Configuration;
+import com.gravity.goose.Goose;
 
 
 public class LoadDetailsContent extends AsyncTask<String, Article, Article> {
 
-	private static final String API_KEY = "2b1a8e7f45b333378006d0b635360406f2b8c621";
 	private final WeakReference<TextView> mOutput;
 	private final WeakReference<Button> mVisitWeb;
 	private final INewsListItem mNewsItem;
@@ -36,7 +37,10 @@ public class LoadDetailsContent extends AsyncTask<String, Article, Article> {
 	@Override
 	protected Article doInBackground(String... _params) {
 		String url = mNewsItem.getURL();
-		ContentExtractor goose = new ContentExtractor(new Configuration());
+		Configuration config = new Configuration();
+		// https://github.com/GravityLabs/goose/issues/60
+		config.setLocalStoragePath("/data/data/com.gmail.hasszhao.mininews/cache");
+		Goose goose = new Goose(config);
 		Article article = goose.extractContent(url);
 		return article;
 	}
@@ -47,8 +51,14 @@ public class LoadDetailsContent extends AsyncTask<String, Article, Article> {
 		if (_result != null) {
 			TextView tv = mOutput.get();
 			if (tv != null) {
-				tv.setText(_result.getCleanedArticleText());
-				tv.setVisibility(View.VISIBLE);
+				String cleaned = _result.cleanedArticleText();
+				if (!TextUtils.isEmpty(cleaned)) {
+					tv.setText(cleaned);
+					tv.setVisibility(View.VISIBLE);
+					Log.i("mini", "Show normal");
+				} else {
+					showFallback();
+				}
 			}
 		} else {
 			showFallback();
@@ -78,6 +88,7 @@ public class LoadDetailsContent extends AsyncTask<String, Article, Article> {
 			// }
 			// }
 			tv.setVisibility(View.VISIBLE);
+			Log.i("mini", "Show fallback");
 		}
 	}
 }

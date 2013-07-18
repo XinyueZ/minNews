@@ -89,11 +89,11 @@
 
     <style name="Text.News_Details" parent="Text.Topline">
         <item name="android:padding">@dimen/details_box_padding</item>
-        <item name="android:background">@drawable/rounded_solid_white</item>
         <item name="android:textSize">20sp</item>
         <item name="android:lineSpacingExtra">@dimen/lineSpacingExtra</item>
         <item name="android:autoLink">all</item>
         <item name="android:gravity">top|left</item>
+        <item name="android:background">@color/white</item>
         <item name="android:linksClickable">true</item>
     </style>
 

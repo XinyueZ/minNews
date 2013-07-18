@@ -1,10 +1,10 @@
 package com.gmail.hasszhao.mininews.fragments.list;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 import com.gmail.hasszhao.mininews.utils.Util;
 
 
@@ -16,6 +16,7 @@ public final class SearchedNewsListPageFragment extends NewsListPageFragment {
 	private static final String KEY_NEW_SEARCH_KEY = "Searched.new.key";
 	private boolean mNewSearch;
 	private String mNewSearchKey;
+	private ListNews mListNews;
 
 
 	@Override
@@ -63,7 +64,13 @@ public final class SearchedNewsListPageFragment extends NewsListPageFragment {
 
 
 	@Override
-	protected void payload(Activity _activity) {
-		// Do not use any pay-loaded-data.
+	protected void setListNews(ListNews _listNews) {
+		mListNews = _listNews;
+	}
+
+
+	@Override
+	protected ListNews getListNews() {
+		return mListNews;
 	}
 }

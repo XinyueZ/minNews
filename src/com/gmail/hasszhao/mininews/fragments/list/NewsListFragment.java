@@ -258,7 +258,7 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 		if (act != null) {
 			mSelectedNewsItem = _newsItem;
 			if (!Prefs.getInstance().getDontAskForOpeningDetailsMethod()) {
-				MainActivity.showPopup(act, AskOpenDetailsMethodFragment.newInstance(this), null);
+				MainActivity.showDialogFragment(act, AskOpenDetailsMethodFragment.newInstance(this), null);
 			} else {
 				openDetails(OpenContentMethod.fromValue(Prefs.getInstance().getOpenDetailsMethod()));
 			}

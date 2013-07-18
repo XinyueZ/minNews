@@ -5,12 +5,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.gmail.hasszhao.mininews.App;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.activities.MainActivity;
+import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 
 
 public abstract class BasicFragment extends SherlockFragment {
 
+	protected static final String KEY_LANGUAGE = "NewsList.Page.language";
 	protected static final int BOTTOM_IN_SEC = 1000;
 
 
@@ -45,5 +48,15 @@ public abstract class BasicFragment extends SherlockFragment {
 		if (act != null) {
 			act.setSidebarEnable(_enable);
 		}
+	}
+
+
+	protected ListNews getListNews() {
+		return ((App) getActivity().getApplication()).getListNews(getArguments().getString(KEY_LANGUAGE));
+	}
+
+
+	protected void setListNews(ListNews _listNews) {
+		((App) getActivity().getApplication()).addListNews(getArguments().getString(KEY_LANGUAGE), _listNews);
 	}
 }

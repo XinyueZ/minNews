@@ -17,7 +17,6 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.gmail.hasszhao.mininews.API;
-import com.gmail.hasszhao.mininews.App;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.activities.MainActivity;
 import com.gmail.hasszhao.mininews.adapters.NewsEndlessListAdapter;
@@ -52,26 +51,8 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsListPageFragment";
-	protected static final String KEY_LANGUAGE = "NewsList.Page.language";
 	private NewsEndlessListAdapter mNewsEndlessListAdapter;
-	private ListNews mNewsList;
 	private INewsListItem mSelectedNewsItem;
-
-
-	@Override
-	public void onAttach(Activity _activity) {
-		super.onAttach(_activity);
-		payload(_activity);
-	}
-
-
-	/**
-	 * Load data from pay-loaded-cache that have been loaded by splash.
-	 * */
-	protected void payload(Activity _activity) {
-		Activity act = _activity;
-		mNewsList = ((App) act.getApplication()).getListNews(getArguments().getString(KEY_LANGUAGE));
-	}
 
 
 	public static NewsListPageFragment newInstance(Context _context, String _language) {
@@ -96,7 +77,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 
 	private void init() {
-		if (mNewsList != null && mNewsList.getPulledNewss().size() > 0) {
+		if (getListNews() != null && getListNews().getPulledNewss().size() > 0) {
 			initList();
 		} else {
 			loadData();
@@ -114,7 +95,6 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 	@Override
 	public void onDestroy() {
 		mNewsEndlessListAdapter = null;
-		mNewsList = null;
 		mSelectedNewsItem = null;
 		super.onDestroy();
 	}
@@ -123,11 +103,11 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 	@Override
 	public void refresh() {
 		View v = getView();
-		if (v != null && mNewsList != null) {
-			mNewsList.getPulledNewss().clear();
+		if (v != null && getListNews() != null) {
+			getListNews().getPulledNewss().clear();
 			// In order to let lazy-loading still work after "All-refreshing"
 			// being finished.
-			mNewsList = null;
+			setListNews(null);
 			mNewsEndlessListAdapter = null;
 		}
 		loadData();
@@ -162,10 +142,10 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 					case API.API_OK:
 						ListNews dataFromServer = TaskHelper.getGson().fromJson(
 								new String(Base64.decode(_response.getData(), Base64.DEFAULT)), ListNews.class);
-						if (mNewsList == null) {
-							mNewsList = (ListNews) dataFromServer.clone();
+						if (getListNews() == null) {
+							setListNews((ListNews) dataFromServer.clone());
 						} else {
-							mNewsList.getPulledNewss().addAll(
+							getListNews().getPulledNewss().addAll(
 									TaskHelper
 											.getGson()
 											.fromJson(new String(Base64.decode(_response.getData(), Base64.DEFAULT)),
@@ -190,13 +170,13 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 	private void initList() {
 		Activity act = getActivity();
-		if (act != null && mNewsList != null && mNewsList.getPulledNewss().size() > 0) {
+		if (act != null && getListNews() != null && getListNews().getPulledNewss().size() > 0) {
 			// Log.d("news", "Ask: news size:" + newsList.size());
 			View v = getView();
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
 				if (mNewsEndlessListAdapter == null) {
-					NewsListAdapter adapter = new NewsListAdapter(getActivity(), mNewsList);
+					NewsListAdapter adapter = new NewsListAdapter(getActivity(), getListNews());
 					adapter.setOnNewsClickedListener(this);
 					adapter.setOnNewsShareListener(this);
 					mNewsEndlessListAdapter = new NewsEndlessListAdapter(act.getApplicationContext(), adapter, this);
@@ -257,7 +237,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 		if (act != null) {
 			mSelectedNewsItem = _newsItem;
 			if (!Prefs.getInstance().getDontAskForOpeningDetailsMethod()) {
-				MainActivity.showPopup(act, AskOpenDetailsMethodFragment.newInstance(this), null);
+				MainActivity.showDialogFragment(act, AskOpenDetailsMethodFragment.newInstance(this), null);
 			} else {
 				openDetails(OpenContentMethod.fromValue(Prefs.getInstance().getOpenDetailsMethod()));
 			}
@@ -340,12 +320,12 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 	@Override
 	public void retry() {
-		callNext(mNewsList == null ? 1 : mNewsList.getPulledNewss().size() + 1);
+		callNext(getListNews() == null ? 1 : getListNews().getPulledNewss().size() + 1);
 	}
 
 
 	@Override
 	public boolean isDataCached() {
-		return mNewsList != null && mNewsList.getPulledNewss().size() > 0;
+		return getListNews() != null && getListNews().getPulledNewss().size() > 0;
 	}
 }

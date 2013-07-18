@@ -26,7 +26,7 @@ import com.gmail.hasszhao.mininews.tasks.LoadDetailsContent;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.views.WrapImageTextView;
-import com.jimplush.goose.Article;
+import com.gravity.goose.Article;
 
 
 public final class NewsDetailsFragment extends BasicFragment implements ISharable, ImageListener, OnClickListener {

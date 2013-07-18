@@ -68,7 +68,7 @@ public class NewsPagersFragment extends BasicFragment implements IRefreshable {
 				vp.setOffscreenPageLimit(mAdapter.getCount());
 				vp.setAdapter(mAdapter);
 			} else {
-				showLoadingFragment();
+				// showLoadingFragment();
 				mAdapter.setData(getChildFragmentManager(), getActivity().getApplicationContext(), getArguments()
 						.getString(KEY_SEARCH_KEY));
 				// There's a workaround, but it seems doesn't work for my case

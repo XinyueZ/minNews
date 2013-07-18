@@ -285,7 +285,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 
 
 	private void updatePages() {
-		Fragment f = getTopFragment();
+		Fragment f = getSupportFragmentManager().findFragmentByTag(NewsPagersFragment.TAG);
 		if (f instanceof NewsPagersFragment) {
 			((NewsPagersFragment) f).updatePages();
 		}
@@ -383,7 +383,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	}
 
 
-	public static void showPopup(FragmentActivity _activty, DialogFragment _dlgFrg, String _tagName) {
+	public static void showDialogFragment(FragmentActivity _activty, DialogFragment _dlgFrg, String _tagName) {
 		if (_dlgFrg != null) {
 			DialogFragment dialogFragment = _dlgFrg;
 			FragmentTransaction ft = _activty.getSupportFragmentManager().beginTransaction();
@@ -405,7 +405,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 
 
 	public synchronized void showLoadingFragment(int _max) {
-		showPopup(this, LoadingFragment.newInstance(getApplicationContext(), _max), DLG_TAG);
+		showDialogFragment(this, LoadingFragment.newInstance(getApplicationContext(), _max), DLG_TAG);
 	}
 
 
