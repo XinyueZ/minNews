@@ -20,6 +20,13 @@ public final class SearchedNewsListPageFragment extends NewsListPageFragment {
 
 
 	@Override
+	public void onDestroy() {
+		mListNews = null;
+		super.onDestroy();
+	}
+
+
+	@Override
 	public void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
 		if (_savedInstanceState != null) {
