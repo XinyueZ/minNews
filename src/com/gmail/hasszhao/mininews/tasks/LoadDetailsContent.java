@@ -36,13 +36,18 @@ public class LoadDetailsContent extends AsyncTask<String, Article, Article> {
 
 	@Override
 	protected Article doInBackground(String... _params) {
-		String url = mNewsItem.getURL();
-		Configuration config = new Configuration();
-		// https://github.com/GravityLabs/goose/issues/60
-		config.setLocalStoragePath("/data/data/com.gmail.hasszhao.mininews/cache");
-		Goose goose = new Goose(config);
-		Article article = goose.extractContent(url);
-		return article;
+		try {
+			String url = mNewsItem.getURL();
+			Configuration config = new Configuration();
+			// https://github.com/GravityLabs/goose/issues/60
+			config.setLocalStoragePath("/data/data/com.gmail.hasszhao.mininews/cache");
+			config.setEnableImageFetching(false);
+			Goose goose = new Goose(config);
+			Article article = goose.extractContent(url);
+			return article;
+		} catch (Exception _e) {
+			return null;
+		}
 	}
 
 

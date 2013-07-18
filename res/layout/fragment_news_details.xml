@@ -63,10 +63,10 @@
             android:id="@+id/tv_details_full_content"
             style="@style/Text.News_Details"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/btn_visit_article_site"
-            android:layerType="software"
+            android:background="@drawable/bg_details"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 
