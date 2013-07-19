@@ -1,13 +1,9 @@
 package com.gmail.hasszhao.mininews.adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,7 +17,7 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 
 
-public final class NewsListAdapter extends BaseAdapter implements OnScrollListener {
+public final class NewsListAdapter extends BaseAdapter {
 
 	private static final int PLACE_HOLDER = R.drawable.ic_launcher;
 	private static final int LAYOUT = R.layout.news_list_item;
@@ -91,27 +87,27 @@ public final class NewsListAdapter extends BaseAdapter implements OnScrollListen
 	}
 
 
-	static class ViewHolder {
+	public static class ViewHolder {
 
 		NetworkImageView thumb;
 		TextView topline;
 		TextView headline;
 		TextView date;
 		ImageButton newsShare;
-		ImageButton bookmarked;
+		public ImageButton bookmark;
 		ImageView banner1;
 		ImageView banner2;
 
 
 		private ViewHolder(NetworkImageView _thumb, TextView _topline, TextView _headline, TextView _date,
-				ImageButton _newsShare, ImageButton _bookmarked, ImageView _banner1, ImageView _banner2) {
+				ImageButton _newsShare, ImageButton _bookmark, ImageView _banner1, ImageView _banner2) {
 			super();
 			thumb = _thumb;
 			topline = _topline;
 			headline = _headline;
 			date = _date;
 			newsShare = _newsShare;
-			bookmarked = _bookmarked;
+			bookmark = _bookmark;
 			banner1 = _banner1;
 			banner2 = _banner2;
 		}
@@ -151,15 +147,15 @@ public final class NewsListAdapter extends BaseAdapter implements OnScrollListen
 		// Move to listview-listener because of blocking while scrolling the
 		// list.
 		// h.bookmarked.setSelected(mAppDB.isNewsBookmarked(newsItem));
-		h.bookmarked.setOnClickListener(new OnClickListener() {
+		h.bookmark.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View _v) {
 				if (mOnNewsBookmarkedListener != null) {
 					if (mAppDB.isNewsBookmarked(newsItem)) {
-						mOnNewsBookmarkedListener.onNewsBookmarkRemoved(h.bookmarked, newsItem);
+						mOnNewsBookmarkedListener.onNewsBookmarkRemoved(h.bookmark, newsItem);
 					} else {
-						mOnNewsBookmarkedListener.onNewsBookmarked(h.bookmarked, newsItem);
+						mOnNewsBookmarkedListener.onNewsBookmarked(h.bookmark, newsItem);
 					}
 				}
 			}
@@ -214,46 +210,5 @@ public final class NewsListAdapter extends BaseAdapter implements OnScrollListen
 
 	public synchronized void setAppDB(AppDB _appDB) {
 		mAppDB = _appDB;
-	}
-
-
-	@Override
-	public void onScroll(AbsListView _view, int _firstVisibleItem, int _visibleItemCount, int _totalItemCount) {
-	}
-
-
-	@Override
-	public void onScrollStateChanged(AbsListView _view, int _scrollState) {
-		View convertView;
-		ViewHolder vh;
-		int totalItemCount = _view.getChildCount();
-		switch (_scrollState) {
-			case OnScrollListener.SCROLL_STATE_IDLE:
-				int first = _view.getFirstVisiblePosition();
-				int count = _view.getChildCount();
-				for (int i = 0; i < count; i++) {
-					convertView = _view.getChildAt(i);
-					if (convertView != null && convertView.getTag() != null) {
-						vh = (ViewHolder) convertView.getTag();
-						int position = first + i;
-						List<? extends INewsListItem> items = mNewsListItems.getPulledNewss();
-						if (items != null) {
-							// Warning! It is sync!
-							vh.bookmarked.setSelected(mAppDB.isNewsBookmarked(items.get(position)));
-						}
-					}
-				}
-				break;
-			case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
-			case OnScrollListener.SCROLL_STATE_FLING:
-				for (int i = 0; i < totalItemCount; i++) {
-					convertView = _view.getChildAt(i);
-					if (convertView != null && convertView.getTag() != null) {
-						vh = (ViewHolder) convertView.getTag();
-						vh.bookmarked.setSelected(false);
-					}
-				}
-				break;
-		}
 	}
 }

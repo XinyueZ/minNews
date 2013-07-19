@@ -1,5 +1,7 @@
 package com.gmail.hasszhao.mininews.fragments.list;
 
+import java.util.List;
+
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +12,8 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -27,13 +31,16 @@ import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsBookmarkButtonClickedListener;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsClickedListener;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsShareListener;
+import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.ViewHolder;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
+import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment.ErrorType;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment.IErrorResponsible;
 import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment;
+import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment.OnDetailsBookmarkButtonClickedListener;
 import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.fragments.dialog.AskOpenDetailsMethodFragment;
 import com.gmail.hasszhao.mininews.fragments.dialog.AskOpenDetailsMethodFragment.OpenContentMethod;
@@ -51,7 +58,8 @@ import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 public class NewsListPageFragment extends BasicFragment implements Listener<DOStatus>, ErrorListener,
 		OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider, ICallNext,
-		IErrorResponsible, OnNewsBookmarkButtonClickedListener {
+		IErrorResponsible, OnNewsBookmarkButtonClickedListener, OnScrollListener,
+		OnDetailsBookmarkButtonClickedListener {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsListPageFragment";
@@ -85,6 +93,64 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 			initList();
 		} else {
 			loadData();
+		}
+	}
+
+
+	private void refreshBookmarkStatusMaybeFromChangingOnDetails() {
+		View v = getView();
+		if (v != null) {
+			ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
+			onListIDLE(listView);
+		}
+	}
+
+
+	@Override
+	public void onScrollStateChanged(AbsListView _view, int _scrollState) {
+		switch (_scrollState) {
+			case OnScrollListener.SCROLL_STATE_IDLE:
+				onListIDLE(_view);
+				break;
+			case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+			case OnScrollListener.SCROLL_STATE_FLING:
+				onListNotIDLE(_view);
+				break;
+		}
+	}
+
+
+	private void onListIDLE(AbsListView _listView) {
+		View convertView;
+		ViewHolder vh;
+		int first = _listView.getFirstVisiblePosition();
+		int totalItemCount = _listView.getChildCount();
+		AppDB db = ((App) getActivity().getApplication()).getAppDB();
+		for (int i = 0; i < totalItemCount; i++) {
+			convertView = _listView.getChildAt(i);
+			if (convertView != null && convertView.getTag() != null) {
+				vh = (ViewHolder) convertView.getTag();
+				int position = first + i;
+				List<? extends INewsListItem> items = getListNews().getPulledNewss();
+				if (items != null) {
+					// Warning! It is sync!
+					vh.bookmark.setSelected(db.isNewsBookmarked(items.get(position)));
+				}
+			}
+		}
+	}
+
+
+	private void onListNotIDLE(AbsListView _listView) {
+		View convertView;
+		ViewHolder vh;
+		int totalItemCount = _listView.getChildCount();
+		for (int i = 0; i < totalItemCount; i++) {
+			convertView = _listView.getChildAt(i);
+			if (convertView != null && convertView.getTag() != null) {
+				vh = (ViewHolder) convertView.getTag();
+				vh.bookmark.setSelected(false);
+			}
 		}
 	}
 
@@ -187,7 +253,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 					adapter.setAppDB(((App) getActivity().getApplication()).getAppDB());
 					mNewsEndlessListAdapter = new NewsEndlessListAdapter(act.getApplicationContext(), adapter, this);
 					mNewsEndlessListAdapter.setRunInBackground(false);
-					listView.setOnScrollListener(adapter);
+					listView.setOnScrollListener(this);
 					listView.setAdapter(mNewsEndlessListAdapter);
 				} else {
 					// mAdapter.refresh(getActivity(), mNewsList);
@@ -292,8 +358,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 	public void openDetailsInApp() {
 		Activity act = getActivity();
 		if (act instanceof MainActivity) {
-			Fragment f = NewsDetailsFragment.newInstance(act);
-			f.setTargetFragment(this, 0);
+			Fragment f = NewsDetailsFragment.newInstance(act, this);
 			((MainActivity) act).addOpenNextPage(f, NewsDetailsFragment.TAG);
 		}
 	}
@@ -366,5 +431,22 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 				}
 			}.execute();
 		}
+	}
+
+
+	@Override
+	public void onDetailsBookmarked() {
+		refreshBookmarkStatusMaybeFromChangingOnDetails();
+	}
+
+
+	@Override
+	public void onDetailsBookmarkRemoved() {
+		refreshBookmarkStatusMaybeFromChangingOnDetails();
+	}
+
+
+	@Override
+	public void onScroll(AbsListView _view, int _firstVisibleItem, int _visibleItemCount, int _totalItemCount) {
 	}
 }

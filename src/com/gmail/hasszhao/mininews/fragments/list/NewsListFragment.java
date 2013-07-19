@@ -306,8 +306,7 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 	public void openDetailsInApp() {
 		Activity act = getActivity();
 		if (act instanceof MainActivity) {
-			Fragment f = NewsDetailsFragment.newInstance(act);
-			f.setTargetFragment(this, 0);
+			Fragment f = NewsDetailsFragment.newInstance(act, this);
 			((MainActivity) act).addOpenNextPage(f, NewsDetailsFragment.TAG);
 		}
 	}

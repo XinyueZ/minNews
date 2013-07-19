@@ -39,8 +39,20 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 	public static final String TAG = "TAG.NewsDetailsFragment";
 
 
-	public static NewsDetailsFragment newInstance(Context _context) {
-		return (NewsDetailsFragment) NewsDetailsFragment.instantiate(_context, NewsDetailsFragment.class.getName());
+	public interface OnDetailsBookmarkButtonClickedListener {
+
+		void onDetailsBookmarked();
+
+
+		void onDetailsBookmarkRemoved();
+	}
+
+
+	public static NewsDetailsFragment newInstance(Context _context, Fragment _target) {
+		NewsDetailsFragment f = (NewsDetailsFragment) NewsDetailsFragment.instantiate(_context,
+				NewsDetailsFragment.class.getName());
+		f.setTargetFragment(_target, 0);
+		return f;
 	}
 
 
@@ -197,6 +209,11 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 					@Override
 					protected void onSuccess() {
 						_v.setSelected(false);
+						Fragment f = getTargetFragment();
+						if (f instanceof OnDetailsBookmarkButtonClickedListener) {
+							OnDetailsBookmarkButtonClickedListener l = (OnDetailsBookmarkButtonClickedListener) f;
+							l.onDetailsBookmarkRemoved();
+						}
 					}
 				}.execute();
 			} else {
@@ -206,6 +223,11 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 					@Override
 					protected void onSuccess() {
 						_v.setSelected(true);
+						Fragment f = getTargetFragment();
+						if (f instanceof OnDetailsBookmarkButtonClickedListener) {
+							OnDetailsBookmarkButtonClickedListener l = (OnDetailsBookmarkButtonClickedListener) f;
+							l.onDetailsBookmarked();
+						}
 					}
 				}.execute();
 			}
