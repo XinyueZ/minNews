@@ -118,18 +118,21 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 
 	private void onListIDLE(AbsListView _listView) {
-		View convertView;
-		ViewHolder vh;
-		int first = _listView.getFirstVisiblePosition();
-		int totalItemCount = _listView.getChildCount();
-		for (int i = 0; i < totalItemCount; i++) {
-			convertView = _listView.getChildAt(i);
-			if (convertView != null && convertView.getTag() != null) {
-				vh = (ViewHolder) convertView.getTag();
-				int position = first + i;
-				List<? extends INewsListItem> items = getListNews().getPulledNewss();
-				if (items != null) {
-					vh.bookmark.setSelected(items.get(position).isBookmarked());
+		ListNews l = getListNews();
+		if (l != null) {
+			View convertView;
+			ViewHolder vh;
+			int first = _listView.getFirstVisiblePosition();
+			int totalItemCount = _listView.getChildCount();
+			for (int i = 0; i < totalItemCount; i++) {
+				convertView = _listView.getChildAt(i);
+				if (convertView != null && convertView.getTag() != null) {
+					vh = (ViewHolder) convertView.getTag();
+					int position = first + i;
+					List<? extends INewsListItem> items = l.getPulledNewss();
+					if (items != null) {
+						vh.bookmark.setSelected(items.get(position).isBookmarked());
+					}
 				}
 			}
 		}
