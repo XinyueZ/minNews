@@ -9,7 +9,7 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.utils.Util;
 
 
-public abstract class BookmarkTask extends AsyncTask<Void, String, String> {
+public abstract class TaskBookmark extends AsyncTask<Void, String, String> {
 
 	public enum BookmarkTaskType {
 		INSERT, DELETE;
@@ -21,7 +21,7 @@ public abstract class BookmarkTask extends AsyncTask<Void, String, String> {
 	private final BookmarkTaskType mType;
 
 
-	public BookmarkTask(AppDB _db, INewsListItem _newsItem, BookmarkTaskType _type) {
+	public TaskBookmark(AppDB _db, INewsListItem _newsItem, BookmarkTaskType _type) {
 		super();
 		mDB = _db;
 		mNewsItem = _newsItem;
@@ -37,10 +37,16 @@ public abstract class BookmarkTask extends AsyncTask<Void, String, String> {
 				if (mDB.insertNewsItem(mNewsItem)) {
 					_msg = mDB.getContext().getString(R.string.action_news_bookmarked);
 				}
+				if (!TextUtils.isEmpty(_msg)) {
+					mNewsItem.setBookmark(true);
+				}
 				break;
 			case DELETE:
 				if (mDB.deleteNewsItemByUrl(mNewsItem)) {
 					_msg = mDB.getContext().getString(R.string.action_news_bookmark_removed);
+				}
+				if (!TextUtils.isEmpty(_msg)) {
+					mNewsItem.setBookmark(false);
 				}
 				break;
 		}

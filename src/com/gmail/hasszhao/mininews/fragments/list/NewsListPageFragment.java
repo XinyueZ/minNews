@@ -8,7 +8,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.ViewHolder;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
-import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment.ErrorType;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment.IErrorResponsible;
@@ -48,9 +46,9 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
-import com.gmail.hasszhao.mininews.tasks.BookmarkTask;
-import com.gmail.hasszhao.mininews.tasks.LoadNewsListTask;
+import com.gmail.hasszhao.mininews.tasks.TaskBookmark;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
+import com.gmail.hasszhao.mininews.tasks.TaskLoadNewsList;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
@@ -114,7 +112,6 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 				break;
 			case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
 			case OnScrollListener.SCROLL_STATE_FLING:
-				onListNotIDLE(_view);
 				break;
 		}
 	}
@@ -125,7 +122,6 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 		ViewHolder vh;
 		int first = _listView.getFirstVisiblePosition();
 		int totalItemCount = _listView.getChildCount();
-		AppDB db = ((App) getActivity().getApplication()).getAppDB();
 		for (int i = 0; i < totalItemCount; i++) {
 			convertView = _listView.getChildAt(i);
 			if (convertView != null && convertView.getTag() != null) {
@@ -133,23 +129,8 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 				int position = first + i;
 				List<? extends INewsListItem> items = getListNews().getPulledNewss();
 				if (items != null) {
-					// Warning! It is sync!
-					vh.bookmark.setSelected(db.isNewsBookmarked(items.get(position)));
+					vh.bookmark.setSelected(items.get(position).isBookmarked());
 				}
-			}
-		}
-	}
-
-
-	private void onListNotIDLE(AbsListView _listView) {
-		View convertView;
-		ViewHolder vh;
-		int totalItemCount = _listView.getChildCount();
-		for (int i = 0; i < totalItemCount; i++) {
-			convertView = _listView.getChildAt(i);
-			if (convertView != null && convertView.getTag() != null) {
-				vh = (ViewHolder) convertView.getTag();
-				vh.bookmark.setSelected(false);
 			}
 		}
 	}
@@ -157,7 +138,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 	@Override
 	public void onDestroyView() {
-		TaskHelper.getRequestQueue().cancelAll(LoadNewsListTask.TAG);
+		TaskHelper.getRequestQueue().cancelAll(TaskLoadNewsList.TAG);
 		super.onDestroyView();
 	}
 
@@ -206,20 +187,17 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 	@Override
 	public synchronized void onResponse(DOStatus _response) {
-		if (_response != null) {
+		Activity act = getActivity();
+		if (_response != null && act != null) {
 			try {
 				switch (_response.getCode()) {
 					case API.API_OK:
-						ListNews dataFromServer = TaskHelper.getGson().fromJson(
-								new String(Base64.decode(_response.getData(), Base64.DEFAULT)), ListNews.class);
+						ListNews dataFromServer = TaskHelper.correctedByDB(_response,
+								((App) act.getApplication()).getAppDB());
 						if (getListNews() == null) {
 							setListNews((ListNews) dataFromServer.clone());
 						} else {
-							getListNews().getPulledNewss().addAll(
-									TaskHelper
-											.getGson()
-											.fromJson(new String(Base64.decode(_response.getData(), Base64.DEFAULT)),
-													ListNews.class).getPulledNewss());
+							getListNews().getPulledNewss().addAll(dataFromServer.getPulledNewss());
 						}
 						closeFragment(ErrorFragment.TAG);
 						initList();
@@ -250,7 +228,6 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 					adapter.setOnNewsClickedListener(this);
 					adapter.setOnNewsShareListener(this);
 					adapter.setOnNewsBookmarkedListener(this);
-					adapter.setAppDB(((App) getActivity().getApplication()).getAppDB());
 					mNewsEndlessListAdapter = new NewsEndlessListAdapter(act.getApplicationContext(), adapter, this);
 					mNewsEndlessListAdapter.setRunInBackground(false);
 					listView.setOnScrollListener(this);
@@ -384,8 +361,8 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 	public void callNext(int _index) {
 		Activity act = getActivity();
 		if (act instanceof MainActivity) {
-			new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
-					new DOCookie(_index, getArguments().getString(KEY_LANGUAGE), getQuery())).execute();
+			new TaskLoadNewsList(act.getApplication(), Method.GET, API.GLAT, DOStatus.class, this, this, new DOCookie(
+					_index, getArguments().getString(KEY_LANGUAGE), getQuery())).execute();
 		}
 	}
 
@@ -407,7 +384,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 		Activity act = getActivity();
 		if (act != null) {
 			App app = (App) act.getApplication();
-			new BookmarkTask(app.getAppDB(), _newsItem, BookmarkTask.BookmarkTaskType.INSERT) {
+			new TaskBookmark(app.getAppDB(), _newsItem, TaskBookmark.BookmarkTaskType.INSERT) {
 
 				@Override
 				protected void onSuccess() {
@@ -423,7 +400,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 		Activity act = getActivity();
 		if (act != null) {
 			App app = (App) act.getApplication();
-			new BookmarkTask(app.getAppDB(), _newsItem, BookmarkTask.BookmarkTaskType.DELETE) {
+			new TaskBookmark(app.getAppDB(), _newsItem, TaskBookmark.BookmarkTaskType.DELETE) {
 
 				@Override
 				protected void onSuccess() {

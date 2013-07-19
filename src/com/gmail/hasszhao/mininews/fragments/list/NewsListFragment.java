@@ -17,6 +17,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.gmail.hasszhao.mininews.API;
+import com.gmail.hasszhao.mininews.App;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.activities.MainActivity;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
@@ -25,6 +26,7 @@ import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsShareListener;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
+import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment.ErrorType;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment.IErrorResponsible;
@@ -36,7 +38,7 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
-import com.gmail.hasszhao.mininews.tasks.LoadNewsListTask;
+import com.gmail.hasszhao.mininews.tasks.TaskLoadNewsList;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
 import com.gmail.hasszhao.mininews.utils.Util;
@@ -85,7 +87,7 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 
 	@Override
 	public void onDestroyView() {
-		TaskHelper.getRequestQueue().cancelAll(LoadNewsListTask.TAG);
+		TaskHelper.getRequestQueue().cancelAll(TaskLoadNewsList.TAG);
 		super.onDestroyView();
 	}
 
@@ -123,16 +125,17 @@ public class NewsListFragment extends BasicFragment implements Listener<DOStatus
 			if (Prefs.getInstance().isSupportGerman()) {
 				mCallCount++;
 			}
+			AppDB db = ((App) act.getApplication()).getAppDB();
 			if (Prefs.getInstance().isSupportEnglish()) {
-				new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
+				new TaskLoadNewsList(db, Method.GET, API.GLAT, DOStatus.class, this, this,
 						new DOCookie(1, "en", getQuery())).execute();
 			}
 			if (Prefs.getInstance().isSupportChinese()) {
-				new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
+				new TaskLoadNewsList(db, Method.GET, API.GLAT, DOStatus.class, this, this,
 						new DOCookie(1, "zh", getQuery())).execute();
 			}
 			if (Prefs.getInstance().isSupportGerman()) {
-				new LoadNewsListTask(act.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, this, this,
+				new TaskLoadNewsList(db, Method.GET, API.GLAT, DOStatus.class, this, this,
 						new DOCookie(1, "de", getQuery())).execute();
 			}
 		}

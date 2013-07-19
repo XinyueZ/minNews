@@ -4,8 +4,6 @@ import java.lang.ref.WeakReference;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -20,12 +18,11 @@ import com.gmail.hasszhao.mininews.App;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
-import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment.ErrorType;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment.IErrorResponsible;
-import com.gmail.hasszhao.mininews.tasks.LoadNewsListTask;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
+import com.gmail.hasszhao.mininews.tasks.TaskLoadNewsList;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 
@@ -57,7 +54,7 @@ public final class SplashActivity extends BasicActivity implements ErrorListener
 
 	@Override
 	public void onBackPressed() {
-		TaskHelper.getRequestQueue().cancelAll(LoadNewsListTask.TAG);
+		TaskHelper.getRequestQueue().cancelAll(TaskLoadNewsList.TAG);
 		super.onBackPressed();
 	}
 
@@ -97,16 +94,16 @@ public final class SplashActivity extends BasicActivity implements ErrorListener
 			mCallCount++;
 		}
 		if (Prefs.getInstance().isSupportEnglish()) {
-			new LoadNewsListTask(this.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class,
-					new ResponseListener(this, "en"), this, new DOCookie(1, "en", "")).execute();
+			new TaskLoadNewsList(getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, new ResponseListener(
+					this, "en"), this, new DOCookie(1, "en", "")).execute();
 		}
 		if (Prefs.getInstance().isSupportChinese()) {
-			new LoadNewsListTask(this.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class,
-					new ResponseListener(this, "zh"), this, new DOCookie(1, "zh", "")).execute();
+			new TaskLoadNewsList(getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, new ResponseListener(
+					this, "zh"), this, new DOCookie(1, "zh", "")).execute();
 		}
 		if (Prefs.getInstance().isSupportGerman()) {
-			new LoadNewsListTask(this.getApplicationContext(), Method.GET, API.GLAT, DOStatus.class,
-					new ResponseListener(this, "de"), this, new DOCookie(1, "de", "")).execute();
+			new TaskLoadNewsList(getApplicationContext(), Method.GET, API.GLAT, DOStatus.class, new ResponseListener(
+					this, "de"), this, new DOCookie(1, "de", "")).execute();
 		}
 	}
 
@@ -162,12 +159,10 @@ public final class SplashActivity extends BasicActivity implements ErrorListener
 					try {
 						switch (_response.getCode()) {
 							case API.API_OK:
-								Log.i("news", "Ask: API_OK");
 								((App) act.getApplication()).addListNews(
 										mLangauge,
-										TaskHelper.getGson().fromJson(
-												new String(Base64.decode(_response.getData(), Base64.DEFAULT)),
-												ListNews.class));
+										TaskHelper.correctedByDB(_response,
+ ((App) act.getApplication()).getAppDB()));
 								break;
 							case API.API_ACTION_FAILED:
 							case API.API_SERVER_DOWN:

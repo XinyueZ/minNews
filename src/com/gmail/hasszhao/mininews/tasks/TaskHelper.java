@@ -1,13 +1,20 @@
 package com.gmail.hasszhao.mininews.tasks;
 
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
+import android.util.Base64;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageCache;
 import com.android.volley.toolbox.Volley;
+import com.gmail.hasszhao.mininews.dataset.DONews;
+import com.gmail.hasszhao.mininews.dataset.DOStatus;
+import com.gmail.hasszhao.mininews.dataset.list.ListNews;
+import com.gmail.hasszhao.mininews.db.AppDB;
 import com.google.gson.Gson;
 
 
@@ -83,5 +90,18 @@ public final class TaskHelper {
 
 	public static Gson getGson() {
 		return sGson;
+	}
+
+
+	public static ListNews correctedByDB(DOStatus _response, AppDB _db) {
+		ListNews dataFromServer = TaskHelper.getGson().fromJson(
+				new String(Base64.decode(_response.getData(), Base64.DEFAULT)), ListNews.class);
+		if (dataFromServer != null) {
+			List<DONews> items = dataFromServer.getPulledNewss();
+			for (DONews n : items) {
+				n.setBookmark(_db.isNewsBookmarked(n));
+			}
+		}
+		return dataFromServer;
 	}
 }

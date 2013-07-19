@@ -25,8 +25,8 @@ import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
-import com.gmail.hasszhao.mininews.tasks.BookmarkTask;
-import com.gmail.hasszhao.mininews.tasks.LoadDetailsContent;
+import com.gmail.hasszhao.mininews.tasks.TaskBookmark;
+import com.gmail.hasszhao.mininews.tasks.TaskLoadDetailsContent;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.views.WrapImageTextView;
@@ -83,7 +83,7 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 			TextView details = (TextView) v.findViewById(R.id.tv_details_full_content);
 			Button fallbackOpenArticleSite = (Button) v.findViewById(R.id.btn_visit_article_site);
 			fallbackOpenArticleSite.setOnClickListener(this);
-			new LoadDetailsContent(details, fallbackOpenArticleSite, item) {
+			new TaskLoadDetailsContent(details, fallbackOpenArticleSite, item) {
 
 				@Override
 				protected void onPreExecute() {
@@ -105,9 +105,8 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 			}.execute();
 			ImageButton bookmark = (ImageButton) v.findViewById(R.id.btn_bookmark);
 			bookmark.setOnClickListener(this);
-			AppDB db = ((App) getActivity().getApplication()).getAppDB();
 			// Warning! It is sync!
-			bookmark.setSelected(db.isNewsBookmarked(item));
+			bookmark.setSelected(item.isBookmarked());
 		}
 	}
 
@@ -201,10 +200,9 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 	private void bookmarkHandling(final View _v, final INewsListItem item, Activity act) {
 		if (act != null) {
 			AppDB db = ((App) act.getApplication()).getAppDB();
-			// Warning! It is sync!
-			if (db.isNewsBookmarked(item)) {
+			if (item.isBookmarked()) {
 				// Delete
-				new BookmarkTask(db, item, BookmarkTask.BookmarkTaskType.DELETE) {
+				new TaskBookmark(db, item, TaskBookmark.BookmarkTaskType.DELETE) {
 
 					@Override
 					protected void onSuccess() {
@@ -218,7 +216,7 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 				}.execute();
 			} else {
 				// Add
-				new BookmarkTask(db, item, BookmarkTask.BookmarkTaskType.INSERT) {
+				new TaskBookmark(db, item, TaskBookmark.BookmarkTaskType.INSERT) {
 
 					@Override
 					protected void onSuccess() {

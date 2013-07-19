@@ -27,4 +27,10 @@ public interface INewsListItem {
 
 
 	long getTime();
+
+
+	boolean isBookmarked();
+
+
+	void setBookmark(boolean _bookmarked);
 }

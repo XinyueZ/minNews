@@ -13,14 +13,15 @@ import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
 
 
-public final class LoadNewsListTask extends AbstractGsonRequest<DOStatus> {
+public final class TaskLoadNewsList extends AbstractGsonRequest<DOStatus> {
 
-	public static final String TAG = LoadNewsListTask.class.getName();
+	public static final String TAG = TaskLoadNewsList.class.getName();
 	private final DOCookie mCookie;
 
 
-	public LoadNewsListTask(Context _context, int _method, String _url, Class<DOStatus> _clazz,
-			Listener<DOStatus> _listener, ErrorListener _errorListener, DOCookie _cookie) {
+	public TaskLoadNewsList(Context _context, int _method, String _url, Class<DOStatus> _clazz,
+			Listener<DOStatus> _listener,
+			ErrorListener _errorListener, DOCookie _cookie) {
 		super(_context, Method.GET, _url, _clazz, _listener, _errorListener);
 		setTag(TAG);
 		setShouldCache(true);

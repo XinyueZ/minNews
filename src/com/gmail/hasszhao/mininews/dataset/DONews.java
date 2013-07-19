@@ -15,6 +15,8 @@ public final class DONews implements INewsListItem {
 	private final String ImageUrl;
 	private final long Date;
 	private final boolean IsHot;
+	// not from feed
+	private boolean mBookmarked;
 
 
 	public DONews(String _title, String _content, String _preview, String _url, String _imageUrl, long _date,
@@ -81,5 +83,17 @@ public final class DONews implements INewsListItem {
 	@Override
 	public long getTime() {
 		return Date;
+	}
+
+
+	@Override
+	public boolean isBookmarked() {
+		return mBookmarked;
+	}
+
+
+	@Override
+	public void setBookmark(boolean _bookmarked) {
+		mBookmarked = _bookmarked;
 	}
 }

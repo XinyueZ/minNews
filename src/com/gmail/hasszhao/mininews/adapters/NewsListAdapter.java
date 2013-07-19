@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
-import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 
@@ -23,7 +22,6 @@ public final class NewsListAdapter extends BaseAdapter {
 	private static final int LAYOUT = R.layout.news_list_item;
 	private Context mContext;
 	private ListNews mNewsListItems;
-	private AppDB mAppDB;
 
 
 	public interface OnNewsClickedListener {
@@ -144,15 +142,13 @@ public final class NewsListAdapter extends BaseAdapter {
 				}
 			}
 		});
-		// Move to listview-listener because of blocking while scrolling the
-		// list.
-		// h.bookmarked.setSelected(mAppDB.isNewsBookmarked(newsItem));
+		h.bookmark.setSelected(newsItem.isBookmarked());
 		h.bookmark.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View _v) {
 				if (mOnNewsBookmarkedListener != null) {
-					if (mAppDB.isNewsBookmarked(newsItem)) {
+					if (newsItem.isBookmarked()) {
 						mOnNewsBookmarkedListener.onNewsBookmarkRemoved(h.bookmark, newsItem);
 					} else {
 						mOnNewsBookmarkedListener.onNewsBookmarked(h.bookmark, newsItem);
@@ -205,10 +201,5 @@ public final class NewsListAdapter extends BaseAdapter {
 
 	public synchronized void setOnNewsBookmarkedListener(OnNewsBookmarkButtonClickedListener _onNewsBookmarkedListener) {
 		mOnNewsBookmarkedListener = _onNewsBookmarkedListener;
-	}
-
-
-	public synchronized void setAppDB(AppDB _appDB) {
-		mAppDB = _appDB;
 	}
 }

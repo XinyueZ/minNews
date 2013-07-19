@@ -17,14 +17,14 @@ import com.gravity.goose.Configuration;
 import com.gravity.goose.Goose;
 
 
-public class LoadDetailsContent extends AsyncTask<String, Article, Article> {
+public class TaskLoadDetailsContent extends AsyncTask<String, Article, Article> {
 
 	private final WeakReference<TextView> mOutput;
 	private final WeakReference<Button> mVisitWeb;
 	private final INewsListItem mNewsItem;
 
 
-	public LoadDetailsContent(TextView _output, Button _visitWeb, INewsListItem _item) {
+	public TaskLoadDetailsContent(TextView _output, Button _visitWeb, INewsListItem _item) {
 		super();
 		mOutput = new WeakReference<TextView>(_output);
 		mVisitWeb = new WeakReference<Button>(_visitWeb);
