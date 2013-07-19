@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,7 @@ import com.gmail.hasszhao.mininews.activities.MainActivity;
 import com.gmail.hasszhao.mininews.adapters.NewsEndlessListAdapter;
 import com.gmail.hasszhao.mininews.adapters.NewsEndlessListAdapter.ICallNext;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
-import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsBookmarkedListener;
+import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsBookmarkButtonClickedListener;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsClickedListener;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsShareListener;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
@@ -42,6 +41,7 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
+import com.gmail.hasszhao.mininews.tasks.BookmarkTask;
 import com.gmail.hasszhao.mininews.tasks.LoadNewsListTask;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
@@ -51,7 +51,7 @@ import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 public class NewsListPageFragment extends BasicFragment implements Listener<DOStatus>, ErrorListener,
 		OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider, ICallNext,
-		IErrorResponsible, OnNewsBookmarkedListener {
+		IErrorResponsible, OnNewsBookmarkButtonClickedListener {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsListPageFragment";
@@ -337,13 +337,33 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 
 	@Override
-	public void onNewsBookmarked(ImageButton _button, INewsListItem _newsItem) {
+	public void onNewsBookmarked(final ImageButton _button, INewsListItem _newsItem) {
 		Activity act = getActivity();
 		if (act != null) {
 			App app = (App) act.getApplication();
-			boolean success = app.getAppDB().insertNewsItem(_newsItem);
-			Log.d("Mini", "Ask: DB: Insert:" + success);
-			_button.setSelected(true);
+			new BookmarkTask(app.getAppDB(), _newsItem, BookmarkTask.BookmarkTaskType.INSERT) {
+
+				@Override
+				protected void onSuccess() {
+					_button.setSelected(true);
+				}
+			}.execute();
+		}
+	}
+
+
+	@Override
+	public void onNewsBookmarkRemoved(final ImageButton _button, INewsListItem _newsItem) {
+		Activity act = getActivity();
+		if (act != null) {
+			App app = (App) act.getApplication();
+			new BookmarkTask(app.getAppDB(), _newsItem, BookmarkTask.BookmarkTaskType.DELETE) {
+
+				@Override
+				protected void onSuccess() {
+					_button.setSelected(false);
+				}
+			}.execute();
 		}
 	}
 }

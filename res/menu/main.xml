@@ -11,6 +11,11 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_share"/>
     <item
+        android:id="@+id/action_bookmark_list"
+        android:icon="@drawable/ic_bookmark_list"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_open_bookmark_list"/>
+    <item
         android:id="@+id/action_open_in_browser"
         android:icon="@drawable/ic_open_browser"
         android:showAsAction="ifRoom"

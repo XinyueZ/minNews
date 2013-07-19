@@ -36,15 +36,18 @@ public final class NewsListAdapter extends BaseAdapter {
 		void onNewsShare(INewsListItem _newsItem);
 	}
 
-	public interface OnNewsBookmarkedListener {
+	public interface OnNewsBookmarkButtonClickedListener {
 
 		void onNewsBookmarked(ImageButton _button, INewsListItem _newsItem);
+
+
+		void onNewsBookmarkRemoved(ImageButton _button, INewsListItem _newsItem);
 	}
 
 
 	private OnNewsClickedListener mOnNewsClickedListener;
 	private OnNewsShareListener mOnNewsShareListener;
-	private OnNewsBookmarkedListener mOnNewsBookmarkedListener;
+	private OnNewsBookmarkButtonClickedListener mOnNewsBookmarkedListener;
 
 
 	public NewsListAdapter(Context _context, ListNews _newsListItems) {
@@ -147,7 +150,11 @@ public final class NewsListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View _v) {
 				if (mOnNewsBookmarkedListener != null) {
-					mOnNewsBookmarkedListener.onNewsBookmarked(h.bookmarked, newsItem);
+					if (mAppDB.isNewsBookmarked(newsItem)) {
+						mOnNewsBookmarkedListener.onNewsBookmarkRemoved(h.bookmarked, newsItem);
+					} else {
+						mOnNewsBookmarkedListener.onNewsBookmarked(h.bookmarked, newsItem);
+					}
 				}
 			}
 		});
@@ -194,7 +201,7 @@ public final class NewsListAdapter extends BaseAdapter {
 	}
 
 
-	public synchronized void setOnNewsBookmarkedListener(OnNewsBookmarkedListener _onNewsBookmarkedListener) {
+	public synchronized void setOnNewsBookmarkedListener(OnNewsBookmarkButtonClickedListener _onNewsBookmarkedListener) {
 		mOnNewsBookmarkedListener = _onNewsBookmarkedListener;
 	}
 

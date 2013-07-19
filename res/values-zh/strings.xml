@@ -21,8 +21,11 @@
     <string name="title_error">哦哈~~</string>
     <string name="action_refresh">刷新</string>
     <string name="action_share">分享</string>
+    <string name="action_open_bookmark_list">收藏列表</string>
     <string name="action_open_in_web">打开浏览器阅读</string>
-    <string name="action_retry">重试</string> 
+    <string name="action_retry">重试</string>
+    <string name="action_news_bookmarked">收藏!</string>
+    <string name="action_news_bookmark_removed">从[收藏]中移出!</string>
     <string name="msg_refresh_all">更新所有页面.</string>
     <string name="msg_error">服务器出现故障，需要数小时等待它恢复工作。</string>
     <string name="msg_data_cant_be_loaded">无法读取数据，请重试。</string>

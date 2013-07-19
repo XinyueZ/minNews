@@ -18,11 +18,12 @@ import com.gmail.hasszhao.mininews.utils.BooleanUtil;
 public final class AppDatabase {
 
 	private final SQLiteDatabase mDB;
-
+	private final Context mContext;
 
 	public AppDatabase(Context _context) {
 		DatabaseHelper dh = new DatabaseHelper(_context);
 		mDB = dh.getReadableDatabase();
+		mContext = _context;
 	}
 
 
@@ -57,13 +58,13 @@ public final class AppDatabase {
 	}
 
 
-	public synchronized boolean deleteNewsItemByUrl(String _url) {
+	public synchronized boolean deleteNewsItemByUrl(INewsListItem _newsItem) {
 		int count = 0;
-		if (!TextUtils.isEmpty(_url)) {
-			Cursor c = mDB.rawQuery(TblBookmarkedNewsItem.STMT_SELECT_BY_URL, new String[] { _url });
+		if (!TextUtils.isEmpty(_newsItem.getURL())) {
+			Cursor c = mDB.rawQuery(TblBookmarkedNewsItem.STMT_SELECT_BY_URL, new String[] { _newsItem.getURL() });
 			if (c.getCount() > 0) {
 				count = mDB.delete(TblBookmarkedNewsItem.TABLE_NAME, TblBookmarkedNewsItem.COL_URL + "=?",
-						new String[] { _url });
+						new String[] { _newsItem.getURL() });
 			}
 			c.close();
 		}
@@ -96,5 +97,10 @@ public final class AppDatabase {
 			}
 		}
 		return results;
+	}
+
+
+	public synchronized Context getContext() {
+		return mContext;
 	}
 }
