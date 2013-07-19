@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">小道消息</string>
+    <string name="app_lang">zh</string>
     <string name="hello_world">你好 世界!</string>
     <string name="on">开</string>
     <string name="off">关</string>

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.text.TextUtils;
 
+import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.fragments.list.NewsListPageFragment;
 import com.gmail.hasszhao.mininews.fragments.list.SearchedNewsListPageFragment;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
@@ -31,17 +32,9 @@ public final class NewsListPagesAdapter extends FragmentStatePagerAdapter {
 		if (mLanguages.size() > 0) {
 			mLanguages.clear();
 		}
-		if (Prefs.getInstance().isSupportEnglish()) {
-			mLanguages.add("en");
-		}
-		if (Prefs.getInstance().isSupportGerman()) {
-			mLanguages.add("de");
-		}
-		if (Prefs.getInstance().isSupportChinese()) {
-			mLanguages.add("zh");
-		}
 		mContext = _context;
 		mSearchedKey = _searchedKey;
+		refreshOrder();
 	}
 
 
@@ -58,5 +51,48 @@ public final class NewsListPagesAdapter extends FragmentStatePagerAdapter {
 	@Override
 	public int getCount() {
 		return mLanguages.size();
+	}
+
+
+	/**
+	 * To order the fragments associated with the machine's language.
+	 * */
+	private void refreshOrder() {
+		if (TextUtils.equals("en", mContext.getString(R.string.app_lang))) {
+			if (Prefs.getInstance().isSupportEnglish()) {
+				mLanguages.add("en");
+			}
+			if (Prefs.getInstance().isSupportGerman()) {
+				mLanguages.add("de");
+			}
+			if (Prefs.getInstance().isSupportChinese()) {
+				mLanguages.add("zh");
+			}
+			return;
+		}
+		if (TextUtils.equals("de", mContext.getString(R.string.app_lang))) {
+			if (Prefs.getInstance().isSupportGerman()) {
+				mLanguages.add("de");
+			}
+			if (Prefs.getInstance().isSupportEnglish()) {
+				mLanguages.add("en");
+			}
+			if (Prefs.getInstance().isSupportChinese()) {
+				mLanguages.add("zh");
+			}
+			return;
+		}
+		if (TextUtils.equals("zh", mContext.getString(R.string.app_lang))) {
+			if (Prefs.getInstance().isSupportChinese()) {
+				mLanguages.add("zh");
+			}
+			if (Prefs.getInstance().isSupportEnglish()) {
+				mLanguages.add("en");
+			}
+			if (Prefs.getInstance().isSupportGerman()) {
+				mLanguages.add("de");
+			}
+			return;
+		}
 	}
 }

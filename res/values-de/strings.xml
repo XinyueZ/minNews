@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">miniNews</string>
-    <string name="app_lang">en</string>
+    <string name="app_lang">de</string>
     <string name="hello_world">Hello world!</string>
     <string name="on">ON</string>
     <string name="off">OFF</string>
