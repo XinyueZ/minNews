@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.gmail.hasszhao.mininews.R;
-import com.gmail.hasszhao.mininews.db.AppDatabase;
+import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.utils.Util;
 
@@ -16,12 +16,12 @@ public abstract class BookmarkTask extends AsyncTask<Void, String, String> {
 	}
 
 
-	private final AppDatabase mDB;
+	private final AppDB mDB;
 	private final INewsListItem mNewsItem;
 	private final BookmarkTaskType mType;
 
 
-	public BookmarkTask(AppDatabase _db, INewsListItem _newsItem, BookmarkTaskType _type) {
+	public BookmarkTask(AppDB _db, INewsListItem _newsItem, BookmarkTaskType _type) {
 		super();
 		mDB = _db;
 		mNewsItem = _newsItem;

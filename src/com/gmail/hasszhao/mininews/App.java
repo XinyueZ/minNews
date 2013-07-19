@@ -7,7 +7,7 @@ import java.util.Set;
 import android.app.Application;
 
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
-import com.gmail.hasszhao.mininews.db.AppDatabase;
+import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
@@ -15,7 +15,7 @@ import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 public final class App extends Application {
 
 	private final Map<String, ListNews> mNewsLists = new HashMap<String, ListNews>();
-	private AppDatabase mAppDB;
+	private AppDB mAppDB;
 
 
 	@Override
@@ -28,7 +28,7 @@ public final class App extends Application {
 	private void init() {
 		TaskHelper.init(getApplicationContext());
 		Prefs.createInstance(getApplicationContext());
-		mAppDB = new AppDatabase(this);
+		mAppDB = new AppDB(this);
 	}
 
 
@@ -57,7 +57,7 @@ public final class App extends Application {
 	}
 
 
-	public synchronized AppDatabase getAppDB() {
+	public synchronized AppDB getAppDB() {
 		return mAppDB;
 	}
 }

@@ -10,18 +10,22 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.gmail.hasszhao.mininews.App;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.activities.MainActivity;
+import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
+import com.gmail.hasszhao.mininews.tasks.BookmarkTask;
 import com.gmail.hasszhao.mininews.tasks.LoadDetailsContent;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.Util;
@@ -65,9 +69,9 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 			((TextView) v.findViewById(R.id.tv_details_topline)).setText(Html.fromHtml(item.getTopline()));
 			loadHeadline(item);
 			TextView details = (TextView) v.findViewById(R.id.tv_details_full_content);
-			Button fallback = (Button) v.findViewById(R.id.btn_visit_article_site);
-			fallback.setOnClickListener(this);
-			new LoadDetailsContent(details, fallback, item) {
+			Button fallbackOpenArticleSite = (Button) v.findViewById(R.id.btn_visit_article_site);
+			fallbackOpenArticleSite.setOnClickListener(this);
+			new LoadDetailsContent(details, fallbackOpenArticleSite, item) {
 
 				@Override
 				protected void onPreExecute() {
@@ -87,6 +91,11 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 					}
 				};
 			}.execute();
+			ImageButton bookmark = (ImageButton) v.findViewById(R.id.btn_bookmark);
+			bookmark.setOnClickListener(this);
+			AppDB db = ((App) getActivity().getApplication()).getAppDB();
+			// Warning! It is sync!
+			bookmark.setSelected(db.isNewsBookmarked(item));
 		}
 	}
 
@@ -161,11 +170,51 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 
 
 	@Override
-	public void onClick(View _v) {
+	public void onClick(final View _v) {
 		Fragment fragment = getTargetFragment();
+		INewsListItemProvider p = (INewsListItemProvider) fragment;
+		final INewsListItem item = p.getNewsListItem();
+		Activity act = getActivity();
+		switch (_v.getId()) {
+			case R.id.btn_visit_article_site:
+				openArticleSite(fragment, item);
+				break;
+			case R.id.btn_bookmark:
+				bookmarkHandling(_v, item, act);
+				break;
+		}
+	}
+
+
+	private void bookmarkHandling(final View _v, final INewsListItem item, Activity act) {
+		if (act != null) {
+			AppDB db = ((App) act.getApplication()).getAppDB();
+			// Warning! It is sync!
+			if (db.isNewsBookmarked(item)) {
+				// Delete
+				new BookmarkTask(db, item, BookmarkTask.BookmarkTaskType.DELETE) {
+
+					@Override
+					protected void onSuccess() {
+						_v.setSelected(false);
+					}
+				}.execute();
+			} else {
+				// Add
+				new BookmarkTask(db, item, BookmarkTask.BookmarkTaskType.INSERT) {
+
+					@Override
+					protected void onSuccess() {
+						_v.setSelected(true);
+					}
+				}.execute();
+			}
+		}
+	}
+
+
+	private void openArticleSite(Fragment fragment, INewsListItem item) {
 		if (fragment instanceof INewsListItemProvider) {
-			INewsListItemProvider p = (INewsListItemProvider) fragment;
-			INewsListItem item = p.getNewsListItem();
 			Activity act = getActivity();
 			if (act != null) {
 				Util.openUrl(act, item.getURL());

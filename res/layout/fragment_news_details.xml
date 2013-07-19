@@ -11,21 +11,37 @@
         android:background="@android:color/transparent"
         android:padding="@dimen/details_box_margin" >
 
-        <com.gmail.hasszhao.mininews.views.FontTextView
-            android:id="@+id/tv_details_topline"
-            style="@style/Text.News_Details_Topline"
+        <RelativeLayout
+            android:id="@+id/container_details_topline"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_marginBottom="@dimen/details_box_margin" >
+
+            <com.gmail.hasszhao.mininews.views.FontTextView
+                android:id="@+id/tv_details_topline"
+                style="@style/Text.News_Details_Topline"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <ImageButton
+                android:id="@+id/btn_bookmark"
+                style="@style/Bookmark_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/selector_bookmark_button" />
+        </RelativeLayout>
 
         <FrameLayout
             android:id="@+id/container_details_headline"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tv_details_topline"
+            android:layout_below="@+id/container_details_topline"
             android:layout_marginBottom="@dimen/details_box_margin"
             android:background="@drawable/rounded_solid_white"
             android:paddingLeft="5dp"

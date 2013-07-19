@@ -15,12 +15,12 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.utils.BooleanUtil;
 
 
-public final class AppDatabase {
+public final class AppDB {
 
 	private final SQLiteDatabase mDB;
 	private final Context mContext;
 
-	public AppDatabase(Context _context) {
+	public AppDB(Context _context) {
 		DatabaseHelper dh = new DatabaseHelper(_context);
 		mDB = dh.getReadableDatabase();
 		mContext = _context;

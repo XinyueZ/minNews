@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
-import com.gmail.hasszhao.mininews.db.AppDatabase;
+import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 
@@ -27,7 +27,7 @@ public final class NewsListAdapter extends BaseAdapter implements OnScrollListen
 	private static final int LAYOUT = R.layout.news_list_item;
 	private Context mContext;
 	private ListNews mNewsListItems;
-	private AppDatabase mAppDB;
+	private AppDB mAppDB;
 
 
 	public interface OnNewsClickedListener {
@@ -212,7 +212,7 @@ public final class NewsListAdapter extends BaseAdapter implements OnScrollListen
 	}
 
 
-	public synchronized void setAppDB(AppDatabase _appDB) {
+	public synchronized void setAppDB(AppDB _appDB) {
 		mAppDB = _appDB;
 	}
 
@@ -238,6 +238,7 @@ public final class NewsListAdapter extends BaseAdapter implements OnScrollListen
 						int position = first + i;
 						List<? extends INewsListItem> items = mNewsListItems.getPulledNewss();
 						if (items != null) {
+							// Warning! It is sync!
 							vh.bookmarked.setSelected(mAppDB.isNewsBookmarked(items.get(position)));
 						}
 					}
