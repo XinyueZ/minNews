@@ -24,13 +24,4 @@ public final class SearchedNewsPagersFragment extends NewsPagersFragment {
 	public View onCreateView(LayoutInflater _inflater, ViewGroup _container, Bundle _savedInstanceState) {
 		return super.onCreateView(_inflater, _container, _savedInstanceState);
 	}
-
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		// Must do it, because the parent will show it, which is staying on
-		// bottom(start-site).
-		setSidebarEnable(false);
-	}
 }

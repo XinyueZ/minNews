@@ -39,12 +39,6 @@ public class NewsPagersFragment extends BasicFragment implements IRefreshable {
 	}
 
 
-	@Override
-	public void onResume() {
-		setSidebarEnable(true);
-		super.onResume();
-	}
-
 
 	@Override
 	public void onViewCreated(View _view, Bundle _savedInstanceState) {

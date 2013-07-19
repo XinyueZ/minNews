@@ -72,7 +72,7 @@ public final class AppDB {
 	}
 
 
-	public synchronized List<? extends INewsListItem> getAllBookmarkedNewsItems() {
+	public synchronized List<DONews> getAllBookmarkedNewsItems() {
 		ArrayList<DONews> results = null;
 		Cursor c = null;
 		try {

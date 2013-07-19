@@ -32,5 +32,5 @@ public interface TblBookmarkedNewsItem {
 			" VALUES (?,?,?,?,?,?,?)";
 	String STMT_DELETE_BY_URL = "DELETE FROM " + TABLE_NAME + " WHERE " + COL_URL + "=?";
 	String STMT_SELECT_BY_URL = "SELECT " + COL_URL + " FROM " + TABLE_NAME + " WHERE " + COL_URL + "=?";
-	String STMT_SELECT_ALL = "SELECT " + COL_URL + " FROM " + TABLE_NAME;
+	String STMT_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
 }

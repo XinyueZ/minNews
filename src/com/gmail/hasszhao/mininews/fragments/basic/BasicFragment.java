@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.gmail.hasszhao.mininews.App;
 import com.gmail.hasszhao.mininews.R;
-import com.gmail.hasszhao.mininews.activities.MainActivity;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 
 
@@ -36,19 +35,7 @@ public abstract class BasicFragment extends SherlockFragment {
 	}
 
 
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		setSidebarEnable(true);
-	}
 
-
-	protected void setSidebarEnable(boolean _enable) {
-		MainActivity act = (MainActivity) getActivity();
-		if (act != null) {
-			act.setSidebarEnable(_enable);
-		}
-	}
 
 
 	protected ListNews getListNews() {

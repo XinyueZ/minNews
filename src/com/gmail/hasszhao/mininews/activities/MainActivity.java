@@ -29,6 +29,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment;
 import com.gmail.hasszhao.mininews.fragments.dialog.LoadingFragment;
+import com.gmail.hasszhao.mininews.fragments.list.BookmarkListFragment;
 import com.gmail.hasszhao.mininews.fragments.viewpagers.NewsPagersFragment;
 import com.gmail.hasszhao.mininews.fragments.viewpagers.SearchedNewsPagersFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
@@ -88,6 +89,11 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	public void onBackStackChanged() {
 		invalidateOptionsMenu();
 		ifOnBackFromSearchedNewsListFragment();
+		if (getTopFragment() == null) {
+			setSidebarEnable(true);
+		} else {
+			setSidebarEnable(false);
+		}
 	}
 
 
@@ -307,16 +313,16 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 			case R.id.action_open_in_browser:
 				openNewsDetailsInBrowser();
 				return true;
+			case R.id.action_bookmark_list:
+				openBookmarkList();
+				return true;
 		}
 		return false;
 	}
 
 
 	private void goUp() {
-		Fragment f = getTopFragment();
-		if (f instanceof NewsDetailsFragment) {
-			closePage(NewsDetailsFragment.TAG);
-		}
+		getSupportFragmentManager().popBackStack();
 	}
 
 
@@ -328,11 +334,22 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	}
 
 
+	private void openBookmarkList() {
+		Fragment f = getSupportFragmentManager().findFragmentByTag(BookmarkListFragment.TAG);
+		if (f == null) {
+			addOpenNextPage(BookmarkListFragment.newInstance(getApplicationContext()), BookmarkListFragment.TAG);
+		}
+	}
+
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu _menu) {
 		if (getTopFragment() instanceof NewsDetailsFragment) {
 			_menu.findItem(R.id.action_refresh).setVisible(false);
 			_menu.findItem(R.id.action_open_in_browser).setVisible(true);
+			if (getSupportFragmentManager().findFragmentByTag(BookmarkListFragment.TAG) != null) {
+				_menu.findItem(R.id.action_bookmark_list).setVisible(false);
+			}
 		} else {
 			_menu.findItem(R.id.action_refresh).setVisible(true);
 			_menu.findItem(R.id.action_open_in_browser).setVisible(false);

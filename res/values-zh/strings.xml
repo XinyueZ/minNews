@@ -3,11 +3,11 @@
 
     <string name="app_name">小道消息</string>
     <string name="app_lang">zh</string>
-    <string name="hello_world">你好 世界!</string>
+    <string name="hello_world">你好 世界！</string>
     <string name="on">开</string>
     <string name="off">关</string>
-    <string name="action_failed">无法发送请求!</string>
-    <string name="server_down">服务器调整!</string>
+    <string name="action_failed">无法发送请求！</string>
+    <string name="server_down">服务器调整！</string>
     <string name="title_language_list">新闻语种</string>
     <string name="title_input_search">搜索</string>
     <string name="title_open_details">内容</string>
@@ -25,9 +25,10 @@
     <string name="action_open_bookmark_list">收藏列表</string>
     <string name="action_open_in_web">打开浏览器阅读</string>
     <string name="action_retry">重试</string>
-    <string name="action_news_bookmarked">收藏!</string>
-    <string name="action_news_bookmark_removed">从[收藏]中移出!</string>
-    <string name="msg_refresh_all">更新所有页面.</string>
+    <string name="action_news_bookmarked">收藏！</string>
+    <string name="action_news_bookmark_removed">从[收藏]中移出！</string>
+    <string name="msg_empty_bookmark">您暂时无[收藏]。</string>
+    <string name="msg_refresh_all">更新所有页面。</string>
     <string name="msg_error">服务器出现故障，需要数小时等待它恢复工作。</string>
     <string name="msg_data_cant_be_loaded">无法读取数据，请重试。</string>
     <string name="msg_data_cant_be_loaded_but_read_cached">无法读取数据，但是可以读取缓冲内容。</string>

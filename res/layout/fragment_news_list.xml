@@ -2,11 +2,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ListView
+    <com.gmail.hasszhao.mininews.views.OneDirectionListView
         android:id="@+id/activity_googlecards_listview"
         style="@style/NewsList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
 
@@ -16,5 +16,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <com.gmail.hasszhao.mininews.views.FontTextView
+        android:id="@+id/tv_empty_bookmark_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
+        android:gravity="center_horizontal"
+        android:text="@string/msg_empty_bookmark"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
 </RelativeLayout>

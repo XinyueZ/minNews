@@ -24,10 +24,11 @@ import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
+import com.gmail.hasszhao.mininews.interfaces.IRefreshNewsListListener;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.tasks.TaskBookmark;
-import com.gmail.hasszhao.mininews.tasks.TaskLoadDetailsContent;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
+import com.gmail.hasszhao.mininews.tasks.TaskLoadDetailsContent;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.views.WrapImageTextView;
 import com.gravity.goose.Article;
@@ -37,15 +38,6 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 
 	private static final int LAYOUT = R.layout.fragment_news_details;
 	public static final String TAG = "TAG.NewsDetailsFragment";
-
-
-	public interface OnDetailsBookmarkButtonClickedListener {
-
-		void onDetailsBookmarked();
-
-
-		void onDetailsBookmarkRemoved();
-	}
 
 
 	public static NewsDetailsFragment newInstance(Context _context, Fragment _target) {
@@ -58,7 +50,6 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 
 	@Override
 	public View onCreateView(LayoutInflater _inflater, ViewGroup _container, Bundle _savedInstanceState) {
-		setSidebarEnable(false);
 		return _inflater.inflate(LAYOUT, _container, false);
 	}
 
@@ -104,9 +95,12 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 				};
 			}.execute();
 			ImageButton bookmark = (ImageButton) v.findViewById(R.id.btn_bookmark);
-			bookmark.setOnClickListener(this);
-			// Warning! It is sync!
-			bookmark.setSelected(item.isBookmarked());
+			if (!(fragment instanceof IRefreshNewsListListener)) {
+				bookmark.setVisibility(View.INVISIBLE);
+			} else {
+				bookmark.setOnClickListener(this);
+				bookmark.setSelected(item.isBookmarked());
+			}
 		}
 	}
 
@@ -208,9 +202,9 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 					protected void onSuccess() {
 						_v.setSelected(false);
 						Fragment f = getTargetFragment();
-						if (f instanceof OnDetailsBookmarkButtonClickedListener) {
-							OnDetailsBookmarkButtonClickedListener l = (OnDetailsBookmarkButtonClickedListener) f;
-							l.onDetailsBookmarkRemoved();
+						if (f instanceof IRefreshNewsListListener) {
+							IRefreshNewsListListener l = (IRefreshNewsListListener) f;
+							l.onBookmarkRemoved();
 						}
 					}
 				}.execute();
@@ -222,9 +216,9 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 					protected void onSuccess() {
 						_v.setSelected(true);
 						Fragment f = getTargetFragment();
-						if (f instanceof OnDetailsBookmarkButtonClickedListener) {
-							OnDetailsBookmarkButtonClickedListener l = (OnDetailsBookmarkButtonClickedListener) f;
-							l.onDetailsBookmarked();
+						if (f instanceof IRefreshNewsListListener) {
+							IRefreshNewsListListener l = (IRefreshNewsListListener) f;
+							l.onBookmarked();
 						}
 					}
 				}.execute();

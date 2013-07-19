@@ -1,35 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">miniNews</string>
     <string name="app_lang">de</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="on">ON</string>
-    <string name="off">OFF</string>
-    <string name="action_failed">The request can not be fired!</string>
-    <string name="server_down">The server is under building!</string>
-    <string name="title_language_list">News language</string>
-    <string name="title_input_search">Search</string>
-    <string name="title_open_details">Open details</string>
-    <string name="title_open_details_in_app">Open content in the App</string>
-    <string name="title_open_details_in_browser">Open link in browser</string>
-    <string name="title_dont_ask_again">Do not ask again.</string>
-    <string name="title_ok">OK</string>
-    <string name="title_cancel">Cancel</string>
-    <string name="title_loading">Loading</string>
-    <string name="title_loading_you_data">Data is being loaded.</string>
-    <string name="title_visit">Visit the article site</string>
-    <string name="title_error">Oppps~~</string>
-    <string name="action_refresh">Refresh</string>
-    <string name="action_share">Share</string>
-    <string name="action_open_bookmark_list">Bookmark-List</string>
-    <string name="action_open_in_web">Open in browser</string>
-    <string name="action_retry">Retry</string>
-    <string name="action_news_bookmarked">Bookmarked!</string>
-    <string name="action_news_bookmark_removed">Remove from the bookmark!</string>
-    <string name="msg_refresh_all">All pages have been refreshed.</string>
-    <string name="msg_error_from_server">The server has been down because of some problems, there are several hours to wait for it return.</string>
-    <string name="msg_error_data_cant_be_loaded">Data can not be loaded at moment, you can retry.</string>
-    <string name="msg_error_data_cant_be_loaded_but_read_cached">Data can not be loaded at moment, you can read cached data.</string>
 
 </resources>

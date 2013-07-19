@@ -22,6 +22,7 @@ public final class NewsListAdapter extends BaseAdapter {
 	private static final int LAYOUT = R.layout.news_list_item;
 	private Context mContext;
 	private ListNews mNewsListItems;
+	private boolean mShowBookmarkButton = true;
 
 
 	public interface OnNewsClickedListener {
@@ -142,6 +143,7 @@ public final class NewsListAdapter extends BaseAdapter {
 				}
 			}
 		});
+		h.bookmark.setVisibility(mShowBookmarkButton ? View.VISIBLE : View.INVISIBLE);
 		h.bookmark.setSelected(newsItem.isBookmarked());
 		h.bookmark.setOnClickListener(new OnClickListener() {
 
@@ -156,7 +158,7 @@ public final class NewsListAdapter extends BaseAdapter {
 				}
 			}
 		});
-		_convertView.setOnClickListener(new OnClickListener() {
+		OnClickListener l = new OnClickListener() {
 
 			@Override
 			public void onClick(View _v) {
@@ -164,7 +166,9 @@ public final class NewsListAdapter extends BaseAdapter {
 					mOnNewsClickedListener.onNewsClicked(newsItem);
 				}
 			}
-		});
+		};
+		h.topline.setOnClickListener(l);
+		h.headline.setOnClickListener(l);
 		if (newsItem.isHot() && newsItem.isNew()) {
 			h.banner1.setVisibility(View.VISIBLE);
 			h.banner1.setImageResource(R.drawable.ic_banner_hot_item);
@@ -201,5 +205,10 @@ public final class NewsListAdapter extends BaseAdapter {
 
 	public synchronized void setOnNewsBookmarkedListener(OnNewsBookmarkButtonClickedListener _onNewsBookmarkedListener) {
 		mOnNewsBookmarkedListener = _onNewsBookmarkedListener;
+	}
+
+
+	public void setShowBookmarkButton(boolean _showBookmarkButton) {
+		mShowBookmarkButton = _showBookmarkButton;
 	}
 }

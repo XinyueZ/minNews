@@ -38,7 +38,6 @@ import com.gmail.hasszhao.mininews.fragments.ErrorFragment;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment.ErrorType;
 import com.gmail.hasszhao.mininews.fragments.ErrorFragment.IErrorResponsible;
 import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment;
-import com.gmail.hasszhao.mininews.fragments.NewsDetailsFragment.OnDetailsBookmarkButtonClickedListener;
 import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.fragments.dialog.AskOpenDetailsMethodFragment;
 import com.gmail.hasszhao.mininews.fragments.dialog.AskOpenDetailsMethodFragment.OpenContentMethod;
@@ -46,6 +45,7 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
+import com.gmail.hasszhao.mininews.interfaces.IRefreshNewsListListener;
 import com.gmail.hasszhao.mininews.tasks.TaskBookmark;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.tasks.TaskLoadNewsList;
@@ -57,7 +57,7 @@ import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 public class NewsListPageFragment extends BasicFragment implements Listener<DOStatus>, ErrorListener,
 		OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider, ICallNext,
 		IErrorResponsible, OnNewsBookmarkButtonClickedListener, OnScrollListener,
-		OnDetailsBookmarkButtonClickedListener {
+		IRefreshNewsListListener {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsListPageFragment";
@@ -299,8 +299,8 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 
 	@Override
-	public void openDetails(OpenContentMethod method) {
-		switch (method) {
+	public void openDetails(OpenContentMethod _method) {
+		switch (_method) {
 			case IN_APP:
 				openDetailsInApp();
 				break;
@@ -415,13 +415,13 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 
 	@Override
-	public void onDetailsBookmarked() {
+	public void onBookmarked() {
 		refreshBookmarkStatusMaybeFromChangingOnDetails();
 	}
 
 
 	@Override
-	public void onDetailsBookmarkRemoved() {
+	public void onBookmarkRemoved() {
 		refreshBookmarkStatusMaybeFromChangingOnDetails();
 	}
 
