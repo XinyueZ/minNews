@@ -187,6 +187,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 					adapter.setAppDB(((App) getActivity().getApplication()).getAppDB());
 					mNewsEndlessListAdapter = new NewsEndlessListAdapter(act.getApplicationContext(), adapter, this);
 					mNewsEndlessListAdapter.setRunInBackground(false);
+					listView.setOnScrollListener(adapter);
 					listView.setAdapter(mNewsEndlessListAdapter);
 				} else {
 					// mAdapter.refresh(getActivity(), mNewsList);

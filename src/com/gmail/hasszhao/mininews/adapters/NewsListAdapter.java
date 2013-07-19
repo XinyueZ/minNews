@@ -1,9 +1,13 @@
 package com.gmail.hasszhao.mininews.adapters;
 
+import java.util.List;
+
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,7 +21,7 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 
 
-public final class NewsListAdapter extends BaseAdapter {
+public final class NewsListAdapter extends BaseAdapter implements OnScrollListener {
 
 	private static final int PLACE_HOLDER = R.drawable.ic_launcher;
 	private static final int LAYOUT = R.layout.news_list_item;
@@ -144,7 +148,9 @@ public final class NewsListAdapter extends BaseAdapter {
 				}
 			}
 		});
-		h.bookmarked.setSelected(mAppDB.isNewsBookmarked(newsItem));
+		// Move to listview-listener because of blocking while scrolling the
+		// list.
+		// h.bookmarked.setSelected(mAppDB.isNewsBookmarked(newsItem));
 		h.bookmarked.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -208,5 +214,45 @@ public final class NewsListAdapter extends BaseAdapter {
 
 	public synchronized void setAppDB(AppDatabase _appDB) {
 		mAppDB = _appDB;
+	}
+
+
+	@Override
+	public void onScroll(AbsListView _view, int _firstVisibleItem, int _visibleItemCount, int _totalItemCount) {
+	}
+
+
+	@Override
+	public void onScrollStateChanged(AbsListView _view, int _scrollState) {
+		View convertView;
+		ViewHolder vh;
+		int totalItemCount = _view.getChildCount();
+		switch (_scrollState) {
+			case OnScrollListener.SCROLL_STATE_IDLE:
+				int first = _view.getFirstVisiblePosition();
+				int count = _view.getChildCount();
+				for (int i = 0; i < count; i++) {
+					convertView = _view.getChildAt(i);
+					if (convertView != null && convertView.getTag() != null) {
+						vh = (ViewHolder) convertView.getTag();
+						int position = first + i;
+						List<? extends INewsListItem> items = mNewsListItems.getPulledNewss();
+						if (items != null) {
+							vh.bookmarked.setSelected(mAppDB.isNewsBookmarked(items.get(position)));
+						}
+					}
+				}
+				break;
+			case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+			case OnScrollListener.SCROLL_STATE_FLING:
+				for (int i = 0; i < totalItemCount; i++) {
+					convertView = _view.getChildAt(i);
+					if (convertView != null && convertView.getTag() != null) {
+						vh = (ViewHolder) convertView.getTag();
+						vh.bookmarked.setSelected(false);
+					}
+				}
+				break;
+		}
 	}
 }
