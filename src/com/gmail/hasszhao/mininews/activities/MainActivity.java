@@ -34,6 +34,7 @@ import com.gmail.hasszhao.mininews.fragments.viewpagers.NewsPagersFragment;
 import com.gmail.hasszhao.mininews.fragments.viewpagers.SearchedNewsPagersFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
+import com.gmail.hasszhao.mininews.interfaces.OnFragmentBackStackChangedListener;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
@@ -42,6 +43,7 @@ import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 public final class MainActivity extends BasicActivity implements OnCheckedChangeListener, ISharable,
 		OnBackStackChangedListener, OnEditorActionListener, DrawerLayout.DrawerListener {
 
+	private static final int FRAGMENT_ID = R.id.container_news;
 	public static final String ACTION = "com.gmail.hasszhao.mininews.MainActivity";
 	private static final String DLG_TAG = "dlg";
 	private static final int LAYOUT = R.layout.activity_main;
@@ -93,6 +95,16 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 			setSidebarEnable(true);
 		} else {
 			setSidebarEnable(false);
+		}
+		// Solve that problem that "added" fragments can not handle onResume
+		// that "replaced" can.
+		// http://stackoverflow.com/questions/6503189/fragments-onresume-from-back-stack
+		FragmentManager manager = getSupportFragmentManager();
+		if (manager != null) {
+			Fragment currFrag = manager.findFragmentById(FRAGMENT_ID);
+			if (currFrag instanceof OnFragmentBackStackChangedListener) {
+				((OnFragmentBackStackChangedListener) currFrag).onFragmentResume();
+			}
 		}
 	}
 
@@ -365,7 +377,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	private void showNewsPagersFragment() {
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		NewsPagersFragment fmg = NewsPagersFragment.newInstance(this);
-		trans.replace(R.id.container_news, fmg, NewsPagersFragment.TAG);
+		trans.replace(FRAGMENT_ID, fmg, NewsPagersFragment.TAG);
 		trans.commit();
 	}
 
@@ -388,7 +400,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		trans.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.slide_in_from_left,
 				R.anim.slide_out_to_right);
-		trans.add(R.id.container_news, _f, _tag).addToBackStack(_tag).commit();
+		trans.add(FRAGMENT_ID, _f, _tag).addToBackStack(_tag).commit();
 	}
 
 

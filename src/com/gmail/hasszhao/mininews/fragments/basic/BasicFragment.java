@@ -8,9 +8,10 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.gmail.hasszhao.mininews.App;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
+import com.gmail.hasszhao.mininews.interfaces.OnFragmentBackStackChangedListener;
 
 
-public abstract class BasicFragment extends SherlockFragment {
+public abstract class BasicFragment extends SherlockFragment implements OnFragmentBackStackChangedListener {
 
 	protected static final String KEY_LANGUAGE = "NewsList.Page.language";
 	protected static final int BOTTOM_IN_SEC = 1000;
@@ -35,9 +36,6 @@ public abstract class BasicFragment extends SherlockFragment {
 	}
 
 
-
-
-
 	protected ListNews getListNews() {
 		return ((App) getActivity().getApplication()).getListNews(getArguments().getString(KEY_LANGUAGE));
 	}
@@ -45,5 +43,10 @@ public abstract class BasicFragment extends SherlockFragment {
 
 	protected void setListNews(ListNews _listNews) {
 		((App) getActivity().getApplication()).addListNews(getArguments().getString(KEY_LANGUAGE), _listNews);
+	}
+
+
+	@Override
+	public void onFragmentResume() {
 	}
 }

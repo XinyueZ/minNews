@@ -14,6 +14,7 @@ import com.gmail.hasszhao.mininews.adapters.NewsListPagesAdapter;
 import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.fragments.list.NewsListPageFragment;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
+import com.gmail.hasszhao.mininews.interfaces.OnFragmentBackStackChangedListener;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -37,7 +38,6 @@ public class NewsPagersFragment extends BasicFragment implements IRefreshable {
 	public View onCreateView(LayoutInflater _inflater, ViewGroup _container, Bundle _savedInstanceState) {
 		return _inflater.inflate(LAYOUT, _container, false);
 	}
-
 
 
 	@Override
@@ -110,6 +110,23 @@ public class NewsPagersFragment extends BasicFragment implements IRefreshable {
 				f.refresh();
 			}
 			Util.showLongToast(getActivity().getApplicationContext(), R.string.msg_refresh_all);
+		}
+	}
+
+
+	@Override
+	public void onFragmentResume() {
+		View view = getView();
+		if (mAdapter != null && view != null) {
+			int count = mAdapter.getCount();
+			NewsListPageFragment f;
+			ViewPager vp = (ViewPager) view.findViewById(R.id.vp_news_pages);
+			for (int i = 0; i < count; i++) {
+				f = (NewsListPageFragment) mAdapter.instantiateItem(vp, i);
+				if (f instanceof OnFragmentBackStackChangedListener) {
+					f.onFragmentResume();
+				}
+			}
 		}
 	}
 }

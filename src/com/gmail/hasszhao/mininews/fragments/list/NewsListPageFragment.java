@@ -44,7 +44,6 @@ import com.gmail.hasszhao.mininews.fragments.dialog.AskOpenDetailsMethodFragment
 import com.gmail.hasszhao.mininews.fragments.dialog.AskOpenDetailsMethodFragment.OpenContentMethod;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
-import com.gmail.hasszhao.mininews.interfaces.IRefreshNewsListListener;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.tasks.TaskBookmark;
@@ -55,11 +54,9 @@ import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 
-public class NewsListPageFragment extends BasicFragment implements Listener<DOStatus>,
-		ErrorListener,
-		OnRefreshListener,// OnNewsClickedListener,
-		OnNewsShareListener, IRefreshable, INewsListItemProvider, ICallNext, IErrorResponsible,
-		OnNewsBookmarkButtonClickedListener, OnScrollListener, IRefreshNewsListListener, OnItemClickListener {
+public class NewsListPageFragment extends BasicFragment implements Listener<DOStatus>, ErrorListener,
+		OnRefreshListener, OnNewsShareListener, IRefreshable, INewsListItemProvider, ICallNext, IErrorResponsible,
+		OnNewsBookmarkButtonClickedListener, OnScrollListener, OnItemClickListener {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsListPageFragment";
@@ -72,6 +69,12 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 		args.putString(KEY_LANGUAGE, _language);
 		return (NewsListPageFragment) NewsListPageFragment.instantiate(_context, NewsListPageFragment.class.getName(),
 				args);
+	}
+
+
+	@Override
+	public void onCreate(Bundle _savedInstanceState) {
+		super.onCreate(_savedInstanceState);
 	}
 
 
@@ -408,24 +411,13 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 
 	@Override
-	public void onBookmarked() {
-		refreshBookmarkStatusMaybeFromChangingOnDetails();
-	}
-
-
-	@Override
-	public void onBookmarkRemoved() {
-		refreshBookmarkStatusMaybeFromChangingOnDetails();
-	}
-
-
-	@Override
 	public void onScroll(AbsListView _view, int _firstVisibleItem, int _visibleItemCount, int _totalItemCount) {
 	}
 
 
 	@Override
 	public void onItemClick(AdapterView<?> _arg0, View _arg1, int _arg2, long _arg3) {
+		// http://cyrilmottier.com/2011/11/23/listview-tips-tricks-4-add-several-clickable-areas/
 		FragmentActivity act = getActivity();
 		if (act != null) {
 			mSelectedNewsItem = getListNews().getPulledNewss().get(_arg2);
@@ -435,5 +427,11 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 				openDetails(OpenContentMethod.fromValue(Prefs.getInstance().getOpenDetailsMethod()));
 			}
 		}
+	}
+
+
+	@Override
+	public void onFragmentResume() {
+		refreshBookmarkStatusMaybeFromChangingOnDetails();
 	}
 }

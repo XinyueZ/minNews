@@ -30,6 +30,8 @@ import com.gmail.hasszhao.mininews.fragments.dialog.AskOpenDetailsMethodFragment
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
+import com.gmail.hasszhao.mininews.tasks.TaskBookmark;
+import com.gmail.hasszhao.mininews.tasks.TaskBookmark.BookmarkTaskType;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
@@ -73,11 +75,20 @@ public final class BookmarkListFragment extends BasicFragment implements // OnNe
 		if (act != null) {
 			List<DONews> list = ((App) act.getApplication()).getAppDB().getAllBookmarkedNewsItems();
 			if (list.size() == 0) {
-				_view.findViewById(R.id.tv_empty_bookmark_list).setVisibility(View.VISIBLE);
+				showWarningWhenListEmpty();
 			} else {
 				setListNews(new ListNews(list, list.size()));
 				initList(_view);
 			}
+		}
+	}
+
+
+	@Override
+	public void onFragmentResume() {
+		View view = getView();
+		if (view != null) {
+			loadBookmarkList(view);
 		}
 	}
 
@@ -160,9 +171,20 @@ public final class BookmarkListFragment extends BasicFragment implements // OnNe
 	// }
 	@Override
 	public void onDismiss(AbsListView _listView, int[] _reverseSortedPositions) {
-		for (int position : _reverseSortedPositions) {
-			mAdapter.remove(position);
-			Log.d("mini", "Ask: onDismiss:" + position);
+		for (final int position : _reverseSortedPositions) {
+			new TaskBookmark(((App) getActivity().getApplication()).getAppDB(), getListNews().getPulledNewss().get(
+					position), BookmarkTaskType.DELETE) {
+
+				@Override
+				protected void onSuccess() {
+					mAdapter.remove(position);
+					mAdapter.notifyDataSetChanged();
+					if (mAdapter.getCount() == 0) {
+						showWarningWhenListEmpty();
+					}
+				}
+			}.execute();
+			Log.d("mini", "Ask: position:" + position);
 		}
 	}
 
@@ -207,6 +229,7 @@ public final class BookmarkListFragment extends BasicFragment implements // OnNe
 
 	@Override
 	public void onItemClick(AdapterView<?> _arg0, View _arg1, int _arg2, long _arg3) {
+		// http://cyrilmottier.com/2011/11/23/listview-tips-tricks-4-add-several-clickable-areas/
 		FragmentActivity act = getActivity();
 		if (act != null) {
 			mSelectedNewsItem = getListNews().getPulledNewss().get(_arg2);
@@ -215,6 +238,14 @@ public final class BookmarkListFragment extends BasicFragment implements // OnNe
 			} else {
 				openDetails(OpenContentMethod.fromValue(Prefs.getInstance().getOpenDetailsMethod()));
 			}
+		}
+	}
+
+
+	private void showWarningWhenListEmpty() {
+		View view = getView();
+		if (view != null) {
+			view.findViewById(R.id.tv_empty_bookmark_list).setVisibility(View.VISIBLE);
 		}
 	}
 }

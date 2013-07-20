@@ -24,7 +24,6 @@ import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
-import com.gmail.hasszhao.mininews.interfaces.IRefreshNewsListListener;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.tasks.TaskBookmark;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
@@ -95,12 +94,8 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 				};
 			}.execute();
 			ImageButton bookmark = (ImageButton) v.findViewById(R.id.btn_bookmark);
-			if (!(fragment instanceof IRefreshNewsListListener)) {
-				bookmark.setVisibility(View.INVISIBLE);
-			} else {
-				bookmark.setOnClickListener(this);
-				bookmark.setSelected(item.isBookmarked());
-			}
+			bookmark.setOnClickListener(this);
+			bookmark.setSelected(item.isBookmarked());
 		}
 	}
 
@@ -201,11 +196,6 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 					@Override
 					protected void onSuccess() {
 						_v.setSelected(false);
-						Fragment f = getTargetFragment();
-						if (f instanceof IRefreshNewsListListener) {
-							IRefreshNewsListListener l = (IRefreshNewsListListener) f;
-							l.onBookmarkRemoved();
-						}
 					}
 				}.execute();
 			} else {
@@ -215,11 +205,6 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 					@Override
 					protected void onSuccess() {
 						_v.setSelected(true);
-						Fragment f = getTargetFragment();
-						if (f instanceof IRefreshNewsListListener) {
-							IRefreshNewsListListener l = (IRefreshNewsListListener) f;
-							l.onBookmarked();
-						}
 					}
 				}.execute();
 			}

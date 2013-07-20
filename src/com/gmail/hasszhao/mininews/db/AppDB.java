@@ -20,6 +20,7 @@ public final class AppDB {
 	private final SQLiteDatabase mDB;
 	private final Context mContext;
 
+
 	public AppDB(Context _context) {
 		DatabaseHelper dh = new DatabaseHelper(_context);
 		mDB = dh.getReadableDatabase();
@@ -88,6 +89,8 @@ public final class AppDB {
 						.getColumnIndex(TblBookmarkedNewsItem.COL_IMAGE_URL)), c.getLong(c
 						.getColumnIndex(TblBookmarkedNewsItem.COL_DATE)), BooleanUtil.fromLong(c.getLong(c
 						.getColumnIndex(TblBookmarkedNewsItem.COL_IS_HOT))));
+				// It's been sure.
+				news.setBookmark(true);
 				results.add(news);
 			}
 		} catch (Exception _e) {
