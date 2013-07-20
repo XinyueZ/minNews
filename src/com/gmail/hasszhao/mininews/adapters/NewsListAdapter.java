@@ -25,11 +25,10 @@ public final class NewsListAdapter extends BaseAdapter {
 	private boolean mShowBookmarkButton = true;
 
 
-	public interface OnNewsClickedListener {
-
-		void onNewsClicked(INewsListItem _newsItem);
-	}
-
+	// public interface OnNewsClickedListener {
+	//
+	// void onNewsClicked(INewsListItem _newsItem);
+	// }
 	public interface OnNewsShareListener {
 
 		void onNewsShare(INewsListItem _newsItem);
@@ -44,7 +43,7 @@ public final class NewsListAdapter extends BaseAdapter {
 	}
 
 
-	private OnNewsClickedListener mOnNewsClickedListener;
+	// private OnNewsClickedListener mOnNewsClickedListener;
 	private OnNewsShareListener mOnNewsShareListener;
 	private OnNewsBookmarkButtonClickedListener mOnNewsBookmarkedListener;
 
@@ -158,17 +157,17 @@ public final class NewsListAdapter extends BaseAdapter {
 				}
 			}
 		});
-		OnClickListener l = new OnClickListener() {
-
-			@Override
-			public void onClick(View _v) {
-				if (mOnNewsClickedListener != null) {
-					mOnNewsClickedListener.onNewsClicked(newsItem);
-				}
-			}
-		};
-		h.topline.setOnClickListener(l);
-		h.headline.setOnClickListener(l);
+		// OnClickListener l = new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View _v) {
+		// if (mOnNewsClickedListener != null) {
+		// mOnNewsClickedListener.onNewsClicked(newsItem);
+		// }
+		// }
+		// };
+		// h.topline.setOnClickListener(l);
+		// h.headline.setOnClickListener(l);
 		if (newsItem.isHot() && newsItem.isNew()) {
 			h.banner1.setVisibility(View.VISIBLE);
 			h.banner1.setImageResource(R.drawable.ic_banner_hot_item);
@@ -188,10 +187,10 @@ public final class NewsListAdapter extends BaseAdapter {
 	}
 
 
-	public void setOnNewsClickedListener(OnNewsClickedListener _onNewsClickedListener) {
-		mOnNewsClickedListener = _onNewsClickedListener;
-	}
-
+	// public void setOnNewsClickedListener(OnNewsClickedListener
+	// _onNewsClickedListener) {
+	// mOnNewsClickedListener = _onNewsClickedListener;
+	// }
 
 	public void setOnNewsShareListener(OnNewsShareListener _onNewsShareListener) {
 		mOnNewsShareListener = _onNewsShareListener;

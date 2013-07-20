@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -28,7 +30,6 @@ import com.gmail.hasszhao.mininews.adapters.NewsEndlessListAdapter;
 import com.gmail.hasszhao.mininews.adapters.NewsEndlessListAdapter.ICallNext;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsBookmarkButtonClickedListener;
-import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsClickedListener;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsShareListener;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.ViewHolder;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
@@ -43,9 +44,9 @@ import com.gmail.hasszhao.mininews.fragments.dialog.AskOpenDetailsMethodFragment
 import com.gmail.hasszhao.mininews.fragments.dialog.AskOpenDetailsMethodFragment.OpenContentMethod;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
+import com.gmail.hasszhao.mininews.interfaces.IRefreshNewsListListener;
 import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
-import com.gmail.hasszhao.mininews.interfaces.IRefreshNewsListListener;
 import com.gmail.hasszhao.mininews.tasks.TaskBookmark;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.tasks.TaskLoadNewsList;
@@ -54,10 +55,11 @@ import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 
-public class NewsListPageFragment extends BasicFragment implements Listener<DOStatus>, ErrorListener,
-		OnRefreshListener, OnNewsClickedListener, OnNewsShareListener, IRefreshable, INewsListItemProvider, ICallNext,
-		IErrorResponsible, OnNewsBookmarkButtonClickedListener, OnScrollListener,
-		IRefreshNewsListListener {
+public class NewsListPageFragment extends BasicFragment implements Listener<DOStatus>,
+		ErrorListener,
+		OnRefreshListener,// OnNewsClickedListener,
+		OnNewsShareListener, IRefreshable, INewsListItemProvider, ICallNext, IErrorResponsible,
+		OnNewsBookmarkButtonClickedListener, OnScrollListener, IRefreshNewsListListener, OnItemClickListener {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.NewsListPageFragment";
@@ -226,9 +228,10 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 			View v = getView();
 			if (v != null) {
 				ListView listView = (ListView) v.findViewById(R.id.activity_googlecards_listview);
+				listView.setOnItemClickListener(this);
 				if (mNewsEndlessListAdapter == null) {
 					NewsListAdapter adapter = new NewsListAdapter(getActivity().getApplicationContext(), getListNews());
-					adapter.setOnNewsClickedListener(this);
+					// adapter.setOnNewsClickedListener(this);
 					adapter.setOnNewsShareListener(this);
 					adapter.setOnNewsBookmarkedListener(this);
 					mNewsEndlessListAdapter = new NewsEndlessListAdapter(act.getApplicationContext(), adapter, this);
@@ -284,20 +287,10 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 	}
 
 
-	@Override
-	public void onNewsClicked(INewsListItem _newsItem) {
-		FragmentActivity act = getActivity();
-		if (act != null) {
-			mSelectedNewsItem = _newsItem;
-			if (!Prefs.getInstance().getDontAskForOpeningDetailsMethod()) {
-				MainActivity.showDialogFragment(act, AskOpenDetailsMethodFragment.newInstance(this), null);
-			} else {
-				openDetails(OpenContentMethod.fromValue(Prefs.getInstance().getOpenDetailsMethod()));
-			}
-		}
-	}
-
-
+	// @Override
+	// public void onNewsClicked(INewsListItem _newsItem) {
+	//
+	// }
 	@Override
 	public void openDetails(OpenContentMethod _method) {
 		switch (_method) {
@@ -428,5 +421,19 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 	@Override
 	public void onScroll(AbsListView _view, int _firstVisibleItem, int _visibleItemCount, int _totalItemCount) {
+	}
+
+
+	@Override
+	public void onItemClick(AdapterView<?> _arg0, View _arg1, int _arg2, long _arg3) {
+		FragmentActivity act = getActivity();
+		if (act != null) {
+			mSelectedNewsItem = getListNews().getPulledNewss().get(_arg2);
+			if (!Prefs.getInstance().getDontAskForOpeningDetailsMethod()) {
+				MainActivity.showDialogFragment(act, AskOpenDetailsMethodFragment.newInstance(this), null);
+			} else {
+				openDetails(OpenContentMethod.fromValue(Prefs.getInstance().getOpenDetailsMethod()));
+			}
+		}
 	}
 }

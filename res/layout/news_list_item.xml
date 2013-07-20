@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_box"
+    android:focusable="false" android:descendantFocusability="blocksDescendants"
     android:paddingBottom="5dp" >
 
     <RelativeLayout
@@ -11,7 +12,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:focusable="false" >
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/iv_thumb"
@@ -19,7 +21,8 @@
             android:layout_width="@dimen/thumb_width"
             android:layout_height="@dimen/thumb_height"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:focusable="false" />
 
         <com.gmail.hasszhao.mininews.views.FontTextView
             android:id="@+id/tv_topline"
@@ -28,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/iv_thumb"
+            android:focusable="false"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout
@@ -35,19 +39,22 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
+            android:focusable="false"
             android:orientation="horizontal" >
 
             <com.gmail.hasszhao.mininews.views.FixedSizeImageView
                 android:id="@+id/iv_bunner_thumb_1"
                 style="@style/Thumb_Banner"
                 android:layout_width="@dimen/banner_thumb_width"
-                android:layout_height="@dimen/banner_thumb_height" />
+                android:layout_height="@dimen/banner_thumb_height"
+                android:focusable="false" />
 
             <com.gmail.hasszhao.mininews.views.FixedSizeImageView
                 android:id="@+id/iv_bunner_thumb_2"
                 style="@style/Thumb_Banner"
                 android:layout_width="@dimen/banner_thumb_width"
-                android:layout_height="@dimen/banner_thumb_height" />
+                android:layout_height="@dimen/banner_thumb_height"
+                android:focusable="false" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -59,6 +66,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/rl_head"
         android:layout_marginTop="5dp"
+        android:focusable="false"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <com.gmail.hasszhao.mininews.views.FontTextView
@@ -69,6 +77,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tv_headline"
         android:layout_marginTop="5dp"
+        android:focusable="false"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <ImageButton
@@ -78,6 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:focusable="false"
         android:src="@drawable/selector_bookmark_button" />
 
     <ImageButton
@@ -87,6 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:focusable="false"
         android:src="@drawable/ic_share" />
 
 </RelativeLayout>

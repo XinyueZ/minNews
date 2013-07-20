@@ -7,17 +7,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.gmail.hasszhao.mininews.App;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.activities.MainActivity;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter;
-import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsClickedListener;
 import com.gmail.hasszhao.mininews.adapters.NewsListAdapter.OnNewsShareListener;
 import com.gmail.hasszhao.mininews.dataset.DONews;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
@@ -36,8 +38,8 @@ import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 
-public final class BookmarkListFragment extends BasicFragment implements OnNewsClickedListener, OnNewsShareListener,
-		OnDismissCallback, INewsListItemProvider {
+public final class BookmarkListFragment extends BasicFragment implements // OnNewsClickedListener,
+		OnNewsShareListener, OnDismissCallback, INewsListItemProvider, OnItemClickListener {
 
 	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.BookmarkList";
@@ -96,9 +98,10 @@ public final class BookmarkListFragment extends BasicFragment implements OnNewsC
 		if (getListNews() != null && getListNews().getPulledNewss().size() > 0) {
 			if (_view != null) {
 				ListView listView = (ListView) _view.findViewById(R.id.activity_googlecards_listview);
+				listView.setOnItemClickListener(this);
 				if (mAdapter == null) {
 					mAdapter = new NewsListAdapter(getActivity().getApplicationContext(), getListNews());
-					mAdapter.setOnNewsClickedListener(this);
+					// mAdapter.setOnNewsClickedListener(this);
 					mAdapter.setOnNewsShareListener(this);
 					mAdapter.setShowBookmarkButton(false);
 					supportCardAnim(listView);
@@ -151,24 +154,15 @@ public final class BookmarkListFragment extends BasicFragment implements OnNewsC
 	}
 
 
-	@Override
-	public void onNewsClicked(INewsListItem _newsItem) {
-		FragmentActivity act = getActivity();
-		if (act != null) {
-			mSelectedNewsItem = _newsItem;
-			if (!Prefs.getInstance().getDontAskForOpeningDetailsMethod()) {
-				MainActivity.showDialogFragment(act, AskOpenDetailsMethodFragment.newInstance(this), null);
-			} else {
-				openDetails(OpenContentMethod.fromValue(Prefs.getInstance().getOpenDetailsMethod()));
-			}
-		}
-	}
-
-
+	// @Override
+	// public void onNewsClicked(INewsListItem _newsItem) {
+	//
+	// }
 	@Override
 	public void onDismiss(AbsListView _listView, int[] _reverseSortedPositions) {
 		for (int position : _reverseSortedPositions) {
 			mAdapter.remove(position);
+			Log.d("mini", "Ask: onDismiss:" + position);
 		}
 	}
 
@@ -207,6 +201,20 @@ public final class BookmarkListFragment extends BasicFragment implements OnNewsC
 			Util.openUrl(act, mSelectedNewsItem.getURL());
 			// act.overridePendingTransition(R.anim.hyperspace_fast_in,
 			// R.anim.hyperspace_fast_out);
+		}
+	}
+
+
+	@Override
+	public void onItemClick(AdapterView<?> _arg0, View _arg1, int _arg2, long _arg3) {
+		FragmentActivity act = getActivity();
+		if (act != null) {
+			mSelectedNewsItem = getListNews().getPulledNewss().get(_arg2);
+			if (!Prefs.getInstance().getDontAskForOpeningDetailsMethod()) {
+				MainActivity.showDialogFragment(act, AskOpenDetailsMethodFragment.newInstance(this), null);
+			} else {
+				openDetails(OpenContentMethod.fromValue(Prefs.getInstance().getOpenDetailsMethod()));
+			}
 		}
 	}
 }
