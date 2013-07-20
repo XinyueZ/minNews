@@ -7,7 +7,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,10 +73,14 @@ public final class BookmarkListFragment extends BasicFragment implements // OnNe
 		Activity act = getActivity();
 		if (act != null) {
 			List<DONews> list = ((App) act.getApplication()).getAppDB().getAllBookmarkedNewsItems();
+			setListNews(new ListNews(list, list.size()));
 			if (list.size() == 0) {
 				showWarningWhenListEmpty();
+				// For case that "details" deleted the "last" item.
+				if (mAdapter != null) {
+					mAdapter.refresh(act.getApplicationContext(), getListNews());
+				}
 			} else {
-				setListNews(new ListNews(list, list.size()));
 				initList(_view);
 			}
 		}
@@ -184,7 +187,7 @@ public final class BookmarkListFragment extends BasicFragment implements // OnNe
 					}
 				}
 			}.execute();
-			Log.d("mini", "Ask: position:" + position);
+			// Log.d("mini", "Ask: position:" + position);
 		}
 	}
 
