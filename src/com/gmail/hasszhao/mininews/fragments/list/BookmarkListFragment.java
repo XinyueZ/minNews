@@ -72,7 +72,7 @@ public final class BookmarkListFragment extends BasicFragment implements // OnNe
 	private void loadBookmarkList(View _view) {
 		Activity act = getActivity();
 		if (act != null) {
-			List<DONews> list = ((App) act.getApplication()).getAppDB().getAllBookmarkedNewsItems();
+			List<DONews> list = ((App) act.getApplication()).getBookmarkedNews();
 			setListNews(new ListNews(list, list.size()));
 			if (list.size() == 0) {
 				showWarningWhenListEmpty();

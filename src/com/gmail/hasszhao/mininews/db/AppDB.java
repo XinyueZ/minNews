@@ -73,6 +73,10 @@ public final class AppDB {
 	}
 
 
+	/**
+	 * @deprecated Do not use all bookmarked news from DB directly.
+	 * */
+	@Deprecated
 	public synchronized List<DONews> getAllBookmarkedNewsItems() {
 		ArrayList<DONews> results = null;
 		Cursor c = null;

@@ -1,11 +1,14 @@
 package com.gmail.hasszhao.mininews;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import android.app.Application;
 
+import com.gmail.hasszhao.mininews.dataset.DONews;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
@@ -29,6 +32,28 @@ public final class App extends Application {
 		TaskHelper.init(getApplicationContext());
 		Prefs.createInstance(getApplicationContext());
 		mAppDB = new AppDB(this);
+	}
+
+
+	public List<DONews> getBookmarkedNews() {
+		List<DONews> ret = new ArrayList<DONews>();
+		Set<String> keys = mNewsLists.keySet();
+		if (keys != null) {
+			ListNews ln = null;
+			List<DONews> ldo = null;
+			for (String key : keys) {
+				ln = mNewsLists.get(key);
+				if (ln != null) {
+					ldo = ln.getPulledNewss();
+					for (DONews n : ldo) {
+						if (n.isBookmarked()) {
+							ret.add(n);
+						}
+					}
+				}
+			}
+		}
+		return ret;
 	}
 
 
