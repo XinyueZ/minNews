@@ -63,15 +63,15 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 	}
 
 
-	private void loadDetails(View v) {
+	private void loadDetails(View _view) {
 		Fragment fragment = getTargetFragment();
 		if (fragment instanceof INewsListItemProvider) {
 			INewsListItemProvider p = (INewsListItemProvider) fragment;
 			INewsListItem item = p.getNewsListItem();
-			((TextView) v.findViewById(R.id.tv_details_topline)).setText(Html.fromHtml(item.getTopline()));
+			((TextView) _view.findViewById(R.id.tv_details_topline)).setText(Html.fromHtml(item.getTopline()));
 			loadHeadline(item);
-			TextView details = (TextView) v.findViewById(R.id.tv_details_full_content);
-			Button fallbackOpenArticleSite = (Button) v.findViewById(R.id.btn_visit_article_site);
+			TextView details = (TextView) _view.findViewById(R.id.tv_details_full_content);
+			Button fallbackOpenArticleSite = (Button) _view.findViewById(R.id.btn_visit_article_site);
 			fallbackOpenArticleSite.setOnClickListener(this);
 			new TaskLoadDetailsContent(details, fallbackOpenArticleSite, item) {
 
@@ -93,9 +93,7 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 					}
 				};
 			}.execute();
-			ImageButton bookmark = (ImageButton) v.findViewById(R.id.btn_bookmark);
-			bookmark.setOnClickListener(this);
-			bookmark.setSelected(item.isBookmarked());
+			refreshBookmarkButton(_view, item);
 		}
 	}
 
@@ -218,6 +216,27 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
 			if (act != null) {
 				Util.openUrl(act, item.getURL());
 			}
+		}
+	}
+
+
+	@Override
+	public void onFragmentResume() {
+		View v = getView();
+		if (v != null) {
+			Fragment fragment = getTargetFragment();
+			INewsListItemProvider p = (INewsListItemProvider) fragment;
+			final INewsListItem item = p.getNewsListItem();
+			refreshBookmarkButton(v, item);
+		}
+	}
+
+
+	private void refreshBookmarkButton(View v, final INewsListItem item) {
+		if (item != null) {
+			ImageButton bookmark = (ImageButton) v.findViewById(R.id.btn_bookmark);
+			bookmark.setOnClickListener(this);
+			bookmark.setSelected(item.isBookmarked());
 		}
 	}
 }
