@@ -97,16 +97,6 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 		mTabHost.setup();
 		mTabHost.setOnTabChangedListener(this);
 		addTab(getString(R.string.title_home_tab));
-		addTab("Test1");
-		addTab("Test2");
-		addTab("Test3");
-		addTab("Test4");
-		addTab("Test5");
-		addTab("Test6");
-		addTab("Test7");
-		addTab("Test8");
-		addTab("Test9");
-		addTab("Test10");
 	}
 
 
@@ -121,7 +111,21 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 
 	@Override
 	public void onTabChanged(String _tabId) {
+		// Learn here to change the "shown" page.
+		// http://wptrafficanalyzer.in/blog/creating-navigation-tabs-using-tabhost-and-fragments-in-android/
+		// But I use "hide" instead of "attach" and "detach" .
 		Util.showShortToast(getApplicationContext(), _tabId);
+		Fragment top = getTopFragment();
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		if (top != null) {
+			// Top is a page of non-home
+			ft.hide(top);
+		}
+		Fragment found = getSupportFragmentManager().findFragmentByTag(_tabId);
+		if (found != null) {
+			ft.show(found);
+		}
+		ft.commit();
 	}
 
 
@@ -143,6 +147,14 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 			if (currFrag instanceof OnFragmentBackStackChangedListener) {
 				((OnFragmentBackStackChangedListener) currFrag).onFragmentResume();
 			}
+		}
+		Fragment top = getTopFragment();
+		if (top == null) {
+			// Bottom-viewpager
+			mTabHost.setCurrentTabByTag(getString(R.string.title_home_tab));
+		} else {
+			// Other-viewpagers, i.e "searched"
+			mTabHost.setCurrentTabByTag(top.getTag());
 		}
 	}
 
@@ -421,16 +433,11 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 
 
 	private void showSearchedNewsListFragment(String _key) {
-		// Fragment f = getTopFragment();
-		// if (f instanceof SearchedNewsPagersFragment) {
-		// SearchedNewsPagersFragment snf = (SearchedNewsPagersFragment) f;
-		// snf.searchWitNewKey(_key);
-		// } else
-		// {
 		SearchedNewsPagersFragment fmg = SearchedNewsPagersFragment.newInstance(this, _key);
-		addOpenNextPage(fmg, SearchedNewsPagersFragment.TAG);
+		addOpenNextPage(fmg, _key);
+		addTab(_key);
+		mTabHost.setCurrentTabByTag(_key);
 		setSidebarEnable(false);
-		// }
 	}
 
 
