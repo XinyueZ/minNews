@@ -11,7 +11,7 @@
         android:background="@android:color/transparent"
         android:padding="@dimen/details_box_margin" >
 
-        <RelativeLayout
+        <RelativeLayout 
             android:id="@+id/container_details_topline"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

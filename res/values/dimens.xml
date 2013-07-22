@@ -30,5 +30,5 @@
     <dimen name="dialog_radios_padding_top_bottom">10dp</dimen>
     <dimen name="dialog_2_buttons_right_button_padding_top">10dp</dimen>
     <dimen name="dialog_2_buttons_right_button_padding_bottom">5dp</dimen>
-
+<dimen name="weather_tab_text">11sp</dimen>
 </resources>

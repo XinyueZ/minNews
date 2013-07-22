@@ -20,6 +20,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -36,12 +38,13 @@ import com.gmail.hasszhao.mininews.interfaces.IRefreshable;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.interfaces.OnFragmentBackStackChangedListener;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
+import com.gmail.hasszhao.mininews.utils.TabFactory;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 
 public final class MainActivity extends BasicActivity implements OnCheckedChangeListener, ISharable,
-		OnBackStackChangedListener, OnEditorActionListener, DrawerLayout.DrawerListener {
+		OnBackStackChangedListener, OnEditorActionListener, DrawerLayout.DrawerListener, OnTabChangeListener {
 
 	private static final int FRAGMENT_ID = R.id.container_news;
 	public static final String ACTION = "com.gmail.hasszhao.mininews.MainActivity";
@@ -49,6 +52,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	private static final int LAYOUT = R.layout.activity_main;
 	private PullToRefreshAttacher mPullToRefreshAttacher;
 	private ActionBarDrawerToggle mDrawerToggle;
+	private TabHost mTabHost;
 
 
 	@Override
@@ -84,6 +88,40 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 		initSidebar();
 		initSwitches();
 		getSupportFragmentManager().addOnBackStackChangedListener(this);
+		initTabs();
+	}
+
+
+	private void initTabs() {
+		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+		mTabHost.setup();
+		mTabHost.setOnTabChangedListener(this);
+		addTab(getString(R.string.title_home_tab));
+		addTab("Test1");
+		addTab("Test2");
+		addTab("Test3");
+		addTab("Test4");
+		addTab("Test5");
+		addTab("Test6");
+		addTab("Test7");
+		addTab("Test8");
+		addTab("Test9");
+		addTab("Test10");
+	}
+
+
+	private void addTab(String _tabText) {
+		TabFactory tf = new TabFactory(this);
+		TabHost.TabSpec spec = mTabHost.newTabSpec(_tabText);
+		spec.setIndicator(tf.createTabView(_tabText));
+		spec.setContent(tf);
+		mTabHost.addTab(spec);
+	}
+
+
+	@Override
+	public void onTabChanged(String _tabId) {
+		Util.showShortToast(getApplicationContext(), _tabId);
 	}
 
 

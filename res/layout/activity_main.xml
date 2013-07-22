@@ -15,10 +15,58 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context=".MainActivity" >
 
+        <HorizontalScrollView
+            android:id="@+id/hsv_tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" >
+
+            <TabHost
+                android:id="@android:id/tabhost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fadingEdge="none"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp" >
+
+                <RelativeLayout
+                    android:id="@+id/ll_weather_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <TabWidget
+                        android:id="@android:id/tabs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/selector_tab_pagers"
+                        android:divider="@drawable/div_tabs"
+                        android:fadingEdge="none" >
+                    </TabWidget>
+
+                    <FrameLayout
+                        android:id="@android:id/tabcontent"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_below="@android:id/tabs"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </TabHost>
+        </HorizontalScrollView>
+
         <FrameLayout
             android:id="@+id/container_news"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_below="@+id/hsv_tabs" />
+
+        <View
+            android:id="@+id/v_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="14dp"
+            android:layout_below="@+id/hsv_tabs"
+            android:background="@drawable/bg_tab_bottom_shadow" />
     </RelativeLayout>
 
     <!-- Sidebar -->

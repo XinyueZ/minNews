@@ -20,6 +20,7 @@
     <string name="title_loading_you_data">Data is being loaded.</string>
     <string name="title_visit">Visit the article site</string>
     <string name="title_error">Oppps~~</string>
+    <string name="title_home_tab">Home</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_share">Share</string>
     <string name="action_open_bookmark_list">Bookmark</string>

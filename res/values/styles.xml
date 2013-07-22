@@ -252,4 +252,18 @@
         <item name="android:layout_marginBottom">@dimen/splash_between</item>
     </style>
 
+    <style name="Text.Tab">
+        <item name="android:textColor">@drawable/selector_tab_pagers_text</item>
+        <item name="android:textSize">@dimen/weather_tab_text</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:fadingEdge">none</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
 </resources>

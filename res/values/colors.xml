@@ -13,5 +13,6 @@
     <color name="light_blue">#ff33b5e5</color>
     <color name="gradient_blue_0">#dbe5ec</color>
     <color name="gradient_blue_100">#fbfcfe</color>
-
+   <color name="orange">#fa7d19</color>
+   <color name="grey_headline">#333333</color>
 </resources>

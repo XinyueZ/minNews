@@ -20,6 +20,7 @@
     <string name="title_loading_you_data">读取数据</string>
     <string name="title_visit">查看原文</string>
     <string name="title_error">哦哈~~</string>
+    <string name="title_home_tab">首页</string>
     <string name="action_refresh">刷新</string>
     <string name="action_share">分享</string>
     <string name="action_open_bookmark_list">收藏列表</string>
