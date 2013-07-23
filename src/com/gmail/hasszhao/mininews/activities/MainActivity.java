@@ -1,5 +1,7 @@
 package com.gmail.hasszhao.mininews.activities;
 
+import java.util.ArrayList;
+
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshAttacher;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.content.res.Configuration;
@@ -39,12 +41,14 @@ import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.interfaces.OnFragmentBackStackChangedListener;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
 import com.gmail.hasszhao.mininews.utils.TabFactory;
+import com.gmail.hasszhao.mininews.utils.TabFactory.OnTabClosedListener;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
 
 public final class MainActivity extends BasicActivity implements OnCheckedChangeListener, ISharable,
-		OnBackStackChangedListener, OnEditorActionListener, DrawerLayout.DrawerListener, OnTabChangeListener {
+		OnBackStackChangedListener, OnEditorActionListener, DrawerLayout.DrawerListener, OnTabChangeListener,
+		OnTabClosedListener {
 
 	private static final int FRAGMENT_ID = R.id.container_news;
 	public static final String ACTION = "com.gmail.hasszhao.mininews.MainActivity";
@@ -53,6 +57,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	private PullToRefreshAttacher mPullToRefreshAttacher;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private TabHost mTabHost;
+	private final ArrayList<TabHost.TabSpec> mTabSpecList = new ArrayList<TabHost.TabSpec>();
 
 
 	@Override
@@ -96,16 +101,46 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup();
 		mTabHost.setOnTabChangedListener(this);
-		addTab(getString(R.string.title_home_tab));
+		addTab(getString(R.string.title_home_tab), false);
 	}
 
 
-	private void addTab(String _tabText) {
+	private void addTab(String _tabText, boolean _canClose) {
 		TabFactory tf = new TabFactory(this);
+		tf.setOnTabClosedListener(this);
 		TabHost.TabSpec spec = mTabHost.newTabSpec(_tabText);
-		spec.setIndicator(tf.createTabView(_tabText));
+		spec.setIndicator(tf.createTabView(_tabText, _canClose));
 		spec.setContent(tf);
 		mTabHost.addTab(spec);
+		mTabHost.setCurrentTabByTag(_tabText);
+		mTabSpecList.add(spec);
+	}
+
+
+	@Override
+	public void onTabClosed(String _tabText) {
+		// mTabHost.
+		Util.showShortToast(getApplicationContext(), _tabText);
+		removeTab(_tabText);
+		closeFragment(_tabText);
+	}
+
+
+	private void removeTab(String _tabText) {
+		for (TabHost.TabSpec spec : mTabSpecList) {
+			if (TextUtils.equals(_tabText, spec.getTag())) {
+				mTabSpecList.remove(spec);
+				break;
+			}
+		}
+		mTabHost.setCurrentTab(0);
+		mTabHost.clearAllTabs();
+		int nTabIndex = 0;
+		for (TabHost.TabSpec spec : mTabSpecList) {
+			mTabHost.addTab(spec);
+			mTabHost.setCurrentTab(nTabIndex++);
+		}
+		mTabHost.setCurrentTab(nTabIndex - 1);
 	}
 
 
@@ -113,7 +148,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	public void onTabChanged(String _tabId) {
 		// Learn here to change the "shown" page.
 		// http://wptrafficanalyzer.in/blog/creating-navigation-tabs-using-tabhost-and-fragments-in-android/
-		// But I use "hide" instead of "attach" and "detach" .
+		// But I use "show"/"hide" instead of "attach" and "detach" .
 		Util.showShortToast(getApplicationContext(), _tabId);
 		Fragment top = getTopFragment();
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -124,6 +159,11 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 		Fragment found = getSupportFragmentManager().findFragmentByTag(_tabId);
 		if (found != null) {
 			ft.show(found);
+		}
+		if (!TextUtils.equals(_tabId, getString(R.string.title_home_tab))) {
+			ActionBar ab = getSupportActionBar();
+			View customView = ab.getCustomView();
+			((EditText) customView.findViewById(R.id.tv_input_search_key)).setText(_tabId);
 		}
 		ft.commit();
 	}
@@ -435,8 +475,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	private void showSearchedNewsListFragment(String _key) {
 		SearchedNewsPagersFragment fmg = SearchedNewsPagersFragment.newInstance(this, _key);
 		addOpenNextPage(fmg, _key);
-		addTab(_key);
-		mTabHost.setCurrentTabByTag(_key);
+		addTab(_key, true);
 		setSidebarEnable(false);
 	}
 

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_box"
-    android:paddingBottom="5dp" >
+    android:paddingBottom="5dp"
+    android:paddingTop="0dp" >
 
     <com.gmail.hasszhao.mininews.views.FixedSizeImageView
         android:id="@+id/iv_thumb"
