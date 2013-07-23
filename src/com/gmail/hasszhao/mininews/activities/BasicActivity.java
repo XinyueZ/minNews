@@ -27,4 +27,12 @@ public abstract class BasicActivity extends SherlockFragmentActivity {
 			trans.commit();
 		}
 	}
+
+
+	protected void removeFragmentragment(String _tag) {
+		Fragment f = getSupportFragmentManager().findFragmentByTag(_tag);
+		if (f != null) {
+			getSupportFragmentManager().beginTransaction().remove(f).commit();
+		}
+	}
 }

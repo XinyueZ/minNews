@@ -24,6 +24,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -58,11 +59,13 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	private ActionBarDrawerToggle mDrawerToggle;
 	private TabHost mTabHost;
 	private final ArrayList<TabHost.TabSpec> mTabSpecList = new ArrayList<TabHost.TabSpec>();
+	private String TAG_HOME;
 
 
 	@Override
 	protected void onDestroy() {
 		mPullToRefreshAttacher = null;
+		getSupportFragmentManager().removeOnBackStackChangedListener(this);
 		super.onDestroy();
 	}
 
@@ -84,6 +87,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		TAG_HOME = getString(R.string.title_home_tab);
 		super.onCreate(savedInstanceState);
 		setContentView(LAYOUT);
 		initActionbar();
@@ -101,7 +105,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup();
 		mTabHost.setOnTabChangedListener(this);
-		addTab(getString(R.string.title_home_tab), false);
+		addTab(TAG_HOME, false);
 	}
 
 
@@ -120,9 +124,9 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	@Override
 	public void onTabClosed(String _tabText) {
 		// mTabHost.
-		Util.showShortToast(getApplicationContext(), _tabText);
+		// Util.showShortToast(getApplicationContext(), _tabText);
 		removeTab(_tabText);
-		closeFragment(_tabText);
+		removeFragmentragment(_tabText);
 	}
 
 
@@ -149,23 +153,38 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 		// Learn here to change the "shown" page.
 		// http://wptrafficanalyzer.in/blog/creating-navigation-tabs-using-tabhost-and-fragments-in-android/
 		// But I use "show"/"hide" instead of "attach" and "detach" .
-		Util.showShortToast(getApplicationContext(), _tabId);
-		Fragment top = getTopFragment();
+		// Util.showShortToast(getApplicationContext(), _tabId);
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		if (top != null) {
-			// Top is a page of non-home
-			ft.hide(top);
+		Fragment found = null;
+		for (TabSpec spec : mTabSpecList) {
+			if (!TextUtils.equals(_tabId, spec.getTag())) {
+				found = getSupportFragmentManager().findFragmentByTag(spec.getTag());
+				if (found != null) {
+					ft.hide(found);
+				}
+			} else {
+				found = getSupportFragmentManager().findFragmentByTag(spec.getTag());
+				if (found != null) {
+					ft.show(found);
+				}
+			}
 		}
-		Fragment found = getSupportFragmentManager().findFragmentByTag(_tabId);
-		if (found != null) {
-			ft.show(found);
-		}
+		ft.commit();
 		if (!TextUtils.equals(_tabId, getString(R.string.title_home_tab))) {
 			ActionBar ab = getSupportActionBar();
 			View customView = ab.getCustomView();
 			((EditText) customView.findViewById(R.id.tv_input_search_key)).setText(_tabId);
 		}
-		ft.commit();
+	}
+
+
+	@Override
+	public void onBackPressed() {
+		Fragment top = getTopFragment();
+		if (top != null) {
+			removeTab(top.getTag());
+		}
+		super.onBackPressed();
 	}
 
 
@@ -191,7 +210,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 		Fragment top = getTopFragment();
 		if (top == null) {
 			// Bottom-viewpager
-			mTabHost.setCurrentTabByTag(getString(R.string.title_home_tab));
+			mTabHost.setCurrentTabByTag(TAG_HOME);
 		} else {
 			// Other-viewpagers, i.e "searched"
 			mTabHost.setCurrentTabByTag(top.getTag());
@@ -257,6 +276,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	private void startSearching(TextView _v, String _key) {
 		Util.hideKeyboard(this, _v);
 		showSearchedNewsListFragment(_key);
+		addTab(_key, true);
 	}
 
 
@@ -348,7 +368,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 			refreshable.refresh();
 		} else {
 			// The bottom site(viewpager) is now exposed to user.
-			Fragment lastFragment = getSupportFragmentManager().findFragmentByTag(NewsPagersFragment.TAG);
+			Fragment lastFragment = getSupportFragmentManager().findFragmentByTag(TAG_HOME);
 			if (lastFragment instanceof IRefreshable) {
 				IRefreshable refreshable = (IRefreshable) lastFragment;
 				refreshable.refresh();
@@ -393,7 +413,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 
 
 	private void updatePages() {
-		Fragment f = getSupportFragmentManager().findFragmentByTag(NewsPagersFragment.TAG);
+		Fragment f = getSupportFragmentManager().findFragmentByTag(TAG_HOME);
 		if (f instanceof NewsPagersFragment) {
 			((NewsPagersFragment) f).updatePages();
 		}
@@ -467,7 +487,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	private void showNewsPagersFragment() {
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		NewsPagersFragment fmg = NewsPagersFragment.newInstance(this);
-		trans.replace(FRAGMENT_ID, fmg, NewsPagersFragment.TAG);
+		trans.replace(FRAGMENT_ID, fmg, TAG_HOME);
 		trans.commit();
 	}
 
@@ -475,7 +495,6 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	private void showSearchedNewsListFragment(String _key) {
 		SearchedNewsPagersFragment fmg = SearchedNewsPagersFragment.newInstance(this, _key);
 		addOpenNextPage(fmg, _key);
-		addTab(_key, true);
 		setSidebarEnable(false);
 	}
 
