@@ -25,7 +25,7 @@
         <item name="displayOptions">showHome|showCustom</item>
     </style>
 
-    <style name="NoActionBar" parent="Theme.Sherlock.Light.NoActionBar" />
+    <style name="NoActionBar" parent="Theme.Sherlock.Light.NoActionBar"/>
 
     <style name="Dialog_Translucent" parent="android:Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -49,7 +49,7 @@
         <item name="android:textSize">21sp</item>
     </style>
 
-    <style name="Text.Error_Topline" parent="Text.Topline" />
+    <style name="Text.Error_Topline" parent="Text.Topline"/>
 
     <style name="Text.Headline">
         <item name="font">robotoThin</item>
@@ -64,7 +64,7 @@
         <item name="android:lines">2</item>
     </style>
 
-    <style name="Text.Error_Headline" parent="Text.Headline" />
+    <style name="Text.Error_Headline" parent="Text.Headline"/>
 
     <style name="Text.News_Details_Topline" parent="Text.Topline">
         <item name="font">robotoBold</item>
@@ -131,8 +131,11 @@
     </style>
 
     <style name="Text.Dialog_2_Buttons" parent="Text.Langauge_Choice_Text">
-        <item name="android:layout_marginTop">@dimen/dialog_2_buttons_right_button_padding_top</item>
-        <item name="android:layout_marginBottom">@dimen/dialog_2_buttons_right_button_padding_bottom</item>
+        <item name="android:layout_marginTop">@dimen/dialog_2_buttons_right_button_padding_top
+        </item>
+        <item name="android:layout_marginBottom">
+            @dimen/dialog_2_buttons_right_button_padding_bottom
+        </item>
     </style>
 
     <style name="Text.Yellow.Button" parent="Text.Langauge_Choice_Text">
@@ -266,6 +269,17 @@
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
         <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="SearchRemoveButton">
+        <item name="android:src">@drawable/ic_remove</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:contentDescription">@null</item>
     </style>
 
 </resources>

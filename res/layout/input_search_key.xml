@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" > <!-- Just move the focus from all input boxes. -->
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"> <!-- Just move the focus from all input boxes. -->
 
-    <LinearLayout android:background="@android:color/transparent"
-        android:layout_width="0px"
-        android:layout_height="0px"
-        android:focusable="true"
-        android:focusableInTouchMode="true" />
+    <LinearLayout
+            android:background="@android:color/transparent"
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
     <!-- Just move the focus from all input boxes. -->
 
     <EditText
-        android:id="@+id/tv_input_search_key"
-        style="@style/Text.Input_Search_Key"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+            android:id="@+id/tv_input_search_key"
+            style="@style/Text.Input_Search_Key"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-</LinearLayout>
+    <ImageButton
+            android:id="@+id/btn_remove"
+            style="@style/SearchRemoveButton"/>
+
+</RelativeLayout>

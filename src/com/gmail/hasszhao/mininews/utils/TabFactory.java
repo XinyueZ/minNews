@@ -26,7 +26,7 @@ public final class TabFactory implements TabHost.TabContentFactory {
 
 	public TabFactory(Context _context) {
 		super();
-		mContext = _context; 
+		mContext = _context;
 	}
 
 
