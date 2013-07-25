@@ -1,11 +1,5 @@
 package com.gmail.hasszhao.mininews;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import android.app.Application;
 
 import com.gmail.hasszhao.mininews.dataset.DONews;
@@ -13,6 +7,12 @@ import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 public final class App extends Application {
