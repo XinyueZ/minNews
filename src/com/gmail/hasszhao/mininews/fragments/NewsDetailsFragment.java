@@ -22,6 +22,7 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.gmail.hasszhao.mininews.App;
 import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.activities.MainActivity;
+import com.gmail.hasszhao.mininews.dataset.DOReadNewsDetails;
 import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.fragments.basic.BasicFragment;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
@@ -84,15 +85,15 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
             }
 
             @Override
-            protected void onPostExecute(String _result) {
+            protected void onPostExecute(final DOReadNewsDetails _result) {
                 mRestoredPosition = false;
-                ((TextView) _view.findViewById(R.id.tv_details_full_content)).setText(_result);
+                ((TextView) _view.findViewById(R.id.tv_details_full_content)).setText(_result.getContent());
                 _view.findViewById(R.id.btn_visit_article_site).setOnClickListener(NewsDetailsFragment.this);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                     _view.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                         @Override
                         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                            restoreLastReadingPosition(_activity, _item, _view);
+                            restoreLastReadingPosition(_activity, _result, _view);
                             ((MainActivity) _activity).setLoadingFragmentStep(1);
                         }
                     });
@@ -100,7 +101,7 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
                     _view.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            restoreLastReadingPosition(_activity, _item, _view);
+                            restoreLastReadingPosition(_activity, _result, _view);
                             ((MainActivity) _activity).setLoadingFragmentStep(1);
                         }
                     }, 1500);
@@ -110,12 +111,11 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
         }.execute(_item);
     }
 
-    private void restoreLastReadingPosition(Activity _activity, INewsListItem _item, View _view) {
+    private void restoreLastReadingPosition(Activity _act, DOReadNewsDetails _result, View _view) {
         if (!mRestoredPosition) {
-            AppDB db = ((App) _activity.getApplication()).getAppDB();
-            if (0 < db.getLastNewsDetailsPosition(_item.getURL())) {
-                Util.showShortToast(_activity.getApplicationContext(), R.string.msg_move_to_the_last_position);
-                ((ScrollView) _view.findViewById(R.id.sv_root)).scrollTo(0, (int) db.getLastNewsDetailsPosition(_item.getURL()));
+            if (0 < _result.getLastPosition()) {
+                Util.showShortToast(_act.getApplicationContext(), R.string.msg_move_to_the_last_position);
+                ((ScrollView) _view.findViewById(R.id.sv_root)).scrollTo(0, (int) _result.getLastPosition());
                 mRestoredPosition = true;
             }
         }

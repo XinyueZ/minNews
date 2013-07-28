@@ -1,18 +1,17 @@
 package com.gmail.hasszhao.mininews.tasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
+import com.gmail.hasszhao.mininews.dataset.DOReadNewsDetails;
 import com.gmail.hasszhao.mininews.db.AppDB;
 import com.gmail.hasszhao.mininews.interfaces.INewsListItem;
-import com.gmail.hasszhao.mininews.utils.Util;
 import com.gravity.goose.Article;
 import com.gravity.goose.Configuration;
 import com.gravity.goose.Goose;
 
 import org.jsoup.Jsoup;
 
-public class TaskReadDetails extends AsyncTask<INewsListItem, String, String> {
+public final class TaskReadDetails extends AsyncTask<INewsListItem, DOReadNewsDetails, DOReadNewsDetails> {
     private AppDB mDB;
 
     public TaskReadDetails(AppDB _appDB) {
@@ -20,8 +19,10 @@ public class TaskReadDetails extends AsyncTask<INewsListItem, String, String> {
     }
 
     @Override
-    protected String doInBackground(INewsListItem... params) {
-        INewsListItem item = params[0];
+    protected DOReadNewsDetails doInBackground(INewsListItem... _params) {
+        INewsListItem item = _params[0];
+        DOReadNewsDetails res = new DOReadNewsDetails();
+        res.setLastPosition(mDB.getLastNewsDetailsPosition(item.getURL()));
         if (!mDB.findNewsDetails(item.getURL())) {
             try {
                 String url = item.getURL();
@@ -31,20 +32,21 @@ public class TaskReadDetails extends AsyncTask<INewsListItem, String, String> {
                 config.setEnableImageFetching(false);
                 Goose goose = new Goose(config);
                 Article article = goose.extractContent(url);
-                return article.cleanedArticleText();
+                res.setContent(article.cleanedArticleText());
             } catch (Exception _e0) {
                 try {
                     _e0.printStackTrace();
                     org.jsoup.nodes.Document doc = Jsoup.parse(item.getFullContent().replace("<br>", "\n\n")
                             .replace("<p>", "\n\n"));
-                    return doc.text();
+                    res.setContent(doc.text());
                 } catch (Exception _e1) {
                     _e1.printStackTrace();
-                    return null;
+                    res.setContent(null);
                 }
             }
         } else {
-            return mDB.getLastNewsDetails(item.getURL());
+            res.setContent(mDB.getLastNewsDetails(item.getURL()));
         }
+        return res;
     }
 }
