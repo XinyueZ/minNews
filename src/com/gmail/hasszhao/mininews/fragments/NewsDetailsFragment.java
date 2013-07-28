@@ -2,7 +2,6 @@ package com.gmail.hasszhao.mininews.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -31,16 +29,16 @@ import com.gmail.hasszhao.mininews.interfaces.INewsListItemProvider;
 import com.gmail.hasszhao.mininews.interfaces.ISharable;
 import com.gmail.hasszhao.mininews.tasks.TaskBookmark;
 import com.gmail.hasszhao.mininews.tasks.TaskHelper;
-import com.gmail.hasszhao.mininews.tasks.TaskLoadDetailsContent;
+import com.gmail.hasszhao.mininews.tasks.TaskReadDetails;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.views.WrapImageTextView;
-import com.gravity.goose.Article;
 
 
 public final class NewsDetailsFragment extends BasicFragment implements ISharable, ImageListener, OnClickListener {
 
     public static final String TAG = "TAG.NewsDetailsFragment";
     private static final int LAYOUT = R.layout.fragment_news_details;
+    private boolean mRestoredPosition = false;
 
     public static NewsDetailsFragment newInstance(Context _context, Fragment _target) {
         NewsDetailsFragment f = (NewsDetailsFragment) NewsDetailsFragment.instantiate(_context,
@@ -64,81 +62,82 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
     }
 
     private void loadDetails(final View _view) {
-        Fragment fragment = getTargetFragment();
-        if (fragment instanceof INewsListItemProvider) {
-            INewsListItemProvider p = (INewsListItemProvider) fragment;
-            final INewsListItem item = p.getNewsListItem();
-            ((TextView) _view.findViewById(R.id.tv_details_topline)).setText(Html.fromHtml(item.getTopline()));
-            loadHeadline(item);
-            TextView details = (TextView) _view.findViewById(R.id.tv_details_full_content);
-            Button fallbackOpenArticleSite = (Button) _view.findViewById(R.id.btn_visit_article_site);
-            fallbackOpenArticleSite.setOnClickListener(this);
-            AsyncTask<String, Article, Article> execute = new TaskLoadDetailsContent(details, fallbackOpenArticleSite, item) {
-
-                @Override
-                protected void onPreExecute() {
-                    Activity act = getActivity();
-                    if (act instanceof MainActivity) {
-                        ((MainActivity) act).showLoadingFragment(1);
-                    }
-                }
-
-                @Override
-                protected void onPostExecute(Article _result) {
-                    super.onPostExecute(_result);
-                    final Activity act = getActivity();
-                    if (act instanceof MainActivity) {
-                        ((MainActivity) act).setLoadingFragmentStep(1);
-                        //TODO Here must be refactored!
-                        //Not the position should be read, the content(parsed) will be as well.
-                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                            _view.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                                @Override
-                                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                                    AppDB db = ((App) act.getApplication()).getAppDB();
-                                    if (0 < db.getLastNewsDetailsPosition(item.getURL())) {
-                                        Util.showShortToast(act.getApplicationContext(), R.string.msg_move_to_the_last_position);
-                                        ((ScrollView) _view.findViewById(R.id.sv_root)).scrollTo(0, (int) db.getLastNewsDetailsPosition(item.getURL()));
-                                    }
-                                }
-                            });
-                        } else {
-                            _view.postDelayed(new Runnable(){
-                                @Override
-                                public void run() {
-                                    AppDB db = ((App) act.getApplication()).getAppDB();
-                                    if (0 < db.getLastNewsDetailsPosition(item.getURL())) {
-                                        Util.showShortToast(act.getApplicationContext(), R.string.msg_move_to_the_last_position);
-                                        ((ScrollView) _view.findViewById(R.id.sv_root)).scrollTo(0, (int) db.getLastNewsDetailsPosition(item.getURL()));
-                                    }
-                                }
-                            },1000);
-                        }
-                    }
-                }
-            }.execute();
-            refreshBookmarkButton(_view, item);
+        Activity act = getActivity();
+        if (act instanceof MainActivity) {
+            Fragment fragment = getTargetFragment();
+            if (fragment instanceof INewsListItemProvider) {
+                INewsListItemProvider p = (INewsListItemProvider) fragment;
+                final INewsListItem item = p.getNewsListItem();
+                ((TextView) _view.findViewById(R.id.tv_details_topline)).setText(Html.fromHtml(item.getTopline()));
+                loadHeadline(item);
+                loadDetails((MainActivity) act, _view, item);
+                refreshBookmarkButton(_view, item);
+            }
         }
     }
 
-    private void loadHeadline(INewsListItem item) {
-        int maxW = (int) getResources().getDimension(R.dimen.thumb_width);
-        int maxH = (int) getResources().getDimension(R.dimen.thumb_height);
-        TaskHelper.getImageLoader().get(item.getThumbUrl(), this, maxW, maxH);
+    private void loadDetails(final MainActivity _activity, final View _view, final INewsListItem _item) {
+        new TaskReadDetails(((App) _activity.getApplication()).getAppDB()) {
+            @Override
+            protected void onPreExecute() {
+                ((MainActivity) _activity).showLoadingFragment(1);
+            }
+
+            @Override
+            protected void onPostExecute(String _result) {
+                mRestoredPosition = false;
+                ((TextView) _view.findViewById(R.id.tv_details_full_content)).setText(_result);
+                _view.findViewById(R.id.btn_visit_article_site).setOnClickListener(NewsDetailsFragment.this);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    _view.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                        @Override
+                        public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                            restoreLastReadingPosition(_activity, _item, _view);
+                            ((MainActivity) _activity).setLoadingFragmentStep(1);
+                        }
+                    });
+                } else {
+                    _view.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            restoreLastReadingPosition(_activity, _item, _view);
+                            ((MainActivity) _activity).setLoadingFragmentStep(1);
+                        }
+                    }, 1500);
+                }
+            }
+
+        }.execute(_item);
     }
 
-    private void refreshBookmarkButton(View v, final INewsListItem item) {
-        if (item != null) {
-            ImageButton bookmark = (ImageButton) v.findViewById(R.id.btn_bookmark);
+    private void restoreLastReadingPosition(Activity _activity, INewsListItem _item, View _view) {
+        if (!mRestoredPosition) {
+            AppDB db = ((App) _activity.getApplication()).getAppDB();
+            if (0 < db.getLastNewsDetailsPosition(_item.getURL())) {
+                Util.showShortToast(_activity.getApplicationContext(), R.string.msg_move_to_the_last_position);
+                ((ScrollView) _view.findViewById(R.id.sv_root)).scrollTo(0, (int) db.getLastNewsDetailsPosition(_item.getURL()));
+                mRestoredPosition = true;
+            }
+        }
+    }
+
+    private void loadHeadline(INewsListItem _item) {
+        int maxW = (int) getResources().getDimension(R.dimen.thumb_width);
+        int maxH = (int) getResources().getDimension(R.dimen.thumb_height);
+        TaskHelper.getImageLoader().get(_item.getThumbUrl(), this, maxW, maxH);
+    }
+
+    private void refreshBookmarkButton(View _v, final INewsListItem _item) {
+        if (_item != null) {
+            ImageButton bookmark = (ImageButton) _v.findViewById(R.id.btn_bookmark);
             bookmark.setOnClickListener(this);
-            bookmark.setSelected(item.isBookmarked());
+            bookmark.setSelected(_item.isBookmarked());
         }
     }
 
     @Override
     public void onStop() {
         saveReadContentPosition();
-        ;
         super.onStop();
     }
 
@@ -232,12 +231,12 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
         }
     }
 
-    private void bookmarkHandling(final View _v, final INewsListItem item, Activity act) {
-        if (act != null) {
-            AppDB db = ((App) act.getApplication()).getAppDB();
-            if (item.isBookmarked()) {
+    private void bookmarkHandling(final View _v, final INewsListItem _item, Activity _act) {
+        if (_act != null) {
+            AppDB db = ((App) _act.getApplication()).getAppDB();
+            if (_item.isBookmarked()) {
                 // Delete
-                new TaskBookmark(db, item, TaskBookmark.BookmarkTaskType.DELETE) {
+                new TaskBookmark(db, _item, TaskBookmark.BookmarkTaskType.DELETE) {
 
                     @Override
                     protected void onSuccess() {
@@ -246,7 +245,7 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
                 }.execute();
             } else {
                 // Add
-                new TaskBookmark(db, item, TaskBookmark.BookmarkTaskType.INSERT) {
+                new TaskBookmark(db, _item, TaskBookmark.BookmarkTaskType.INSERT) {
 
                     @Override
                     protected void onSuccess() {
@@ -257,11 +256,11 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
         }
     }
 
-    private void openArticleSite(Fragment fragment, INewsListItem item) {
-        if (fragment instanceof INewsListItemProvider) {
+    private void openArticleSite(Fragment _fragment, INewsListItem _item) {
+        if (_fragment instanceof INewsListItemProvider) {
             Activity act = getActivity();
             if (act != null) {
-                Util.openUrl(act, item.getURL());
+                Util.openUrl(act, _item.getURL());
             }
         }
     }

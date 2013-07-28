@@ -52,7 +52,7 @@ public final class AppDB {
         long pos = 0;
         Cursor c = null;
         try {
-            c = mDB.rawQuery(TblNewsDetail.STMT_SELECT_BY_URL, new String[]{_url});
+            c = mDB.rawQuery(TblNewsDetail.STMT_SELECT_POS_BY_URL, new String[]{_url});
             int count = c.getCount();
             if (count > 0) {
                 while (c.moveToNext()) {
@@ -69,10 +69,39 @@ public final class AppDB {
         return pos;
     }
 
+    public synchronized String getLastNewsDetails(String _url) {
+        String str = null;
+        Cursor c = null;
+        try {
+            c = mDB.rawQuery(TblNewsDetail.STMT_SELECT_DETAILS_BY_URL, new String[]{_url});
+            int count = c.getCount();
+            if (count > 0) {
+                while (c.moveToNext()) {
+                    str = c.getString(c.getColumnIndex(TblNewsDetail.COL_CONTENT));
+                }
+            }
+        } catch (Exception _e) {
+            _e.printStackTrace();
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return str;
+    }
+
     public synchronized boolean refreshNewsDetails(String _url, String _details, int _position) {
         boolean ret;
-        Cursor c = mDB.rawQuery(TblNewsDetail.STMT_SELECT_BY_URL, new String[]{_url});
+        Cursor c = mDB.rawQuery(TblNewsDetail.STMT_SELECT_POS_BY_URL, new String[]{_url});
         ret = c.getCount() < 1 ? insertNewsDetails(_url, _details, _position) : updatetNewsDetails(_url, _details, _position);
+        c.close();
+        return ret;
+    }
+
+    public synchronized boolean findNewsDetails(String _url) {
+        boolean ret;
+        Cursor c = mDB.rawQuery(TblNewsDetail.STMT_SELECT_POS_BY_URL, new String[]{_url});
+        ret = c.getCount() > 0;
         c.close();
         return ret;
     }
