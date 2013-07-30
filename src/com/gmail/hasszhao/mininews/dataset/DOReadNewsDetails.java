@@ -1,9 +1,7 @@
 package com.gmail.hasszhao.mininews.dataset;
 
-/**
- * Created by zhaoxinyue on 28.07.13.
- */
-public class DOReadNewsDetails {
+
+public final class DOReadNewsDetails {
     private String mContent;
     private long mLastPosition;
 

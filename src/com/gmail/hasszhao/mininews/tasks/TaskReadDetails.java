@@ -11,7 +11,7 @@ import com.gravity.goose.Goose;
 
 import org.jsoup.Jsoup;
 
-public final class TaskReadDetails extends AsyncTask<INewsListItem, DOReadNewsDetails, DOReadNewsDetails> {
+public   class TaskReadDetails extends AsyncTask<INewsListItem, DOReadNewsDetails, DOReadNewsDetails> {
     private AppDB mDB;
 
     public TaskReadDetails(AppDB _appDB) {
