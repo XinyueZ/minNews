@@ -73,6 +73,7 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
                 loadHeadline(item);
                 loadDetails((MainActivity) act, _view, item);
                 refreshBookmarkButton(_view, item);
+                _view.findViewById(R.id.iv_open_photo).setOnClickListener(this);
             }
         }
     }
@@ -227,6 +228,9 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
                 break;
             case R.id.btn_bookmark:
                 bookmarkHandling(_v, item, act);
+                break;
+            case R.id.iv_open_photo:
+                Util.showShortToast(getActivity(),"test");
                 break;
         }
     }

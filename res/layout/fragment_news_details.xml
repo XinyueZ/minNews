@@ -1,90 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sv_root"
-    android:layout_width="match_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/bg_world"
-    android:scrollbars="none" >
+            android:id="@+id/sv_root"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/bg_world"
+            android:scrollbars="none">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:padding="@dimen/details_box_margin" >
-
-        <RelativeLayout 
-            android:id="@+id/container_details_topline"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/details_box_margin" >
+            android:background="@android:color/transparent"
+            android:padding="@dimen/details_box_margin">
 
-            <com.gmail.hasszhao.mininews.views.FontTextView
-                android:id="@+id/tv_details_topline"
-                style="@style/Text.News_Details_Topline"
+        <RelativeLayout
+                android:id="@+id/container_details_topline"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:layout_marginBottom="@dimen/details_box_margin">
+
+            <com.gmail.hasszhao.mininews.views.FontTextView
+                    android:id="@+id/tv_details_topline"
+                    style="@style/Text.News_Details_Topline"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <ImageButton
-                android:id="@+id/btn_bookmark"
-                style="@style/Bookmark_Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/selector_bookmark_button" />
+                    android:id="@+id/btn_bookmark"
+                    style="@style/Bookmark_Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/selector_bookmark_button"/>
         </RelativeLayout>
 
         <FrameLayout
-            android:id="@+id/container_details_headline"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/container_details_topline"
-            android:layout_marginBottom="@dimen/details_box_margin"
-            android:background="@drawable/rounded_solid_white"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp" >
-
-            <com.gmail.hasszhao.mininews.views.WrapImageTextView
-                android:id="@+id/tv_details_headline_with_image"
+                android:id="@+id/container_details_headline"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:visibility="gone" >
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/container_details_topline"
+                android:layout_marginBottom="@dimen/details_box_margin"
+                android:background="@drawable/rounded_solid_white"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+            <com.gmail.hasszhao.mininews.views.WrapImageTextView
+                    android:id="@+id/tv_details_headline_with_image"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:visibility="gone">
 
                 <com.gmail.hasszhao.mininews.views.FixedSizeImageView
-                    android:id="@+id/iv_thumb"
-                    style="@style/Thumb_Details"
-                    android:layout_width="@dimen/thumb_width"
-                    android:layout_height="@dimen/thumb_height"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="5dp" />
+                        android:id="@+id/iv_thumb"
+                        style="@style/Thumb_Details"
+                        android:layout_width="@dimen/thumb_width"
+                        android:layout_height="@dimen/thumb_height"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"/>
+
+                <com.gmail.hasszhao.mininews.views.FixedSizeImageView
+                        android:id="@+id/iv_open_photo"
+                        style="@style/Thumb_Details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@+id/iv_thumb"
+                        android:layout_alignBottom="@+id/iv_thumb"
+                        android:src="@drawable/ic_av_full_screen"
+                        />
+
             </com.gmail.hasszhao.mininews.views.WrapImageTextView>
         </FrameLayout>
 
         <Button
-            android:id="@+id/btn_visit_article_site"
-            style="@style/Text.Yellow.Long.Button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/container_details_headline"
-            android:text="@string/title_visit" />
+                android:id="@+id/btn_visit_article_site"
+                style="@style/Text.Yellow.Long.Button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/container_details_headline"
+                android:text="@string/title_visit"/>
 
         <com.gmail.hasszhao.mininews.views.FontTextView
-            android:id="@+id/tv_details_full_content"
-            style="@style/Text.News_Details"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/btn_visit_article_site"
-            android:background="@drawable/bg_details"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:id="@+id/tv_details_full_content"
+                style="@style/Text.News_Details"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/btn_visit_article_site"
+                android:background="@drawable/bg_details"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
     </RelativeLayout>
 
 </ScrollView>

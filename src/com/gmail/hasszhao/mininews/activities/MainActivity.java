@@ -202,11 +202,31 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
     public void onBackStackChanged() {
         invalidateOptionsMenu();
         ifOnBackFromSearchedNewsListFragment();
+        onUIChangedWhenStackChanged();
+        onFragmentsResume();
+
+    }
+
+    private void onUIChangedWhenStackChanged() {
+        Fragment top = getTopFragment();
         if (getTopFragment() == null) {
+            // Bottom-viewpager
             setSidebarEnable(true);
+            mTabHost.setCurrentTabByTag(TAG_HOME);
+            mTabHost.setVisibility(View.VISIBLE);
         } else {
+            // Other-viewpagers, i.e "searched"
             setSidebarEnable(false);
+            if (top instanceof NewsDetailsFragment) {
+                mTabHost.setVisibility(View.GONE);
+            } else {
+                mTabHost.setVisibility(View.VISIBLE);
+                mTabHost.setCurrentTabByTag(top.getTag());
+            }
         }
+    }
+
+    private void onFragmentsResume() {
         // Solve that problem that "added" fragments can not handle onResume
         // that "replaced" can.
         // http://stackoverflow.com/questions/6503189/fragments-onresume-from-back-stack
@@ -216,14 +236,6 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
             if (currFrag instanceof OnFragmentBackStackChangedListener) {
                 ((OnFragmentBackStackChangedListener) currFrag).onFragmentResume();
             }
-        }
-        Fragment top = getTopFragment();
-        if (top == null) {
-            // Bottom-viewpager
-            mTabHost.setCurrentTabByTag(TAG_HOME);
-        } else {
-            // Other-viewpagers, i.e "searched"
-            mTabHost.setCurrentTabByTag(top.getTag());
         }
     }
 
