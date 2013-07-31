@@ -169,23 +169,25 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment found = null;
         for (TabSpec spec : mTabSpecList) {
+            found = getSupportFragmentManager().findFragmentByTag(spec.getTag());
             if (!TextUtils.equals(_tabId, spec.getTag())) {
-                found = getSupportFragmentManager().findFragmentByTag(spec.getTag());
                 if (found != null) {
                     ft.hide(found);
                 }
             } else {
-                found = getSupportFragmentManager().findFragmentByTag(spec.getTag());
                 if (found != null) {
                     ft.show(found);
                 }
             }
         }
         ft.commit();
-        if (!TextUtils.equals(_tabId, getString(R.string.title_home_tab))) {
+        if (!TextUtils.equals(_tabId, TAG_HOME)) {
             ActionBar ab = getSupportActionBar();
             View customView = ab.getCustomView();
             ((EditText) customView.findViewById(R.id.tv_input_search_key)).setText(_tabId);
+            setSidebarEnable(false);
+        } else {
+            setSidebarEnable(true);
         }
     }
 
