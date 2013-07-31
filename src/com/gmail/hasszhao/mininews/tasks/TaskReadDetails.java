@@ -1,6 +1,7 @@
 package com.gmail.hasszhao.mininews.tasks;
 
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import com.gmail.hasszhao.mininews.dataset.DOReadNewsDetails;
 import com.gmail.hasszhao.mininews.db.AppDB;
@@ -11,7 +12,7 @@ import com.gravity.goose.Goose;
 
 import org.jsoup.Jsoup;
 
-public   class TaskReadDetails extends AsyncTask<INewsListItem, DOReadNewsDetails, DOReadNewsDetails> {
+public class TaskReadDetails extends AsyncTask<INewsListItem, DOReadNewsDetails, DOReadNewsDetails> {
     private AppDB mDB;
 
     public TaskReadDetails(AppDB _appDB) {
@@ -32,7 +33,12 @@ public   class TaskReadDetails extends AsyncTask<INewsListItem, DOReadNewsDetail
                 config.setEnableImageFetching(false);
                 Goose goose = new Goose(config);
                 Article article = goose.extractContent(url);
-                res.setContent(article.cleanedArticleText());
+                String cleaned = article.cleanedArticleText();
+                if (!TextUtils.isEmpty(cleaned)) {
+                    res.setContent(cleaned);
+                } else {
+                    throw new Exception();
+                }
             } catch (Exception _e0) {
                 try {
                     _e0.printStackTrace();

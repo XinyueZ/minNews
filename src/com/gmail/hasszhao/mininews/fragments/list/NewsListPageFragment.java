@@ -1,8 +1,5 @@
 package com.gmail.hasszhao.mininews.fragments.list;
 
-import java.util.List;
-
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -52,6 +49,10 @@ import com.gmail.hasszhao.mininews.tasks.TaskLoadNewsList;
 import com.gmail.hasszhao.mininews.utils.ShareUtil;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
+
+import java.util.List;
+
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 
 
 public class NewsListPageFragment extends BasicFragment implements Listener<DOStatus>, ErrorListener,
@@ -207,7 +208,7 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 						} else {
 							getListNews().getPulledNewss().addAll(dataFromServer.getPulledNewss());
 						}
-						closeFragment(ErrorFragment.TAG);
+						removeFragment(ErrorFragment.TAG);
 						initList();
 						break;
 					case API.API_ACTION_FAILED:

@@ -140,7 +140,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
         // mTabHost.
         // Util.showShortToast(getApplicationContext(), _tabText);
         removeTab(_tabText);
-        removeFragmentragment(_tabText);
+        removeFragment(_tabText);
     }
 
     private void removeTab(String _tabText) {
@@ -332,23 +332,10 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
         sidebar.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
     }
 
-    public void refreshingOn() {
-        if (mPullToRefreshAttacher != null) {
-            mPullToRefreshAttacher.setRefreshing(true);
-        }
-    }
-
     public void refreshComplete() {
         if (mPullToRefreshAttacher != null) {
             mPullToRefreshAttacher.setRefreshComplete();
         }
-    }
-
-    public boolean isRefreshing() {
-        if (mPullToRefreshAttacher != null) {
-            return mPullToRefreshAttacher.isRefreshing();
-        }
-        return false;
     }
 
     public void setRefreshableView(View _view, OnRefreshListener _refreshListener) {
@@ -503,13 +490,6 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
         trans.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.slide_in_from_left,
                 R.anim.slide_out_to_right);
         trans.add(FRAGMENT_ID, _f, _tag).addToBackStack(_tag).commit();
-    }
-
-    public void closePage(String _tag) {
-        getSupportFragmentManager().popBackStack(_tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-        // trans.remove(_f);
-        trans.commit();
     }
 
     public synchronized void showLoadingFragment(int _max) {
