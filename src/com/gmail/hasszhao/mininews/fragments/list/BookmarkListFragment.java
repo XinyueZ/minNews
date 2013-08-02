@@ -1,7 +1,5 @@
 package com.gmail.hasszhao.mininews.fragments.list;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -38,6 +36,8 @@ import com.haarman.listviewanimations.itemmanipulation.OnDismissCallback;
 import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
+import java.util.List;
+
 
 public final class BookmarkListFragment extends BasicFragment implements // OnNewsClickedListener,
 		OnNewsShareListener, OnDismissCallback, INewsListItemProvider, OnItemClickListener {
@@ -56,6 +56,7 @@ public final class BookmarkListFragment extends BasicFragment implements // OnNe
 
 	@Override
 	public View onCreateView(LayoutInflater _inflater, ViewGroup _container, Bundle _savedInstanceState) {
+        super. onCreateView(  _inflater,   _container,   _savedInstanceState);
 		return _inflater.inflate(LAYOUT, _container, false);
 	}
 
