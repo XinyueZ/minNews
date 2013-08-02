@@ -342,12 +342,12 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 
     private void refresh() {
         Fragment f = getTopFragment();
-        if (f instanceof IRefreshable) {
+        if (f instanceof NewsDetailsFragment) {
             IRefreshable refreshable = (IRefreshable) f;
             refreshable.refresh();
         } else {
             // The bottom site(viewpager) is now exposed to user.
-            Fragment lastFragment = getSupportFragmentManager().findFragmentByTag(TAG_HOME);
+            Fragment lastFragment = getSupportFragmentManager().findFragmentByTag(mTabHost.getCurrentTabTag());
             if (lastFragment instanceof IRefreshable) {
                 IRefreshable refreshable = (IRefreshable) lastFragment;
                 refreshable.refresh();
@@ -443,6 +443,10 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
             if (getSupportFragmentManager().findFragmentByTag(BookmarkListFragment.TAG) != null) {
                 _menu.findItem(R.id.action_bookmark_list).setVisible(false);
             }
+        } else if (getTopFragment() instanceof BookmarkListFragment) {
+            _menu.findItem(R.id.action_bookmark_list).setVisible(false);
+            _menu.findItem(R.id.action_open_in_browser).setVisible(false);
+            _menu.findItem(R.id.action_refresh).setVisible(false);
         } else {
             _menu.findItem(R.id.action_refresh).setVisible(true);
             _menu.findItem(R.id.action_open_in_browser).setVisible(false);

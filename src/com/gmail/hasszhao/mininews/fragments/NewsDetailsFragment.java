@@ -95,7 +95,6 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
                         @Override
                         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                             restoreLastReadingPosition(_activity, _result, _view);
-                            ((MainActivity) _activity).setLoadingFragmentStep(1);
                         }
                     });
                 } else {
@@ -103,10 +102,10 @@ public final class NewsDetailsFragment extends BasicFragment implements ISharabl
                         @Override
                         public void run() {
                             restoreLastReadingPosition(_activity, _result, _view);
-                            ((MainActivity) _activity).setLoadingFragmentStep(1);
                         }
                     }, 1500);
                 }
+                ((MainActivity) _activity).setLoadingFragmentStep(1);
             }
 
         }.execute(_item);
