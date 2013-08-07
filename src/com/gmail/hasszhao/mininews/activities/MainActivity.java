@@ -19,6 +19,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabWidget;
@@ -63,6 +66,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
     private ActionBarDrawerToggle mDrawerToggle;
     private FragmentTabHost mTabHost;
     private TabWidget mTabWidget;
+    private HorizontalScrollView mHorizontalScrollView;
     private String TAG_HOME;
 
     public static void showDialogFragment(FragmentActivity _activty, DialogFragment _dlgFrg, String _tagName) {
@@ -126,6 +130,18 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
         NewsPagersFragment.newInstance(mTabHost, createTab(TAG_HOME, false));
         mTabWidget = (TabWidget) findViewById(android.R.id.tabs);
         mTabWidget.setVisibility(View.GONE);
+
+        //In order to give FragmentTabHost a h-scroll
+        //http://stackoverflow.com/questions/14598819/fragmenttabhost-with-horizontal-scroll
+        LinearLayout tabsContainer = (LinearLayout) mTabWidget.getParent();
+        mHorizontalScrollView = new HorizontalScrollView(this);
+        mHorizontalScrollView.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT));
+        tabsContainer.addView(mHorizontalScrollView, 0);
+        tabsContainer.removeView(mTabWidget);
+        mHorizontalScrollView.addView(mTabWidget);
+        mHorizontalScrollView.setHorizontalScrollBarEnabled(false);
     }
 
     private TabHost.TabSpec createTab(String _tabText, boolean _canClose) {
@@ -159,11 +175,10 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
             mTabHost.setCurrentTab(nTabIndex++);
         }
         mTabHost.setCurrentTab(nTabIndex - 1);
-        if( mTabSpecList.size() == 1) {
+        if (mTabSpecList.size() == 1) {
             mTabWidget.setVisibility(View.GONE);
         }
     }
-
 
     @Override
     public void onTabChanged(String _tabId) {
@@ -177,7 +192,6 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
             ((EditText) customView.findViewById(R.id.tv_input_search_key)).setText("");
         }
     }
-
 
     @Override
     public void onBackStackChanged() {
@@ -456,6 +470,13 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 
     private void showSearchedNewsListFragment(String _key) {
         SearchedNewsPagersFragment.newInstance(mTabHost, createTab(_key, true), _key);
+        mTabWidget.setCurrentTab(mTabSpecList.size() - 1);
+        //http://stackoverflow.com/questions/4720469/horizontalscrollview-auto-scroll-to-end-when-new-views-are-added
+        mTabWidget.postDelayed(new Runnable() {
+            public void run() {
+                mHorizontalScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+            }
+        }, 500L);
         setSidebarEnable(false);
     }
 
