@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -47,7 +48,8 @@ import com.gmail.hasszhao.mininews.utils.TabFactory.OnTabClosedListener;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshAttacher;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
@@ -61,7 +63,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
     private static final int FRAGMENT_ID = R.id.container_news;
     private static final String DLG_TAG = "dlg";
     private static final int LAYOUT = R.layout.activity_main;
-    private final ArrayList<TabHost.TabSpec> mTabSpecList = new ArrayList<TabHost.TabSpec>();
+    private final List<TabHost.TabSpec> mTabSpecList = new LinkedList<TabHost.TabSpec>();
     private PullToRefreshAttacher mPullToRefreshAttacher;
     private ActionBarDrawerToggle mDrawerToggle;
     private FragmentTabHost mTabHost;
@@ -130,6 +132,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
         NewsPagersFragment.newInstance(mTabHost, createTab(TAG_HOME, false));
         mTabWidget = (TabWidget) findViewById(android.R.id.tabs);
         mTabWidget.setVisibility(View.GONE);
+//        mTabHost.setVisibility(View.GONE);
 
         //In order to give FragmentTabHost a h-scroll
         //http://stackoverflow.com/questions/14598819/fragmenttabhost-with-horizontal-scroll
@@ -291,10 +294,46 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
         return false;
     }
 
+    private void middelTab(int _position) {
+        int width = (int) getResources().getDimension(R.dimen.tab_width);
+        int screenWidth = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay()
+                .getWidth();
+        mHorizontalScrollView.scrollTo((width * _position - screenWidth / 2) + width / 2, 0);
+    }
+
+    private int containsTab(String _tabText) {
+        if (mTabSpecList != null) {
+            int i = 0;
+            for (TabHost.TabSpec tabSpec : mTabSpecList) {
+                if (TextUtils.equals(tabSpec.getTag(), _tabText)) {
+                    return i;
+                }
+                i++;
+            }
+            return -1;
+        } else {
+            return -1;
+        }
+    }
+
     private void startSearching(TextView _v, String _key) {
         Util.hideKeyboard(this, _v);
-        showSearchedNewsListFragment(_key);
-        mTabWidget.setVisibility(View.VISIBLE);
+        if (!TextUtils.isEmpty(_key)) {
+            int foundIndex = containsTab(_key);
+            if (foundIndex != -1) {
+                mTabHost.setCurrentTabByTag(_key);
+                middelTab(foundIndex);
+            } else {
+                showSearchedNewsListFragment(_key);
+                mTabWidget.setVisibility(View.VISIBLE);
+                //http://stackoverflow.com/questions/4720469/horizontalscrollview-auto-scroll-to-end-when-new-views-are-added
+                mTabWidget.postDelayed(new Runnable() {
+                    public void run() {
+                        mHorizontalScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+                    }
+                }, 500L);
+            }
+        }
     }
 
     @Override
@@ -471,12 +510,6 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
     private void showSearchedNewsListFragment(String _key) {
         SearchedNewsPagersFragment.newInstance(mTabHost, createTab(_key, true), _key);
         mTabWidget.setCurrentTab(mTabSpecList.size() - 1);
-        //http://stackoverflow.com/questions/4720469/horizontalscrollview-auto-scroll-to-end-when-new-views-are-added
-        mTabWidget.postDelayed(new Runnable() {
-            public void run() {
-                mHorizontalScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
-            }
-        }, 500L);
         setSidebarEnable(false);
     }
 
