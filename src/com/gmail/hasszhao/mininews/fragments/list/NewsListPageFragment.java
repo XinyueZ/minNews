@@ -259,15 +259,30 @@ public class NewsListPageFragment extends BasicFragment implements Listener<DOSt
 
 	@Override
 	public void setUserVisibleHint(boolean _isVisibleToUser) {
+		super.setUserVisibleHint(_isVisibleToUser);
 		View view = getView();
 		if (_isVisibleToUser && canPullToLoad() && view != null) {
-			ListView listView = (ListView) view.findViewById(R.id.activity_googlecards_listview);
-			Activity act = getActivity();
-			if (act != null) {
-				((MainActivity) act).setRefreshableView(listView, this);
-			}
+			setPullToLoadView(view);
 		}
-		super.setUserVisibleHint(_isVisibleToUser);
+	}
+
+
+	private void setPullToLoadView(View _view) {
+		ListView listView = (ListView) _view.findViewById(R.id.activity_googlecards_listview);
+		Activity act = getActivity();
+		if (act != null) {
+			((MainActivity) act).setRefreshableView(listView, this);
+		}
+	}
+
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		View view = getView();
+		if (getUserVisibleHint() && view != null && canPullToLoad()) {
+			setPullToLoadView(view);
+		}
 	}
 
 
