@@ -2,8 +2,8 @@ package com.gmail.hasszhao.mininews.interfaces;
 
 public interface ISharable {
 
-	String getSubject();
+	String getSharedSubject();
 
 
-	String getText();
+	String getSharedText();
 }

@@ -22,13 +22,13 @@ public final class DatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase _db) {
 		_db.execSQL(TblBookmarkedNewsItem.SQL_CREATE);
-        _db.execSQL(TblNewsDetail.SQL_CREATE);
+		_db.execSQL(TblNewsDetail.SQL_CREATE);
 	}
 
 
 	@Override
 	public void onUpgrade(SQLiteDatabase _db, int _oldVersion, int _newVersion) {
 		_db.execSQL("DROP TABLE IF EXISTS " + TblNewsDetail.TABLE_NAME);
-        _db.execSQL("DROP TABLE IF EXISTS " + TblBookmarkedNewsItem.TABLE_NAME);
+		_db.execSQL("DROP TABLE IF EXISTS " + TblBookmarkedNewsItem.TABLE_NAME);
 	}
 }

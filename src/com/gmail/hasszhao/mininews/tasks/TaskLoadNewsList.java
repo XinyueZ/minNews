@@ -1,9 +1,5 @@
 package com.gmail.hasszhao.mininews.tasks;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.Context;
 
 import com.android.volley.AuthFailureError;
@@ -11,6 +7,10 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.gmail.hasszhao.mininews.dataset.DOCookie;
 import com.gmail.hasszhao.mininews.dataset.DOStatus;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public final class TaskLoadNewsList extends AbstractGsonRequest<DOStatus> {
@@ -20,9 +20,8 @@ public final class TaskLoadNewsList extends AbstractGsonRequest<DOStatus> {
 
 
 	public TaskLoadNewsList(Context _context, int _method, String _url, Class<DOStatus> _clazz,
-			Listener<DOStatus> _listener,
-			ErrorListener _errorListener, DOCookie _cookie) {
-		super(_context, Method.GET, _url, _clazz, _listener, _errorListener);
+			Listener<DOStatus> _listener, ErrorListener _errorListener, DOCookie _cookie) {
+		super(_context, _method, _url, _clazz, _listener, _errorListener);
 		setTag(TAG);
 		setShouldCache(true);
 		mCookie = _cookie;

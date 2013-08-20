@@ -23,26 +23,6 @@ public final class NewsListAdapter extends BaseAdapter {
 	private Context mContext;
 	private ListNews mNewsListItems;
 	private boolean mShowBookmarkButton = true;
-
-
-	// public interface OnNewsClickedListener {
-	//
-	// void onNewsClicked(INewsListItem _newsItem);
-	// }
-	public interface OnNewsShareListener {
-
-		void onNewsShare(INewsListItem _newsItem);
-	}
-
-	public interface OnNewsBookmarkButtonClickedListener {
-
-		void onNewsBookmarked(ImageButton _button, INewsListItem _newsItem);
-
-
-		void onNewsBookmarkRemoved(ImageButton _button, INewsListItem _newsItem);
-	}
-
-
 	// private OnNewsClickedListener mOnNewsClickedListener;
 	private OnNewsShareListener mOnNewsShareListener;
 	private OnNewsBookmarkButtonClickedListener mOnNewsBookmarkedListener;
@@ -82,33 +62,6 @@ public final class NewsListAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int _position) {
 		return _position;
-	}
-
-
-	public static class ViewHolder {
-
-		NetworkImageView thumb;
-		TextView topline;
-		TextView headline;
-		TextView date;
-		ImageButton newsShare;
-		public ImageButton bookmark;
-		ImageView banner1;
-		ImageView banner2;
-
-
-		private ViewHolder(NetworkImageView _thumb, TextView _topline, TextView _headline, TextView _date,
-				ImageButton _newsShare, ImageButton _bookmark, ImageView _banner1, ImageView _banner2) {
-			super();
-			thumb = _thumb;
-			topline = _topline;
-			headline = _headline;
-			date = _date;
-			newsShare = _newsShare;
-			bookmark = _bookmark;
-			banner1 = _banner1;
-			banner2 = _banner2;
-		}
 	}
 
 
@@ -187,11 +140,6 @@ public final class NewsListAdapter extends BaseAdapter {
 	}
 
 
-	// public void setOnNewsClickedListener(OnNewsClickedListener
-	// _onNewsClickedListener) {
-	// mOnNewsClickedListener = _onNewsClickedListener;
-	// }
-
 	public void setOnNewsShareListener(OnNewsShareListener _onNewsShareListener) {
 		mOnNewsShareListener = _onNewsShareListener;
 	}
@@ -207,7 +155,55 @@ public final class NewsListAdapter extends BaseAdapter {
 	}
 
 
+	// public void setOnNewsClickedListener(OnNewsClickedListener
+	// _onNewsClickedListener) {
+	// mOnNewsClickedListener = _onNewsClickedListener;
+	// }
 	public void setShowBookmarkButton(boolean _showBookmarkButton) {
 		mShowBookmarkButton = _showBookmarkButton;
+	}
+
+
+	// public interface OnNewsClickedListener {
+	//
+	// void onNewsClicked(INewsListItem _newsItem);
+	// }
+	public interface OnNewsShareListener {
+
+		void onNewsShare(INewsListItem _newsItem);
+	}
+
+	public interface OnNewsBookmarkButtonClickedListener {
+
+		void onNewsBookmarked(ImageButton _button, INewsListItem _newsItem);
+
+
+		void onNewsBookmarkRemoved(ImageButton _button, INewsListItem _newsItem);
+	}
+
+	public static class ViewHolder {
+
+		public ImageButton bookmark;
+		NetworkImageView thumb;
+		TextView topline;
+		TextView headline;
+		TextView date;
+		ImageButton newsShare;
+		ImageView banner1;
+		ImageView banner2;
+
+
+		private ViewHolder(NetworkImageView _thumb, TextView _topline, TextView _headline, TextView _date,
+				ImageButton _newsShare, ImageButton _bookmark, ImageView _banner1, ImageView _banner2) {
+			super();
+			thumb = _thumb;
+			topline = _topline;
+			headline = _headline;
+			date = _date;
+			newsShare = _newsShare;
+			bookmark = _bookmark;
+			banner1 = _banner1;
+			banner2 = _banner2;
+		}
 	}
 }

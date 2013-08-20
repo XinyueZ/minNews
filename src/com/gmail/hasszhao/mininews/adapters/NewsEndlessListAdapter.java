@@ -1,7 +1,5 @@
 package com.gmail.hasszhao.mininews.adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +9,13 @@ import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.dataset.DONews;
 import com.gmail.hasszhao.mininews.dataset.list.ListNews;
 
+import java.util.List;
+
 
 public final class NewsEndlessListAdapter extends EndlessAdapter {
 
 	private final Context mContext;
 	private final ListNews mNewsList;
-
-
-	public interface ICallNext {
-
-		void callNext(int _index);
-	}
-
-
 	private final ICallNext mCallNext;
 
 
@@ -53,5 +45,11 @@ public final class NewsEndlessListAdapter extends EndlessAdapter {
 
 	@Override
 	protected void appendCachedData() {
+	}
+
+
+	public interface ICallNext {
+
+		void callNext(int _index);
 	}
 }

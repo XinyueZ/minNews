@@ -96,6 +96,16 @@
                 android:layout_below="@+id/btn_visit_article_site"
                 android:background="@drawable/bg_details"
                 android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <ProgressBar
+                android:id="@+id/pb_loading"
+                style="?android:attr/progressBarStyleInverse"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:visibility="gone"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/btn_visit_article_site"/>
+
     </RelativeLayout>
 
 </ScrollView>

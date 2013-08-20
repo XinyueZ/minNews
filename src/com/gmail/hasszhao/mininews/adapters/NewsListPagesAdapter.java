@@ -1,8 +1,5 @@
 package com.gmail.hasszhao.mininews.adapters;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +10,9 @@ import com.gmail.hasszhao.mininews.R;
 import com.gmail.hasszhao.mininews.fragments.list.NewsListPageFragment;
 import com.gmail.hasszhao.mininews.fragments.list.SearchedNewsListPageFragment;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public final class NewsListPagesAdapter extends FragmentStatePagerAdapter {

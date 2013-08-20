@@ -19,79 +19,89 @@ import java.util.Set;
 
 public final class App extends Application {
 
-    private final Map<String, ListNews> mNewsLists = new HashMap<String, ListNews>();
-    private final Map<MultiKey, ListNews> mSearchedNewsLists = new HashMap<MultiKey, ListNews>();
-    private AppDB mAppDB;
+	private final Map<String, ListNews> mNewsLists = new HashMap<String, ListNews>();
+	private final Map<MultiKey, ListNews> mSearchedNewsLists = new HashMap<MultiKey, ListNews>();
+	private AppDB mAppDB;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        init();
-    }
 
-    private void init() {
-        TaskHelper.init(getApplicationContext());
-        Prefs.createInstance(getApplicationContext());
-        mAppDB = new AppDB(this);
-    }
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		init();
+	}
 
-    public List<DONews> getBookmarkedNews() {
-        List<DONews> ret = new ArrayList<DONews>();
-        Set<String> keys = mNewsLists.keySet();
-        if (keys != null) {
-            ListNews ln = null;
-            List<DONews> ldo = null;
-            for (String key : keys) {
-                ln = mNewsLists.get(key);
-                if (ln != null) {
-                    ldo = ln.getPulledNewss();
-                    for (DONews n : ldo) {
-                        if (n.isBookmarked()) {
-                            ret.add(n);
-                        }
-                    }
-                }
-            }
-        }
-        return ret;
-    }
 
-    public synchronized void addListNews(String _langauge, ListNews _newsList) {
-        mNewsLists.put(_langauge, _newsList);
-    }
+	private void init() {
+		TaskHelper.init(getApplicationContext());
+		Prefs.createInstance(getApplicationContext());
+		mAppDB = new AppDB(this);
+	}
 
-    public synchronized ListNews getListNews(String _langauge) {
-        return mNewsLists.get(_langauge);
-    }
 
-    public synchronized void addSearchedListNews(MultiKey _key, ListNews _newsList) {
-        mSearchedNewsLists.put(_key, _newsList);
-    }
+	public List<DONews> getBookmarkedNews() {
+		List<DONews> ret = new ArrayList<DONews>();
+		Set<String> keys = mNewsLists.keySet();
+		if (keys != null) {
+			ListNews ln = null;
+			List<DONews> ldo = null;
+			for (String key : keys) {
+				ln = mNewsLists.get(key);
+				if (ln != null) {
+					ldo = ln.getPulledNewss();
+					for (DONews n : ldo) {
+						if (n.isBookmarked()) {
+							ret.add(n);
+						}
+					}
+				}
+			}
+		}
+		return ret;
+	}
 
-    public synchronized ListNews getSearchedListNews(MultiKey _key) {
-        return mSearchedNewsLists.get(_key);
-    }
 
-    public boolean hasSomePayloaded() {
-        Set<String> keys = mNewsLists.keySet();
-        if (keys == null || keys.size() == 0) {
-            return false;
-        } else {
-            for (String key : keys) {
-                if (mNewsLists.get(key) != null) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
+	public synchronized void addListNews(String _langauge, ListNews _newsList) {
+		mNewsLists.put(_langauge, _newsList);
+	}
 
-    public void clearAllData() {
-        mNewsLists.clear();
-        mSearchedNewsLists.clear();
-    }
 
-    public synchronized AppDB getAppDB() {
-        return mAppDB;
-    }
+	public synchronized ListNews getListNews(String _langauge) {
+		return mNewsLists.get(_langauge);
+	}
+
+
+	public synchronized void addSearchedListNews(MultiKey _key, ListNews _newsList) {
+		mSearchedNewsLists.put(_key, _newsList);
+	}
+
+
+	public synchronized ListNews getSearchedListNews(MultiKey _key) {
+		return mSearchedNewsLists.get(_key);
+	}
+
+
+	public boolean hasSomePayloaded() {
+		Set<String> keys = mNewsLists.keySet();
+		if (keys == null || keys.size() == 0) {
+			return false;
+		} else {
+			for (String key : keys) {
+				if (mNewsLists.get(key) != null) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+
+	public void clearAllData() {
+		mNewsLists.clear();
+		mSearchedNewsLists.clear();
+	}
+
+
+	public synchronized AppDB getAppDB() {
+		return mAppDB;
+	}
 }

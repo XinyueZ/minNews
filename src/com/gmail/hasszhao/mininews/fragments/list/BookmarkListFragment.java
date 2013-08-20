@@ -42,8 +42,8 @@ import java.util.List;
 public final class BookmarkListFragment extends BasicFragment implements // OnNewsClickedListener,
 		OnNewsShareListener, OnDismissCallback, INewsListItemProvider, OnItemClickListener {
 
-	private static final int LAYOUT = R.layout.fragment_news_list;
 	public static final String TAG = "TAG.BookmarkList";
+	private static final int LAYOUT = R.layout.fragment_news_list;
 	private NewsListAdapter mAdapter;
 	private ListNews mListNews;
 	private INewsListItem mSelectedNewsItem;
@@ -56,7 +56,7 @@ public final class BookmarkListFragment extends BasicFragment implements // OnNe
 
 	@Override
 	public View onCreateView(LayoutInflater _inflater, ViewGroup _container, Bundle _savedInstanceState) {
-        super. onCreateView(  _inflater,   _container,   _savedInstanceState);
+		super.onCreateView(_inflater, _container, _savedInstanceState);
 		return _inflater.inflate(LAYOUT, _container, false);
 	}
 
@@ -98,14 +98,14 @@ public final class BookmarkListFragment extends BasicFragment implements // OnNe
 
 
 	@Override
-	protected void setListNews(ListNews _listNews) {
-		mListNews = _listNews;
+	protected ListNews getListNews() {
+		return mListNews;
 	}
 
 
 	@Override
-	protected ListNews getListNews() {
-		return mListNews;
+	protected void setListNews(ListNews _listNews) {
+		mListNews = _listNews;
 	}
 
 
@@ -150,13 +150,13 @@ public final class BookmarkListFragment extends BasicFragment implements // OnNe
 		new ShareUtil().openShare(this, new ISharable() {
 
 			@Override
-			public String getText() {
+			public String getSharedText() {
 				return makeShareText(_newsItem);
 			}
 
 
 			@Override
-			public String getSubject() {
+			public String getSharedSubject() {
 				return getString(R.string.app_name);
 			}
 		});
@@ -209,6 +209,12 @@ public final class BookmarkListFragment extends BasicFragment implements // OnNe
 				openDetailsInBrowser();
 				break;
 		}
+	}
+
+
+	@Override
+	public List<? extends INewsListItem> getList() {
+		return getListNews().getPulledNewss();
 	}
 
 

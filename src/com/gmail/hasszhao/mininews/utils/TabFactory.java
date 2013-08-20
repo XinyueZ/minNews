@@ -11,7 +11,7 @@ import com.gmail.hasszhao.mininews.R;
 
 public final class TabFactory implements TabHost.TabContentFactory {
 
-    private static final int LAYOUT_TAB = R.layout.tab_pagers;
+	private static final int LAYOUT_TAB = R.layout.tab_pagers;
 	private final Context mContext;
 
 

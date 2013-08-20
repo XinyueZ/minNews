@@ -1,7 +1,5 @@
 package com.gmail.hasszhao.mininews.tasks;
 
-import java.io.UnsupportedEncodingException;
-
 import android.content.Context;
 
 import com.android.volley.NetworkResponse;
@@ -11,8 +9,9 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+
+import java.io.UnsupportedEncodingException;
 
 
 public abstract class AbstractGsonRequest<T> extends Request<T> {
@@ -25,16 +24,7 @@ public abstract class AbstractGsonRequest<T> extends Request<T> {
 
 	public AbstractGsonRequest(Context _context, int method, String url, Class<T> clazz, Listener<T> listener,
 			ErrorListener errorListener) {
-		super(Method.GET, url, errorListener);
-		this.mClazz = clazz;
-		this.mListener = listener;
-		mContext = _context;
-	}
-
-
-	public AbstractGsonRequest(Context _context, int method, String url, Class<T> clazz, Listener<T> listener,
-			ErrorListener errorListener, Gson gson) {
-		super(Method.GET, url, errorListener);
+		super(method, url, errorListener);
 		this.mClazz = clazz;
 		this.mListener = listener;
 		mContext = _context;

@@ -137,6 +137,18 @@ public final class SplashActivity extends BasicActivity implements ErrorListener
 	}
 
 
+	@Override
+	public void retry() {
+		load();
+	}
+
+
+	@Override
+	public boolean isDataCached() {
+		return false;
+	}
+
+
 	static class ResponseListener implements Listener<DOStatus> {
 
 		private final String mLangauge;
@@ -159,10 +171,8 @@ public final class SplashActivity extends BasicActivity implements ErrorListener
 					try {
 						switch (_response.getCode()) {
 							case API.API_OK:
-								((App) act.getApplication()).addListNews(
-										mLangauge,
-										TaskHelper.correctedByDB(_response,
- ((App) act.getApplication()).getAppDB()));
+								((App) act.getApplication()).addListNews(mLangauge,
+										TaskHelper.correctedByDB(_response, ((App) act.getApplication()).getAppDB()));
 								break;
 							case API.API_ACTION_FAILED:
 							case API.API_SERVER_DOWN:
@@ -179,17 +189,5 @@ public final class SplashActivity extends BasicActivity implements ErrorListener
 				}
 			}
 		}
-	}
-
-
-	@Override
-	public void retry() {
-		load();
-	}
-
-
-	@Override
-	public boolean isDataCached() {
-		return false;
 	}
 }
