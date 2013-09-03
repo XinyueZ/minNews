@@ -1,10 +1,5 @@
 package com.gmail.hasszhao.mininews.activities;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshAttacher;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -55,6 +50,12 @@ import com.gmail.hasszhao.mininews.utils.TabFactory.OnTabClosedListener;
 import com.gmail.hasszhao.mininews.utils.Util;
 import com.gmail.hasszhao.mininews.utils.prefs.Prefs;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshAttacher;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher.OnRefreshListener;
+
 
 public final class MainActivity extends BasicActivity implements OnCheckedChangeListener, ISharable,
 		OnBackStackChangedListener, OnEditorActionListener, DrawerLayout.DrawerListener, OnTabChangeListener,
@@ -71,6 +72,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 	private TabWidget mTabWidget;
 	private HorizontalScrollView mHorizontalScrollView;
 	private String TAG_HOME;
+	private View mLastP2LView;
 
 
 	public static void showDialogFragment(FragmentActivity _activty, DialogFragment _dlgFrg, String _tagName) {
@@ -124,7 +126,7 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 		super.onCreate(savedInstanceState);
 		setContentView(LAYOUT);
 		initActionbar();
-		mPullToRefreshAttacher = new PullToRefreshAttacher(this);
+		mPullToRefreshAttacher = PullToRefreshAttacher.get(this);
 		initSidebar();
 		initSwitches();
 		getSupportFragmentManager().addOnBackStackChangedListener(this);
@@ -400,7 +402,11 @@ public final class MainActivity extends BasicActivity implements OnCheckedChange
 
 	public void setRefreshableView(View _view, OnRefreshListener _refreshListener) {
 		if (mPullToRefreshAttacher != null) {
-			mPullToRefreshAttacher.setRefreshableView(_view, _refreshListener);
+			if (mLastP2LView != null) {
+				mPullToRefreshAttacher.removeRefreshableView(mLastP2LView);
+			}
+			mPullToRefreshAttacher.addRefreshableView(_view, _refreshListener);
+			mLastP2LView = _view;
 		}
 	}
 
