@@ -3,7 +3,7 @@
     <target name="internal_debug">
         <echo>Try to replace location of ActionBar.</echo>
         <replaceregexp match="../../../your/path/to/actionbarsherlock"
-                       replace='../../../libs/ActionBar/library'>
+                       replace='/scratch/jenkins/workspace/miniNews_SmartPhone_Android/libs/ActionBar/library'>
             <fileset dir="submodules/ActionBar-PullToRefresh/extras/actionbarsherlock">
                 <include name="project.properties"/>
             </fileset>
