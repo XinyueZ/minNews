@@ -2,7 +2,7 @@
 <project name="custom_rules">
     <target name="internal_debug">
         <replaceregexp match="../../../your/path/to/actionbarsherlock"
-                       replace='libs/ActionBar/library'>
+                       replace='../../../libs/ActionBar/library'>
             <fileset dir="submodules/ActionBar-PullToRefresh/extras/actionbarsherlock">
                 <include name="project.properties"/>
             </fileset>
