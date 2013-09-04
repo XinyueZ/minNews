@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_rules">
     <target name="internal_debug">
-	    <echo>Try to replace location of ActionBar.</echo>
+        <echo>Try to replace location of ActionBar.</echo>
         <replaceregexp match="../../../your/path/to/actionbarsherlock"
                        replace='../../../libs/ActionBar/library'>
             <fileset dir="submodules/ActionBar-PullToRefresh/extras/actionbarsherlock">
