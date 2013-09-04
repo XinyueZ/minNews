@@ -6,7 +6,7 @@
             <fileset dir="submodules/ActionBar-PullToRefresh/extras/actionbarsherlock">
                 <include name="project.properties"/>
             </fileset>
-        </replaceregexp>
+        </replaceregexp>   
         <antcall target="debug"/>
     </target>
 
