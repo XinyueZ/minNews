@@ -29,7 +29,7 @@ public final class App extends Application {
 		super.onCreate();
 		init();
 	}
-
+    
 
 	private void init() {
 		TaskHelper.init(getApplicationContext());
