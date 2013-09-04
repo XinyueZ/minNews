@@ -29,14 +29,14 @@ public final class App extends Application {
 		super.onCreate();
 		init();
 	}
-    
+
 
 	private void init() {
 		TaskHelper.init(getApplicationContext());
 		Prefs.createInstance(getApplicationContext());
 		mAppDB = new AppDB(this);
 	}
-
+     
 
 	public List<DONews> getBookmarkedNews() {
 		List<DONews> ret = new ArrayList<DONews>();
