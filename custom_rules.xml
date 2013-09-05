@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_rules">
+
     <target name="internal_debug">
-        <echo>Try to replace location of ActionBar.</echo>
+
+	    <script language="groovy"><![CDATA[
+	        for( int i = 0; i < 5; i++ ) {
+		        println("message is " + message)
+		    }
+	     ]]> </script>
+
         <replaceregexp match="../../../your/path/to/actionbarsherlock"
                        replace='../../../../libs/ActionBar/library'>
             <fileset dir="submodules/ActionBar-PullToRefresh/extras/actionbarsherlock">
                 <include name="project.properties"/>
             </fileset>
         </replaceregexp>
+	    <echo>Tried replacing location of ActionBar.</echo>
         <antcall target="debug"/>
     </target>
 
