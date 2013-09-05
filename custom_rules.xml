@@ -3,11 +3,14 @@
 
     <target name="internal_debug">
 
-	    <script language="beanshell"><![CDATA[
-	        for( int i = 0; i < 5; i++ ) {
-		        System.out.println("Index is " + i);
-		    }
-	     ]]> </script>
+	    <var name="index" value="1"/>
+	    <for list="piyush,kumar" param="letter">
+		    <sequential>
+			    <property name="var${index}" value="@{letter}" />
+			    <math result="index" operand1="${index}" operation="+" operand2="1" datatype="int" />
+			    <echo message="var${index}"/>
+		    </sequential>
+	    </for>
 
         <replaceregexp match="../../../your/path/to/actionbarsherlock"
                        replace='../../../../libs/ActionBar/library'>
