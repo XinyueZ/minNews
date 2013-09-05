@@ -3,7 +3,7 @@
 
     <target name="internal_debug">
 
-	    <var name="index" value="1"/>
+	    <property name="index" value="1"/>
 	    <for list="piyush,kumar" param="letter">
 		    <sequential>
 			    <property name="var${index}" value="@{letter}" />
