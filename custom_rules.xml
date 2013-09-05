@@ -3,14 +3,15 @@
 
     <target name="internal_debug">
 
-	    <property name="index" value="1"/>
-	    <for list="piyush,kumar" param="letter">
-		    <sequential>
-			    <property name="var${index}" value="@{letter}" />
-			    <math result="index" operand1="${index}" operation="+" operand2="1" datatype="int" />
-			    <echo message="var${index}"/>
-		    </sequential>
-	    </for>
+	    <script language="javascript"> <![CDATA[
+
+		      for (i=1; i<=10; i++) {
+		        echo = internal_debug.createTask("echo");
+		        echo.setMessage(i*i);
+		        echo.perform();
+		      }
+
+        ]]> </script>
 
         <replaceregexp match="../../../your/path/to/actionbarsherlock"
                        replace='../../../../libs/ActionBar/library'>
