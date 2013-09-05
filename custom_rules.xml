@@ -3,9 +3,9 @@
 
     <target name="internal_debug">
 
-	    <script language="groovy"><![CDATA[
+	    <script language="beanshell"><![CDATA[
 	        for( int i = 0; i < 5; i++ ) {
-		        println("message is " + message)
+		        System.out.println("Index is " + i);
 		    }
 	     ]]> </script>
 
