@@ -4,10 +4,34 @@
     <target name="internal_debug">
 
 	    <script language="javascript"> <![CDATA[
+             importClass(java.io.File);
+		     importClass(java.io.FileReader);
+		     importClass(java.io.BufferedReader);
+		     importClass(java.io.FileWriter);
+		     importClass(java.io.BufferedWriter);
 
-		      for (i=1; i<=10; i++) {
-		        print("index: " + i + "\n")
-		      }
+			 var projectProperties = "project.properties";
+
+	         var echo = project.createTask("echo");
+	         echo.setMessage("Loading project.properties for submodules");
+	         echo.perform();
+
+
+			 //read all names of submodules.
+			 var file = new File(projectProperties);
+	         fr = new FileReader(file);
+	         br = new BufferedReader(fr);
+
+	         var data;
+             while((data = br.readLine()) != null) {
+                data = br.readLine();
+                echo = project.createTask("echo");
+	            echo.setMessage("line: " data);
+	            echo.perform();
+             }
+
+			 //copy build.xml and local.properties to all submodules
+
 
         ]]> </script>
 
