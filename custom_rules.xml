@@ -31,10 +31,10 @@
 			</and>
 		</condition>
 		<antcall target="op.debug"/>
-		
+
 	</target>
 
 	<target name="op.debug" if="debug.present">
-		<echo message="Find debug build."/>
+		<echo>Find debug build.</echo>
 	</target>
 </project>
