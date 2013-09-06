@@ -20,14 +20,16 @@
 	         var fr = new InputStreamReader(file);
 	         var br = new BufferedReader(fr);
 
+			 var content = "";
 	         var data;
-             while((data = br.readLine()) != null) {
+             while((data = br.read()) != -1) {
                 data = br.readLine();
-                echo = project.createTask("echo");
-	            echo.setMessage("line: " + data);
-	            echo.perform();
-	            print(data + "\n");
+                content += data;
              }
+
+             echo = project.createTask("echo");
+	         echo.setMessage(content);
+	         echo.perform();
 
 			 //copy build.xml and local.properties to all submodules
 
