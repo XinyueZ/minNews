@@ -23,8 +23,7 @@
 			 var content = "";
 	         var data;
              while((data = br.read()) != -1) {
-                data = br.read();
-                content += data;
+                content += br.readLine();
              }
 
              echo = project.createTask("echo");
