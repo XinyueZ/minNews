@@ -27,7 +27,7 @@
 		<!--Find debug build-->
 		<condition property="debug.present">
 			<and>
-				<available file="${JOB_NAME}-debug.apk" filepath="bin/"/>
+				<available file="bin/${JOB_NAME}-debug.apk"  />
 			</and>
 		</condition>
 		<antcall target="op.debug"/>
