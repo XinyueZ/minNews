@@ -4,11 +4,9 @@
     <target name="internal_debug">
 
 	    <script language="javascript"> <![CDATA[
-             importClass(java.io.File);
-		     importClass(java.io.FileReader);
-		     importClass(java.io.BufferedReader);
-		     importClass(java.io.FileWriter);
-		     importClass(java.io.BufferedWriter);
+             importClass(java.io.FileInputStream);
+		     importClass(java.io.InputStreamReader);
+		     importClass(java.io.BufferedReader); 
 
 			 var projectProperties = "project.properties";
 
@@ -18,8 +16,8 @@
 
 
 			 //read all names of submodules.
-			 var file = new File(projectProperties);
-	         var fr = new FileReader(file);
+			 var file = new FileInputStream(projectProperties);
+	         var fr = new InputStreamReader(file);
 	         var br = new BufferedReader(fr);
 
 	         var data;
