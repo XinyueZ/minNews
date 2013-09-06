@@ -53,10 +53,7 @@
 
 		<!--Reset-->
 		<echo>#######Reset.#######</echo>
-		<git command="reset">
-			<args>
-				<arg value="--hard HEAD" />
-			</args>
+		<git command="reset --hard HEAD"> 
 		</git>
 	</target>
 
