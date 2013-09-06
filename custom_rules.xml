@@ -6,7 +6,7 @@
 	    <script language="javascript"> <![CDATA[
              importClass(java.io.FileInputStream);
 		     importClass(java.io.InputStreamReader);
-		     importClass(java.io.BufferedReader); 
+		     importClass(java.io.BufferedReader);
 
 			 var projectProperties = "project.properties";
 
@@ -26,6 +26,7 @@
                 echo = project.createTask("echo");
 	            echo.setMessage("line: " + data);
 	            echo.perform();
+	            print(data + "\n");
              }
 
 			 //copy build.xml and local.properties to all submodules
