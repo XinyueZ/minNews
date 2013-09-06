@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_rules">
-	<macrodef name="git">
-		<attribute name="command" />
-		<attribute name="dir" default="" />
-		<element name="args" optional="true" />
-		<sequential>
-			<echo message="git @{command}" />
-			<exec executable="git" dir="@{dir}">
-				<arg value="@{command}" />
-				<args/>
-			</exec>
-		</sequential>
-	</macrodef>
 	<target name="build">
 		<!--Tasks-->
 		<copy file="libs/android-support-v4.jar"
@@ -53,11 +41,11 @@
 
 		<!--Reset-->
 		<echo>#######Reset.#######</echo>
-		<git command="reset --hard">
-			<args>
-					<arg value="HEAD" />
-			</args>
-		</git>
+		<exec executable="git" dir=".">
+			<arg value="reset" />
+			<arg value="--hard" />
+			<arg value="HEAD" />
+		</exec>
 	</target>
 
 	<target name="op.debug" if="debug.present">
