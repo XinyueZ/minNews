@@ -24,13 +24,12 @@
 		<!--After building process.-->
 		<echo>After building.</echo>
 
+		<available file="bin/${JOB_NAME}-debug.apk" property="debug.present"/>
 		<if>
-			<bool>
-				<and>
-					<available file="bin/${JOB_NAME}-debug.apk"/>
-				</and>
-			</bool>
-			<echo message="Find debug build."/>
+			<isset property="debug.present"/>
+			<then>
+				<echo message="Find debug build."/>
+			</then>
 			<else>
 				<echo message="Can not find debug build."/>
 			</else>
