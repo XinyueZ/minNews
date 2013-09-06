@@ -19,14 +19,14 @@
 
 			 //read all names of submodules.
 			 var file = new File(projectProperties);
-	         fr = new FileReader(file);
-	         br = new BufferedReader(fr);
+	         var fr = new FileReader(file);
+	         var br = new BufferedReader(fr);
 
 	         var data;
              while((data = br.readLine()) != null) {
                 data = br.readLine();
                 echo = project.createTask("echo");
-	            echo.setMessage("line: " data);
+	            echo.setMessage("line: " + data);
 	            echo.perform();
              }
 
