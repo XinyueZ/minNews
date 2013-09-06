@@ -23,7 +23,7 @@
 			 var content = "";
 	         var data;
              while((data = br.read()) != -1) {
-                data = br.readLine();
+                data = br.read();
                 content += data;
              }
 
