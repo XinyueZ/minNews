@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_rules">
+	<macrodef name="git">
+		<attribute name="command" />
+		<attribute name="dir" default="" />
+		<element name="args" optional="true" />
+		<sequential>
+			<echo message="git @{command}" />
+			<exec executable="git" dir="@{dir}">
+				<arg value="@{command}" />
+				<args/>
+			</exec>
+		</sequential>
+	</macrodef>
 	<target name="build">
 		<!--Tasks-->
 		<copy file="libs/android-support-v4.jar"
