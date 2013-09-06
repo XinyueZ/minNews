@@ -28,10 +28,10 @@
 		<condition property="debug.present">
 			<and>
 				<available file="${JOB_NAME}-debug.apk" filepath="bin/"/>
-				<antcall target="op.debug"/>
 			</and>
 		</condition>
-
+		<antcall target="op.debug"/>
+		
 	</target>
 
 	<target name="op.debug" if="debug.present">
