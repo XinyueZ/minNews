@@ -2,7 +2,8 @@
 <project name="custom_rules">
 	<target name="internal_debug">
 		<!--Tasks-->
-		<copy file="libs/android-support-v4.jar" todir="libs/ActionBar/library/libs/"
+		<copy file="libs/android-support-v4.jar"
+		      todir="libs/ActionBar/library/libs/"
 		      overwrite="true"/>
 		<echo>android-support-v4.jar -> libs/ActionBar/library/libs/</echo>
 		<copy file="libs/android-support-v4.jar"
@@ -10,7 +11,7 @@
 		      overwrite="true"/>
 		<echo>android-support-v4.jar -> submodules/Android-ViewPagerIndicator/library/libs/</echo>
 
-		<!--Custom tasks-->
+		<!--Application specialized tasks-->
 		<replaceregexp match="../../../your/path/to/actionbarsherlock"
 		               replace='../../../../libs/ActionBar/library'>
 			<fileset dir="submodules/ActionBar-PullToRefresh/extras/actionbarsherlock">
@@ -23,12 +24,13 @@
 		<!--After building process.-->
 		<echo>After building.</echo>
 
-		<available file="bin/${JOB_NAME}-debug.apk" property="debug.present"/>
 		<if>
-			<equals arg1="${debug.present}" arg2="true"/>
-			<then>
-				<echo message="Find debug build."/>
-			</then>
+			<bool>
+				<and>
+					<available file="bin/${JOB_NAME}-debug.apk"/>
+				</and>
+			</bool>
+			<echo message="Find debug build."/>
 			<else>
 				<echo message="Can not find debug build."/>
 			</else>
