@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_rules">
+	<target name="internal_debug">
+		<!--Tasks-->
+		<copy file="libs/android-support-v4.jar" todir="libs/ActionBar/library/libs/"/>
+		<echo>android-support-v4.jar -> libs/ActionBar/library/libs/</echo>
+		<copy file="libs/android-support-v4.jar"
+		      todir="submodules/Android-ViewPagerIndicator/library/libs/"/>
+		<echo>android-support-v4.jar -> submodules/Android-ViewPagerIndicator/library/libs/</echo>
 
-    <target name="internal_debug">
-        <replaceregexp match="../../../your/path/to/actionbarsherlock"
-                       replace='../../../../libs/ActionBar/library'>
-            <fileset dir="submodules/ActionBar-PullToRefresh/extras/actionbarsherlock">
-                <include name="project.properties"/>
-            </fileset>
-        </replaceregexp>
-	    <echo>Tried replacing location of ActionBar.</echo>
-        <antcall target="debug"/>
-	    <echo>After debug.</echo>
-    </target>
+		<!--Custom tasks-->
+		<replaceregexp match="../../../your/path/to/actionbarsherlock"
+		               replace='../../../../libs/ActionBar/library'>
+			<fileset dir="submodules/ActionBar-PullToRefresh/extras/actionbarsherlock">
+				<include name="project.properties"/>
+			</fileset>
+		</replaceregexp>
+		<echo>Tried replacing location of ActionBar.</echo>
+		<antcall target="debug"/>
+
+		<!--After building process.-->
+		<echo>After building.</echo>
+
+		<available file="bin/${JOB_NAME}-debug.apk" property="debug.present"/>
+		<if>
+			<equals arg1="${debug.present}" arg2="true"/>
+			<then>
+				<echo message="Find debug build."/>
+			</then>
+			<else>
+				<echo message="Can not find debug build."/>
+			</else>
+		</if>
+	</target>
 </project>
