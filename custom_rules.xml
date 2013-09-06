@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_rules">
-	<target name="internal_debug">
+	<target name="build">
 		<!--Tasks-->
 		<copy file="libs/android-support-v4.jar"
 		      todir="libs/ActionBar/library/libs/"
@@ -24,15 +24,17 @@
 		<!--After building process.-->
 		<echo>After building.</echo>
 
-		<available file="bin/${JOB_NAME}-debug.apk" property="debug.present"/>
-		<if>
-			<isset property="debug.present"/>
-			<then>
-				<echo message="Find debug build."/>
-			</then>
-			<else>
-				<echo message="Can not find debug build."/>
-			</else>
-		</if>
+		<!--Find debug build-->
+		<condition property="debug.present">
+			<and>
+				<available file="${JOB_NAME}-debug.apk" filepath="bin/"/>
+				<antcall target="op.debug"/>
+			</and>
+		</condition>
+
+	</target>
+
+	<target name="op.debug" if="debug.present">
+		<echo message="Find debug build."/>
 	</target>
 </project>
