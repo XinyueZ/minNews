@@ -5,14 +5,12 @@
 		<copy file="libs/android-support-v4.jar"
 		      todir="libs/ActionBar/library/libs/"
 		      overwrite="true"/>
-		<echo>--------android-support-v4.jar -> libs/ActionBar/library/libs/--------</echo>
 		<copy file="libs/android-support-v4.jar"
 		      todir="submodules/Android-ViewPagerIndicator/library/libs/"
 		      overwrite="true"/>
-		<echo>--------android-support-v4.jar -> submodules/Android-ViewPagerIndicator/library/libs/--------</echo>
 
 		<!--Application specialized tasks-->
-		<echo>--------Replacing location of ActionBar.--------</echo>
+		<echo>#######Replacing location of ActionBar.#######</echo>
 		<replaceregexp match="../../../your/path/to/actionbarsherlock"
 		               replace='../../../../libs/ActionBar/library'>
 			<fileset dir="submodules/ActionBar-PullToRefresh/extras/actionbarsherlock">
@@ -21,12 +19,13 @@
 		</replaceregexp>
 
 		<!--Make application-->
-		<echo message="--------Mode: ${mode}--------"/>
+		<echo message="#######Mode: ${mode}#######"/>
+		<antcall target="clean"/>
 		<antcall target="${mode}"/>
 
 		<!--After building process.-->
-		<echo>--------After building.--------</echo>
-		<echo message="--------Build number: ${build_number}--------"/>
+		<echo>#######After building.#######</echo>
+		<echo message="#######Build number: ${build_number}#######"/>
 
 		<!--Find debug build-->
 		<condition property="debug.present">
@@ -39,19 +38,27 @@
 			<available file="bin/${job_name}-release.apk"  />
 		</condition>
 		<antcall target="op.release"/>
+
+		<!--Reset-->
+		<echo>#######Reset.#######</echo>
+		<git command="reset">
+			<args>
+				<arg value="--hard HEAD" />
+			</args>
+		</git>
 	</target>
 
 	<target name="op.debug" if="debug.present">
-		<echo>--------Find debug build.--------</echo>
-		<echo message="--------Output: bin/${job_name}-debug.apk--------"/>
+		<echo>#######Find debug build.#######</echo>
+		<echo message="#######Output: bin/${job_name}-debug.apk#######"/>
 		<copy file="bin/${job_name}-debug.apk"
 		      tofile="bin/${job_name}-${build_number}-debug.apk"
 		      overwrite="true"/>
 	</target>
 
 	<target name="op.release" if="release.present">
-		<echo>--------Find release build.--------</echo>
-		<echo message="--------Output: bin/${job_name}-release.apk--------"/>
+		<echo>#######Find release build.#######</echo>
+		<echo message="#######Output: bin/${job_name}-release.apk#######"/>
 		<copy file="bin/${job_name}-release.apk"
 		      tofile="bin/${job_name}-${build_number}-release.apk"
 		      overwrite="true"/>
