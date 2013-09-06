@@ -23,18 +23,30 @@
 
 		<!--After building process.-->
 		<echo>After building.</echo>
-		<echo message="Build number: bin/${build_number}-debug.apk"/>
-		<echo message="Output: bin/${job_name}-debug.apk"/>
+		<echo message="Build number: ${build_number}"/>
 
 		<!--Find debug build-->
-
 		<condition property="debug.present">
-				<available file="bin/${job_name}-debug.apk"  />
+			<available file="bin/${job_name}-debug.apk"  />
+			<echo message="Output: bin/${job_name}-debug.apk"/>
 		</condition>
 		<antcall target="op.debug"/>
+
+		<!--Find release build-->
+		<condition property="release.present">
+			<available file="bin/${job_name}-release.apk"  />
+			<echo message="Output: bin/${job_name}-release.apk"/>
+		</condition>
+		<antcall target="op.release"/>
 	</target>
 
 	<target name="op.debug" if="debug.present">
 		<echo>Find debug build.</echo>
+		<copyfile src="bin/${job_name}-debug.apk" dest="bin/${job_name}-${build_number}-debug.apk"/>
+	</target>
+
+	<target name="op.release" if="release.present">
+		<echo>Find release build.</echo>
+		<copyfile src="bin/${job_name}-release.apk" dest="bin/${job_name}-${build_number}-release.apk"/>
 	</target>
 </project>
