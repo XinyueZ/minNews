@@ -23,12 +23,13 @@
 
 		<!--After building process.-->
 		<echo>After building.</echo>
-		<echo message="Output: bin/${JOB_NAME}-debug.apk"/>
-		
+		<echo message="Build number: bin/${build_number}-debug.apk"/>
+		<echo message="Output: bin/${job_name}-debug.apk"/>
+
 		<!--Find debug build-->
 
 		<condition property="debug.present">
-				<available file="bin/${JOB_NAME}-debug.apk"  />
+				<available file="bin/${job_name}-debug.apk"  />
 		</condition>
 		<antcall target="op.debug"/>
 	</target>
