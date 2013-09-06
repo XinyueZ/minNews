@@ -2,39 +2,7 @@
 <project name="custom_rules">
 
     <target name="internal_debug">
-
-	    <script language="javascript"> <![CDATA[
-             importClass(java.io.FileInputStream);
-		     importClass(java.io.InputStreamReader);
-		     importClass(java.io.BufferedReader);
-
-			 var projectProperties = "project.properties";
-
-	         var echo = project.createTask("echo");
-	         echo.setMessage("Loading project.properties for submodules");
-	         echo.perform();
-
-
-			 //read all names of submodules.
-			 var file = new FileInputStream(projectProperties);
-	         var fr = new InputStreamReader(file);
-	         var br = new BufferedReader(fr);
-
-			 var content = "";
-	         var data;
-             while((data = br.read()) != -1) {
-                content += br.readLine();
-                content += "\n";
-             }
-
-             echo = project.createTask("echo");
-	         echo.setMessage(content);
-	         echo.perform();
-
-			 //copy build.xml and local.properties to all submodules
-
-
-        ]]> </script>
+ 
 
         <replaceregexp match="../../../your/path/to/actionbarsherlock"
                        replace='../../../../libs/ActionBar/library'>
