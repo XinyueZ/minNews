@@ -2,11 +2,21 @@
 <project name="custom_rules">
 	<target name="build">
 		<!--Tasks-->
-		<property file="project.properties" />
-		<property name="target" value="${target} " />
-		<property name="android.library.reference.1" value="${android.library.reference.1} " />
+		<property file="project.properties"/>
+		<property name="target" value="${target} "/>
+		<property name="android.library" value="${android.library} "/>
+		<property name="android.library.reference.1" value="${android.library.reference.1} "/>
 		<echo message="#######target: ${target}#######"/>
+		<echo message="#######android.library: ${android.library}#######"/>
 		<echo message="#######android.library.reference.1: ${android.library.reference.1}#######"/>
+		<propertyset id="android.library.references">
+			<propertyref prefix="android.library.reference."/>
+		</propertyset>
+		<for list="${android.library.references}" param="ref">
+			<sequential>
+				<echo message="#######Lib: @{ref}#######"/>
+			</sequential>
+		</for>
 
 		<!--Replace all v4 library in library projects.-->
 		<copy file="libs/android-support-v4.jar"
@@ -26,7 +36,7 @@
 		</replaceregexp>
 
 		<!--Make application-->
-		<echo message="#######Building: ${JOB_NAME}#######"/>
+		<echo message="#######Building: ${job_name}#######"/>
 		<echo message="#######Mode: ${mode}#######"/>
 		<antcall target="clean"/>
 		<antcall target="${mode}"/>
@@ -37,22 +47,22 @@
 
 		<!--Find debug build-->
 		<condition property="debug.present">
-			<available file="bin/${job_name}-debug.apk"  />
+			<available file="bin/${job_name}-debug.apk"/>
 		</condition>
 		<antcall target="op.debug"/>
 
 		<!--Find release build-->
 		<condition property="release.present">
-			<available file="bin/${job_name}-release.apk"  />
+			<available file="bin/${job_name}-release.apk"/>
 		</condition>
 		<antcall target="op.release"/>
 
 		<!--Reset-->
 		<echo>#######Reset.#######</echo>
 		<exec executable="git" dir=".">
-			<arg value="reset" />
-			<arg value="--hard" />
-			<arg value="HEAD" />
+			<arg value="reset"/>
+			<arg value="--hard"/>
+			<arg value="HEAD"/>
 		</exec>
 	</target>
 
