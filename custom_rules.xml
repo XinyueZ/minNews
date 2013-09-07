@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_rules">
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="../lib/ant/ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
 	<target name="build">
 		<!--Tasks-->
 		<property file="project.properties"/>
@@ -8,18 +13,15 @@
 		<property name="android.library.reference.1" value="${android.library.reference.1} "/>
 		<echo message="#######target: ${target}#######"/>
 		<echo message="#######android.library: ${android.library}#######"/>
-		<echo message="#######All android.library.references:#######"/>
-		<echoproperties prefix="android.library.reference." />
-		<property name="android.library.references" file="project.properties" prefix="android.library.reference."/>
-
-		<script language="javascript">
-			<![CDATA[
-					 var pset = self.getProject().getProperty("android.library.references");
-					 for (i = 0; i < pset.length; i++) {
-						 print(pset[i]);
-					 }
-			]]>
-		</script>
+		<echo message="#######android.library.reference.1: ${android.library.reference.1}#######"/>
+		<propertyset id="android.library.references">
+			<propertyref prefix="android.library.reference."/>
+		</propertyset>
+		<for list="${android.library.references}" param="ref">
+			<sequential>
+				<echo message="#######Lib: @{ref}#######"/>
+			</sequential>
+		</for>
 
 		<!--Replace all v4 library in library projects.-->
 		<copy file="libs/android-support-v4.jar"
