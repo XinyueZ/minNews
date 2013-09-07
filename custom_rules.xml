@@ -8,11 +8,10 @@
 		<property name="android.library.reference.1" value="${android.library.reference.1} "/>
 		<echo message="#######target: ${target}#######"/>
 		<echo message="#######android.library: ${android.library}#######"/>
-		<echo message="#######android.library.reference.1: ${android.library.reference.1}#######"/>
+		<echo message="#######All android.library.references:#######"/>
 		<echoproperties prefix="android.library.reference." />
-		<propertyset id="android.library.references">
-			<propertyref prefix="android.library.reference."/>
-		</propertyset>
+		<property name="android.library.references" prefix="android.library.reference."/>
+
 		<script language="javascript">
 			<![CDATA[
 					 var pset = self.getProject().getProperty("android.library.references");
