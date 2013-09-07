@@ -12,11 +12,11 @@
 		<propertyset id="android.library.references">
 			<propertyref prefix="android.library.reference."/>
 		</propertyset>
-		<for list="${android.library.references}" param="ref">
+		<foreach list="${android.library.references}" param="ref">
 			<sequential>
 				<echo message="#######Lib: @{ref}#######"/>
 			</sequential>
-		</for>
+		</foreach>
 
 		<!--Replace all v4 library in library projects.-->
 		<copy file="libs/android-support-v4.jar"
