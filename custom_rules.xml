@@ -2,6 +2,13 @@
 <project name="custom_rules">
 	<target name="build">
 		<!--Tasks-->
+		<property file="project.properties" />
+		<property name="target" value="${target} " />
+		<property name="android.library.reference.1" value="${android.library.reference.1} " />
+		<echo message="#######target: ${target}#######"/>
+		<echo message="#######android.library.reference.1: ${android.library.reference.1}#######"/>
+
+		<!--Replace all v4 library in library projects.-->
 		<copy file="libs/android-support-v4.jar"
 		      todir="libs/ActionBar/library/libs/"
 		      overwrite="true"/>
@@ -19,6 +26,7 @@
 		</replaceregexp>
 
 		<!--Make application-->
+		<echo message="#######Building: ${JOB_NAME}#######"/>
 		<echo message="#######Mode: ${mode}#######"/>
 		<antcall target="clean"/>
 		<antcall target="${mode}"/>
