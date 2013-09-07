@@ -10,7 +10,7 @@
 		<echo message="#######android.library: ${android.library}#######"/>
 		<echo message="#######All android.library.references:#######"/>
 		<echoproperties prefix="android.library.reference." />
-		<property name="android.library.references" prefix="android.library.reference."/>
+		<property name="android.library.references" file="project.properties" prefix="android.library.reference."/>
 
 		<script language="javascript">
 			<![CDATA[
