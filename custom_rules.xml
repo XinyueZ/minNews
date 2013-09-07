@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_rules">
-	<property name="ant-contrib.jar" location="${build.dir}/build/lib/ant-contrib-1.0b3.jar" />
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="${ant-contrib.jar}" />
 	<target name="build">
 		<!--Tasks-->
 		<property file="project.properties"/>
