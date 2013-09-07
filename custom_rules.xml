@@ -14,9 +14,9 @@
 		</propertyset>
 		<script language="javascript">
 			<![CDATA[
-					 var start=@{android.library.references};
-					 for (i = 0; i<start.length; i++) {
-						 print(start[i]);
+					 var pset = self.getProject().getProperty("android.library.references");
+					 for (i = 0; i < pset.length; i++) {
+						 print(pset[i]);
 					 }
 			]]>
 		</script>
