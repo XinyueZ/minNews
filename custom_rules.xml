@@ -9,6 +9,7 @@
 		<echo message="#######target: ${target}#######"/>
 		<echo message="#######android.library: ${android.library}#######"/>
 		<echo message="#######android.library.reference.1: ${android.library.reference.1}#######"/>
+		<echoproperties prefix="android.library.reference." />
 		<propertyset id="android.library.references">
 			<propertyref prefix="android.library.reference."/>
 		</propertyset>
