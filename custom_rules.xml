@@ -2,7 +2,7 @@
 <project name="custom_rules">
 	<target name="build">
 		<!--Tasks-->
-		<property file="project.properties"/>
+		<loadproperties srcfile="project.properties"/>
 		<property name="target" value="${target} "/>
 		<property name="android.library" value="${android.library} "/>
 		<property name="android.library.reference.1" value="${android.library.reference.1}"/>
