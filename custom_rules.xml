@@ -8,7 +8,7 @@
 		<property name="android.library.reference.1" value="${android.library.reference.1}"/>
 		<echo message="#######target: ${target}#######"/>
 		<echo message="#######android.library: ${android.library}#######"/>
-		
+
 		<!--Update all build.xml, local.properties-->
 		<antcall target="op.updatePrj"/>
 
@@ -56,6 +56,7 @@
 				<include name="project.properties"/>
 			</fileset>
 		</replaceregexp>
+		<antcall target="op.volley.as.lib"/>
 
 		<!--Make application-->
 		<echo message="#######Building: ${job_name}#######"/>
@@ -124,6 +125,20 @@
 			<arg value="-s"/>
 			<arg value="-p"/>
 			<arg value="${libPath}"/>
+		</exec>
+	</target>
+
+	<target name="op.volley.as.lib">
+		<echo message="${android} create lib-project -p submodules/Volley/ -k com.android.volley -t 31"/>
+		<exec executable="${android}" dir=".">
+			<arg value="create"/>
+			<arg value="lib-project"/>
+			<arg value="-p"/>
+			<arg value="submodules/Volley/"/>
+			<arg value="-k"/>
+			<arg value="com.android.volley"/>
+			<arg value="-t"/>
+			<arg value="31"/>
 		</exec>
 	</target>
 </project>
