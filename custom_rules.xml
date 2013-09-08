@@ -10,14 +10,16 @@
 		<echo message="#######android.library: ${android.library}#######"/>
 		<echo message="#######android.library.reference.*#######"/>
 		<echoproperties prefix="android.library.reference"/>
-		<!--<property name = "android.library.references" file="build.properties"   prefix="android.library.reference"/>-->
 		<script language="javascript">
 			<![CDATA[
-				 var keys = project.getProperties().keySet();
+				 importClass(java.util.*); 
+
+				 var props = project.getProperties();
+				 var keys = props.keySet();
 				 var cntKeys = keys.size();
 				 for (i = 0; i < cntKeys; i++) {
 				    echo = project.createTask("echo");
-                    echo.setMessage(project.getProperties().get((project.getProperties().keySet())[i]));
+                    echo.setMessage(props.get(keys[i]));
                     echo.perform();
 				 }
 			]]>
