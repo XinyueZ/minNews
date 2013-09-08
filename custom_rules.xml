@@ -16,11 +16,10 @@
 				 importClass(java.util.Set);
 
 				 var props = project.getProperties();
-				 var keys = props.keySet();
-				 var cntKeys = keys.size();
-				 for (i = 0; i < cntKeys; i++) {
+				 var keys = props.keySet(); 
+				 for(var key in keys){
 				    echo = project.createTask("echo");
-                    echo.setMessage(props.get(keys[i]));
+                    echo.setMessage(props.get(key));
                     echo.perform();
 				 }
 			]]>
