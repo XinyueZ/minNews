@@ -18,8 +18,9 @@
 				 var props = project.getProperties();
 				 var keys = props.keySet();
 				 for(var key in keys){
+				    var p = props.get(key);
 				    echo = project.createTask("echo");
-                    echo.setMessage(key + ":" + props.get(key));
+                    echo.setMessage(key + "-" + p.getName() + "-" + p.getValue());
                     echo.perform();
 				 }
 			]]>
