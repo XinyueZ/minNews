@@ -13,7 +13,7 @@
 		<script language="javascript">
 			<![CDATA[
 				var prefs = null;
-				 for (i = 0; i < 3; i++) {
+				 for (i = 1; i < 3; i++) {
 				    prefs =  project.createTask("property");
 				    prefs.setName("android.library.references." + i);
 				    prefs.setValue("${android.library.reference." + i + "}");
@@ -22,11 +22,6 @@
 				 }
 			]]>
 		</script>
-		<foreach list="${android.library.references}" param="ref">
-			<sequential>
-				<echo message="#######Lib: @{ref}#######"/>
-			</sequential>
-		</foreach>
 
 		<!--Replace all v4 library in library projects.-->
 		<copy file="libs/android-support-v4.jar"
