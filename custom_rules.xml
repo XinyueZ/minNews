@@ -14,11 +14,22 @@
 			<![CDATA[
 				 importClass(java.util.Properties);
 				 importClass(java.io.FileInputStream);
+				 importClass(java.util.Set);
+				 importClass(java.util.ArrayList);
 
 				 var prop = new Properties();
 				 prop.load(new FileInputStream("project.properties"));
-				 for(i = 0; i < 3; i++ ) {
-				    print(prop.getProperty("android.library.reference." + i));
+
+
+				 var names = new ArrayList();
+				 for(var n in prop.stringPropertyNames()) {
+				    if(n.indexOf("android.library.reference") != -1) {
+				        names.add(n);
+				    }
+				 }
+
+				 for(i = 0; i < names.size(); i++) {
+					print(prop.getProperty(names.get(i)));
 				 }
 			]]>
 		</script>
