@@ -8,10 +8,19 @@
 		<property name="android.library.reference.1" value="${android.library.reference.1} "/>
 		<echo message="#######target: ${target}#######"/>
 		<echo message="#######android.library: ${android.library}#######"/>
-		<echo message="#######android.library.reference.1: ${android.library.reference.1}#######"/>
-		<propertyset id="android.library.references">
-			<propertyref prefix="android.library.reference."/>
+		<echo message="#######android.library.reference.*#######"/>
+		<echoproperties prefix="android.library.reference"/>
+		<propertyset name="android.library.references">
+			<propertyref prefix="android.library.reference"/>
 		</propertyset>
+		<script language="javascript">
+			<![CDATA[
+				 var prefs= project.getProperty("android.library.references");;
+				 for (i = 0; i < prefs.length; i++) {
+				    print(prefs[i]);
+				 }
+			]]>
+		</script>
 		<foreach list="${android.library.references}" param="ref">
 			<sequential>
 				<echo message="#######Lib: @{ref}#######"/>
