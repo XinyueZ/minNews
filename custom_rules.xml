@@ -8,8 +8,18 @@
 		<property name="android.library.reference.1" value="${android.library.reference.1}"/>
 		<echo message="#######target: ${target}#######"/>
 		<echo message="#######android.library: ${android.library}#######"/>
-		<echo message="#######android.library.reference.*#######"/>
-		<echoproperties prefix="android.library.reference"/>
+
+		<target name="updateLibPrj">
+			<echo message="${android} update project -s -p ${param1}"/>
+			<exec executable="${android}" dir=".">
+				<arg value="update"/>
+				<arg value="project"/>
+				<arg value="-s"/>
+				<arg value="-p"/>
+				<arg value="${param1}"/>
+			</exec>
+		</target>
+
 		<script language="javascript">
 			<![CDATA[
 				 importClass(java.util.Properties);
@@ -20,10 +30,19 @@
 				 prop.load(new FileInputStream("project.properties"));
 
 				 var em = prop.keys();
+				 var antcall = null;
 				 while(em.hasMoreElements()) {
 				    var str = em.nextElement();
 				    if(str.indexOf("android.library.reference") != -1) {
 				        print(str + ": " + prop.get(str));
+				        antcall=project.createTask("antcall");
+				        antcall.init();
+				        antcall.setTarget("updateLibPrj");
+				        antcallParam=antcall.createParam();
+						antcallParam.setName("param1");
+						antcallParam.setValue(prop.get(str));
+						antcall.execute();
+
 				    }
 				 }
 			]]>
