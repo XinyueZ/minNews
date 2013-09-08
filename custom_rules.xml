@@ -5,7 +5,7 @@
 		<property file="project.properties"/>
 		<property name="target" value="${target} "/>
 		<property name="android.library" value="${android.library} "/>
-		<property name="android.library.reference.1" value="${android.library.reference.1} "/>
+		<property name="android.library.reference.1" value="${android.library.reference.1}"/>
 		<echo message="#######target: ${target}#######"/>
 		<echo message="#######android.library: ${android.library}#######"/>
 		<echo message="#######android.library.reference.*#######"/>
@@ -14,8 +14,11 @@
 			<![CDATA[
 				var prefs = null;
 				 for (i = 0; i < 3; i++) {
-				    prefs= project.getProperty("android.library.references." + i);
-				    print(prefs[i]);
+				    prefs =  project.createTask("property");
+				    prefs.setName("android.library.references." + i);
+				    prefs.setValue("${android.library.reference." + i + "}");
+				    prefs.preform();
+				    print(project.getProperty("android.library.references." + i));
 				 }
 			]]>
 		</script>
