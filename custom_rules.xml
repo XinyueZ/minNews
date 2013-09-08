@@ -14,22 +14,17 @@
 			<![CDATA[
 				 importClass(java.util.Properties);
 				 importClass(java.io.FileInputStream);
-				 importClass(java.util.Set);
-				 importClass(java.util.ArrayList);
+				 importClass(java.util.Enumeration);
 
 				 var prop = new Properties();
 				 prop.load(new FileInputStream("project.properties"));
 
-
-				 var names = new ArrayList();
-				 for(var n in prop.stringPropertyNames()) {
-				    if(n.indexOf("android.library.reference") != -1) {
-				        names.add(n);
+				 Enumeration em = pro.keys();
+				 while(em.hasMoreElements()){
+				    str = em.nextElement();
+				    if(str.indexOf("android.library.reference") != -1) {
+				        print(str + ": " + prop.get(str));
 				    }
-				 }
-
-				 for(i = 0; i < names.size(); i++) {
-					print(prop.getProperty(names.get(i)));
 				 }
 			]]>
 		</script>
