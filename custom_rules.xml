@@ -10,13 +10,11 @@
 		<echo message="#######android.library: ${android.library}#######"/>
 		<echo message="#######android.library.reference.*#######"/>
 		<echoproperties prefix="android.library.reference"/>
-		<propertyset name="android.library.references">
-			<propertyref prefix="android.library.reference"/>
-		</propertyset>
 		<script language="javascript">
 			<![CDATA[
-				 var prefs= project.getProperty("android.library.references");;
-				 for (i = 0; i < prefs.length; i++) {
+				var prefs = null;
+				 for (i = 0; i < 3; i++) {
+				    prefs= project.getProperty("android.library.references." + i);
 				    print(prefs[i]);
 				 }
 			]]>
