@@ -12,16 +12,13 @@
 		<echoproperties prefix="android.library.reference"/>
 		<script language="javascript">
 			<![CDATA[
-				 importClass(java.util.Hashtable);
-				 importClass(java.util.Set);
+				 importClass(java.util.Properties);
+				 importClass(java.io.FileInputStream);
 
-				 var props = project.getProperties();
-				 var keys = props.keySet();
-				 for(var key in keys){
-				    var p = props.get(key);
-				    echo = project.createTask("echo");
-                    echo.setMessage(key);
-                    echo.perform();
+				 var prop = new Properties();
+				 prop.load(new FileInputStream("project.properties"));
+				 for(i = 0; i < 3; i++ ) {
+				    print(prop.getProperty("android.library.reference." + i));
 				 }
 			]]>
 		</script>
