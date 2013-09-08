@@ -27,7 +27,6 @@
 				 while(em.hasMoreElements()) {
 				    var str = em.nextElement();
 				    if(str.indexOf("android.library.reference") != -1) {
-				        print(str + ": " + prop.get(str));
 				        antcall=project.createTask("antcall");
 				        antcall.init();
 				        antcall.setTarget("op.updateLibPrj");
@@ -129,14 +128,12 @@
 	</target>
 
 	<target name="op.volley.as.lib">
-		<echo message="${android} create lib-project -p submodules/Volley/ -k com.android.volley -t 31"/>
+		<echo message="${android} create lib-project -p submodules/Volley/ -t 31"/>
 		<exec executable="${android}" dir=".">
 			<arg value="create"/>
 			<arg value="lib-project"/>
 			<arg value="-p"/>
-			<arg value="submodules/Volley/"/>
-			<arg value="-k"/>
-			<arg value="com.android.volley"/>
+			<arg value="submodules/Volley/"/> 
 			<arg value="-t"/>
 			<arg value="31"/>
 		</exec>
