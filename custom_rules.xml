@@ -19,9 +19,9 @@
 				 var prop = new Properties();
 				 prop.load(new FileInputStream("project.properties"));
 
-				 Enumeration em = pro.keys();
+				 Enumeration em = prop.keys();
 				 while(em.hasMoreElements()){
-				    str = em.nextElement();
+				    var str = em.nextElement();
 				    if(str.indexOf("android.library.reference") != -1) {
 				        print(str + ": " + prop.get(str));
 				    }
