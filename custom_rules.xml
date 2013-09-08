@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_rules">
 	<target name="build">
-		<!--Tasks-->
+		<!--Reading project properties-->
 		<loadproperties srcfile="project.properties"/>
 		<property name="target" value="${target} "/>
 		<property name="android.library" value="${android.library} "/>
 		<property name="android.library.reference.1" value="${android.library.reference.1}"/>
 		<echo message="#######target: ${target}#######"/>
 		<echo message="#######android.library: ${android.library}#######"/>
+		
+		<!--Update all build.xml, local.properties-->
+		<antcall target="op.updatePrj"/>
 
-
-
+		<!--Update all build.xml, local.properties in submodules, project libraries, etc.-->
 		<script language="javascript">
 			<![CDATA[
 				 importClass(java.util.Properties);
@@ -28,9 +30,9 @@
 				        print(str + ": " + prop.get(str));
 				        antcall=project.createTask("antcall");
 				        antcall.init();
-				        antcall.setTarget("updateLibPrj");
+				        antcall.setTarget("op.updateLibPrj");
 				        antcallParam=antcall.createParam();
-						antcallParam.setName("param1");
+						antcallParam.setName("libPath");
 						antcallParam.setValue(prop.get(str));
 						antcall.execute();
 				    }
@@ -102,14 +104,26 @@
 		      overwrite="true"/>
 	</target>
 
-	<target name="updateLibPrj">
-		<echo message="${android} update project -s -p ${param1}"/>
+	<target name="op.updatePrj">
+		<echo message="${android} update project -p . -n ${job_name}"/>
+		<exec executable="${android}" dir=".">
+			<arg value="update"/>
+			<arg value="project"/>
+			<arg value="-p"/>
+			<arg value="."/>
+			<arg value="-n"/>
+			<arg value="${job_name}"/>
+		</exec>
+	</target>
+
+	<target name="op.updateLibPrj">
+		<echo message="${android} update project -s -p ${libPath}"/>
 		<exec executable="${android}" dir=".">
 			<arg value="update"/>
 			<arg value="project"/>
 			<arg value="-s"/>
 			<arg value="-p"/>
-			<arg value="${param1}"/>
+			<arg value="${libPath}"/>
 		</exec>
 	</target>
 </project>
