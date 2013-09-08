@@ -16,8 +16,7 @@
 				 for (i = 1; i < 3; i++) {
 				    prefs =  project.createTask("property");
 				    prefs.setName("android.library.references." + i);
-				    prefs.setValue("${android.library.reference." + i + "}");
-				    prefs.preform();
+				    prefs.setValue("${android.library.reference." + i + "}"); 
 				    print(project.getProperty("android.library.references." + i));
 				 }
 			]]>
