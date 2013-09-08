@@ -12,8 +12,10 @@
 		<!--Update all build.xml, local.properties-->
 		<antcall target="op.updatePrj"/>
 
-		<!--Update all build.xml, local.properties in submodules, project libraries, etc.-->
-		<!--Copy v4 as well-->
+		<!--
+			Update all build.xml, local.properties in submodules, project libraries, etc.
+			Copy v4 as well.
+		-->
 		<script language="javascript">
 			<![CDATA[
 				 importClass(java.util.Properties);
