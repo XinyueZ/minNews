@@ -20,7 +20,7 @@
 				 for(var key in keys){
 				    var p = props.get(key);
 				    echo = project.createTask("echo");
-                    echo.setMessage(key + "-" + p.getName() + "-" + p.getValue());
+                    echo.setMessage(key);
                     echo.perform();
 				 }
 			]]>
