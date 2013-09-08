@@ -13,39 +13,45 @@
 		<antcall target="op.updatePrj"/>
 
 		<!--Update all build.xml, local.properties in submodules, project libraries, etc.-->
+		<!--Copy v4 as well-->
 		<script language="javascript">
 			<![CDATA[
 				 importClass(java.util.Properties);
 				 importClass(java.io.FileInputStream);
 				 importClass(java.util.Enumeration);
+				 importClass(java.io.File);
+
+
+				 function antcall(_target, _targetParam, _paramValue){
+				    var antcall = project.createTask("antcall");
+				    antcall.init();
+				    antcall.setTarget(_target);
+				    antcallParam = antcall.createParam();
+			    	antcallParam.setName(_targetParam);
+					antcallParam.setValue(_paramValue);
+					antcall.execute();
+				 }
 
 				 var prop = new Properties();
 				 prop.load(new FileInputStream("project.properties"));
 
 				 var em = prop.keys();
-				 var antcall = null;
+				 var v4f = null;
+				 var f = null;
 				 while(em.hasMoreElements()) {
 				    var str = em.nextElement();
 				    if(str.indexOf("android.library.reference") != -1) {
-				        antcall=project.createTask("antcall");
-				        antcall.init();
-				        antcall.setTarget("op.updateLibPrj");
-				        antcallParam=antcall.createParam();
-						antcallParam.setName("libPath");
-						antcallParam.setValue(prop.get(str));
-						antcall.execute();
+						antcall("op.updateLibPrj", "libPath", prop.get(str));
+						v4f = prop.get(str) + "/libs/android-support-v4.jar";
+						f = new File(v4f);
+						if(f.exists()) {
+					        antcall("op.update.v4", "libFullName", v4f);
+						}
 				    }
 				 }
+
 			]]>
 		</script>
-
-		<!--Replace all v4 library in library projects.-->
-		<copy file="libs/android-support-v4.jar"
-		      todir="libs/ActionBar/library/libs/"
-		      overwrite="true"/>
-		<copy file="libs/android-support-v4.jar"
-		      todir="submodules/Android-ViewPagerIndicator/library/libs/"
-		      overwrite="true"/>
 
 		<!--Application specialized tasks-->
 		<echo>#######Replacing location of ActionBar.#######</echo>
@@ -128,14 +134,22 @@
 	</target>
 
 	<target name="op.volley.as.lib">
-		<echo message="${android} create lib-project -p submodules/Volley/ -t 31"/>
+		<echo message="${android} create lib-project -p submodules/Volley/ -k com.android.volley -t 31"/>
 		<exec executable="${android}" dir=".">
 			<arg value="create"/>
 			<arg value="lib-project"/>
 			<arg value="-p"/>
-			<arg value="submodules/Volley/"/> 
+			<arg value="submodules/Volley/"/>
+			<arg value="-k"/>
+			<arg value="com.android.volley"/>
 			<arg value="-t"/>
 			<arg value="31"/>
 		</exec>
+	</target>
+
+	<target name="op.update.v4">
+		<copy file="libs/android-support-v4.jar"
+		      tofile="${libFullName}"
+		      overwrite="true"/>
 	</target>
 </project>
