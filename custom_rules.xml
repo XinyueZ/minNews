@@ -9,16 +9,7 @@
 		<echo message="#######target: ${target}#######"/>
 		<echo message="#######android.library: ${android.library}#######"/>
 
-		<target name="updateLibPrj">
-			<echo message="${android} update project -s -p ${param1}"/>
-			<exec executable="${android}" dir=".">
-				<arg value="update"/>
-				<arg value="project"/>
-				<arg value="-s"/>
-				<arg value="-p"/>
-				<arg value="${param1}"/>
-			</exec>
-		</target>
+
 
 		<script language="javascript">
 			<![CDATA[
@@ -42,7 +33,6 @@
 						antcallParam.setName("param1");
 						antcallParam.setValue(prop.get(str));
 						antcall.execute();
-
 				    }
 				 }
 			]]>
@@ -110,5 +100,16 @@
 		<copy file="bin/${job_name}-release.apk"
 		      tofile="bin/${job_name}-${build_number}-release.apk"
 		      overwrite="true"/>
+	</target>
+
+	<target name="updateLibPrj">
+		<echo message="${android} update project -s -p ${param1}"/>
+		<exec executable="${android}" dir=".">
+			<arg value="update"/>
+			<arg value="project"/>
+			<arg value="-s"/>
+			<arg value="-p"/>
+			<arg value="${param1}"/>
+		</exec>
 	</target>
 </project>
