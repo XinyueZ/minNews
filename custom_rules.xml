@@ -12,7 +12,8 @@
 		<echoproperties prefix="android.library.reference"/>
 		<script language="javascript">
 			<![CDATA[
-				 importClass(java.util.*); 
+				 importClass(java.util.Hashtable);
+				 importClass(java.util.Set);
 
 				 var props = project.getProperties();
 				 var keys = props.keySet();
