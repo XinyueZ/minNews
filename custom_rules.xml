@@ -152,6 +152,6 @@
 	<target name="op.update.v4">
 		<copy file="libs/android-support-v4.jar"
 		      tofile="${libFullName}"
-		      overwrite="true"/>
+			      overwrite="true"/>
 	</target>
 </project>
